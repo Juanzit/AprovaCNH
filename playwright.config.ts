@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'list',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3055',
     trace: 'on-first-retry',
   },
   projects: [
@@ -17,13 +17,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 13'] },
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
     },
   ],
   webServer: {
-    command: 'pnpm dev',
-    url: 'http://localhost:3000',
+    command: 'pnpm start -p 3055',
+    url: 'http://localhost:3055',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
