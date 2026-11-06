@@ -1,0 +1,217 @@
+[
+  {
+    "id": "demo-sin-001",
+    "version": 1,
+    "statement": "Qual é a finalidade principal das placas de advertência no trânsito?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Alertar os usuários da via sobre condições potencialmente perigosas, indicando sua natureza."
+      },
+      {
+        "id": "b",
+        "text": "Informar sobre obrigações, proibições e restrições no uso das vias urbanas e rurais."
+      },
+      {
+        "id": "c",
+        "text": "Indicar sentidos de direção, distâncias e destinos turísticos ao longo do trajeto."
+      },
+      {
+        "id": "d",
+        "text": "Estabelecer valores fixos de multas e penalidades aplicáveis a cada infração cometida."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "As placas de advertência têm a função de alertar condutores sobre condições de risco à frente na via, para que adaptem a velocidade e atenção.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Placas de Advertência",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "demo",
+      "document": "Resolução CONTRAN (Exemplo Didático)",
+      "provision": null,
+      "url": null,
+      "checkedAt": null,
+      "effectiveFrom": null,
+      "effectiveUntil": null,
+      "sourceVersion": null,
+      "licenseNote": "Fixture demonstrativa de interface — Não homologada juridicamente",
+      "verificationStatus": "pending"
+    },
+    "status": "rascunho",
+    "isExample": true
+  },
+  {
+    "id": "demo-sin-002",
+    "version": 1,
+    "statement": "Diante da placa de regulamentação 'Parada Obrigatória' (R-1), qual deve ser a conduta do condutor?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reduzir a velocidade e parar somente se houver veículos se aproximando da via preferencial."
+      },
+      {
+        "id": "b",
+        "text": "Imobilizar totalmente o veículo antes de entrar ou cruzar a via, independentemente do fluxo."
+      },
+      {
+        "id": "c",
+        "text": "Acelerar para liberar rapidamente o cruzamento antes dos pedestres iniciarem a travessia."
+      },
+      {
+        "id": "d",
+        "text": "Buzinar de forma breve para avisar aos demais usuários que entrará no cruzamento."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A placa R-1 exige a imobilização completa do veículo antes do cruzamento, assegurando a prioridade dos que trafegam na via transversal.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Placas de Regulamentação",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "demo",
+      "document": "Resolução CONTRAN (Exemplo Didático)",
+      "provision": null,
+      "url": null,
+      "checkedAt": null,
+      "effectiveFrom": null,
+      "effectiveUntil": null,
+      "sourceVersion": null,
+      "licenseNote": "Fixture demonstrativa de interface — Não homologada juridicamente",
+      "verificationStatus": "pending"
+    },
+    "status": "rascunho",
+    "isExample": true
+  },
+  {
+    "id": "demo-sin-003",
+    "version": 1,
+    "statement": "Qual linha de divisão de fluxos opostos pintada no pavimento proíbe expressamente a ultrapassagem nos dois sentidos?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Linha contínua dupla amarela."
+      },
+      {
+        "id": "b",
+        "text": "Linha seccionada simples branca."
+      },
+      {
+        "id": "c",
+        "text": "Linha seccionada simples amarela."
+      },
+      {
+        "id": "d",
+        "text": "Linha contínua simples branca."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "A linha contínua dupla amarela proíbe a manobra de ultrapassagem para os fluxos em ambos os sentidos da pista.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Horizontal",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "demo",
+      "document": "Manual Brasileiro de Sinalização Horizontal (Exemplo)",
+      "provision": null,
+      "url": null,
+      "checkedAt": null,
+      "effectiveFrom": null,
+      "effectiveUntil": null,
+      "sourceVersion": null,
+      "licenseNote": "Fixture demonstrativa de interface — Não homologada juridicamente",
+      "verificationStatus": "pending"
+    },
+    "status": "rascunho",
+    "isExample": true
+  },
+  {
+    "id": "demo-sin-004",
+    "version": 1,
+    "statement": "Em um semáforo veicular padrão de três luzes, o que indica o acendimento isolado da luz amarela?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Aceleração imediata antes do fechamento do sinal."
+      },
+      {
+        "id": "b",
+        "text": "Atenção: o condutor deve parar o veículo, salvo se já estiver na área de cruzamento com risco à segurança."
+      },
+      {
+        "id": "c",
+        "text": "Passagem livre exclusivamente para veículos de transporte coletivo e emergência."
+      },
+      {
+        "id": "d",
+        "text": "Permissão para conversão à esquerda sem observar o tráfego em sentido oposto."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A luz amarela sinaliza o término da fase de direito de passagem. O condutor deve imobilizar o veículo, exceto se a parada repentina causar risco de colisão.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Luminosa",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "demo",
+      "document": "Resolução CONTRAN Semafórica (Exemplo)",
+      "provision": null,
+      "url": null,
+      "checkedAt": null,
+      "effectiveFrom": null,
+      "effectiveUntil": null,
+      "sourceVersion": null,
+      "licenseNote": "Fixture demonstrativa de interface — Não homologada juridicamente",
+      "verificationStatus": "pending"
+    },
+    "status": "rascunho",
+    "isExample": true
+  },
+  {
+    "id": "demo-sin-005",
+    "version": 1,
+    "statement": "Diante da ordem de parada emitida por agente da autoridade de trânsito em desacordo com o semáforo verde, prevalece:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A indicação do semáforo, pois equipamentos eletrônicos possuem maior precisão técnica."
+      },
+      {
+        "id": "b",
+        "text": "As ordens do agente de trânsito sobre as normas de circulação e outros sinais."
+      },
+      {
+        "id": "c",
+        "text": "A regra geral de preferência da via com maior volume de tráfego no cruzamento."
+      },
+      {
+        "id": "d",
+        "text": "A livre decisão do condutor sobre qual comando seguir com menor risco."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Na ordem de prevalência da sinalização de trânsito, as ordens do agente prevalecem sobre as normas de circulação e sobre os demais sinais.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Hierarquia da Sinalização",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "demo",
+      "document": "Código de Trânsito Brasileiro (Exemplo Demonstrativo)",
+      "provision": null,
+      "url": null,
+      "checkedAt": null,
+      "effectiveFrom": null,
+      "effectiveUntil": null,
+      "sourceVersion": null,
+      "licenseNote": "Fixture demonstrativa de interface — Não homologada juridicamente",
+      "verificationStatus": "pending"
+    },
+    "status": "rascunho",
+    "isExample": true
+  }
+]
