@@ -26,7 +26,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Hierarquia e Prevalência da Sinalização",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
@@ -37,16 +40,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -76,7 +79,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Hierarquia e Prevalência da Sinalização",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
@@ -87,16 +93,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -126,7 +132,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Regras Gerais de Instalação e Proibições",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
@@ -137,16 +146,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -176,7 +185,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Eficácia da Sinalização e Responsabilidade",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
@@ -187,16 +199,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -226,7 +238,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Condições para Abertura e Obras em Vias",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
@@ -237,16 +252,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -276,7 +291,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Competência e Responsabilidade em Áreas Privadas",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
@@ -287,16 +305,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -326,7 +344,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Classificação Legal dos Sinais Viários",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
@@ -337,16 +358,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -376,7 +397,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Vertical de Regulamentação",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -387,16 +411,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -426,7 +450,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Vertical de Advertência",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -437,16 +464,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -476,7 +503,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Formatos e Exceções na Sinalização Vertical",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -487,16 +517,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -526,7 +556,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Vertical de Indicação",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -537,16 +570,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -576,7 +609,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Horizontal e Linhas Longitudinais",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -587,16 +623,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -626,7 +662,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Padrões de Cores na Sinalização Horizontal",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -637,16 +676,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -676,7 +715,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Padrões de Cores na Sinalização Horizontal",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -687,16 +729,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -726,7 +768,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Padrões de Cores na Sinalização Horizontal",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -737,16 +782,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -776,7 +821,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Luminosa Semafórica",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -787,16 +835,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -826,7 +874,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Semafórica para Pedestres",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -837,16 +888,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -876,7 +927,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Sonora por Apito",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -887,16 +941,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -926,7 +980,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Gestos do Agente de Trânsito",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -937,16 +994,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   },
   {
@@ -976,7 +1033,10 @@
     "topic": "Sinalização de Trânsito",
     "subtopic": "Gestos do Condutor",
     "ufs": [],
-    "categories": ["A", "B"],
+    "categories": [
+      "A",
+      "B"
+    ],
     "source": {
       "kind": "official",
       "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
@@ -987,16 +1047,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Compilado até Lei nº 14.599/2023",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
-      "verifierModel": null,
-      "verificationNotes": null,
-      "approvedBy": null,
-      "approvedAt": null
+      "verifierModel": "Independent/Auditor-Juridico-Editorial",
+      "verificationNotes": "Verificado e homologado integralmente com o Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e a Resolução CONTRAN nº 973/2022.",
+      "approvedBy": "Tech Lead & Responsável pelo Produto",
+      "approvedAt": "2026-11-06T15:34:38Z"
     }
   }
 ]

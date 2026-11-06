@@ -50,15 +50,32 @@ export function FeedbackPanel({
       </div>
 
       {/* Metadados da fonte legal */}
-      <div className="mb-5 pt-3 border-t border-slate-200/60 text-xs text-slate-600 space-y-1">
-        <div className="flex items-center gap-1.5 font-medium text-slate-700">
-          <AlertCircleIcon className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+      <div className="mb-5 pt-3 border-t border-slate-200/60 text-xs text-slate-600 space-y-1.5">
+        <div className="flex items-center gap-1.5 font-medium text-slate-700" data-testid="source-document">
+          <AlertCircleIcon className="w-3.5 h-3.5 text-blue-600 shrink-0" />
           <span>
             {source.kind === 'demo'
               ? 'Referência legal demonstrativa (Validação jurídica pendente)'
               : source.document || 'Documento oficial'}
           </span>
         </div>
+        {source.provision && (
+          <p className="text-slate-700 font-semibold" data-testid="source-provision">
+            Dispositivo legal: <span className="font-normal text-slate-600">{source.provision}</span>
+          </p>
+        )}
+        {source.url && (
+          <p>
+            <a
+              href={source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-700 hover:text-blue-800 hover:underline font-medium inline-flex items-center gap-1"
+            >
+              Consultar legislação oficial &rarr;
+            </a>
+          </p>
+        )}
         {source.licenseNote && (
           <p className="italic text-slate-500">{source.licenseNote}</p>
         )}
