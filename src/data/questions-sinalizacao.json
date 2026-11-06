@@ -1,0 +1,1002 @@
+[
+  {
+    "id": "sin-001",
+    "version": 1,
+    "statement": "Em um cruzamento sinalizado por semáforo em que o foco luminoso indica sinal verde para a via em que você trafega, um agente da autoridade de trânsito devidamente identificado e postado no centro da pista emite ordem expressa de parada direcionada ao seu fluxo. Diante desse conflito de comandos, como o condutor deve proceder segundo o Código de Trânsito Brasileiro?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Seguir em frente no sinal verde, pois as indicações luminosas de semáforos instalados na via pública prevalecem sobre ordens verbais ou gestos de agentes de trânsito."
+      },
+      {
+        "id": "b",
+        "text": "Obedecer à ordem de parada do agente de trânsito, cuja autoridade legal prevalece sobre as indicações do semáforo, sobre os demais sinais e sobre as regras de circulação."
+      },
+      {
+        "id": "c",
+        "text": "Avançar lentamente com o pisca-alerta acionado, cabendo aos demais motoristas aplicar o princípio de preferência para veículos que vêm pela direita."
+      },
+      {
+        "id": "d",
+        "text": "Imobilizar o veículo somente se houver viatura policial no local com sinais luminosos e sonoros acionados simultaneamente."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Conforme dispõe expressamente o Art. 89, inciso I, do CTB, a sinalização possui ordem estrita de prevalência: as ordens do agente de trânsito prevalecem sobre as normas de circulação e sobre todos os outros sinais viários (incluindo o semáforo). Portanto, o foco verde é subordinado ao comando do agente.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Hierarquia e Prevalência da Sinalização",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
+      "provision": "Art. 89, I",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#art89",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-002",
+    "version": 1,
+    "statement": "Ao se aproximar de uma interseção em nível sem agente fiscalizador, o condutor constata que há uma placa vertical de 'Dê a Preferência' (R-2) e, no mesmo ponto da via, um semáforo de controle de fluxo operando normalmente na fase verde. Qual sinalização deve guiar a conduta do condutor nesse cruzamento?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A placa 'Dê a Preferência', pois a sinalização vertical física tem precedência sobre comandos eletrônicos de sinalização semafórica."
+      },
+      {
+        "id": "b",
+        "text": "A regra geral de circulação de quem vem pela direita, descartando tanto a placa quanto o semáforo por contradição aparente."
+      },
+      {
+        "id": "c",
+        "text": "A indicação do semáforo na fase verde, visto que as indicações do semáforo prevalecem expressamente sobre os demais sinais viários."
+      },
+      {
+        "id": "d",
+        "text": "Ambos os sinais simultaneamente, exigindo parada completa do veículo para ceder passagem mesmo com sinal verde ativo."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "O Art. 89, inciso II, do CTB estabelece que as indicações do semáforo prevalecem sobre os demais sinais (como placas verticais e marcas horizontais). Dessa forma, com o semáforo funcionando regularmente na fase verde, o condutor deve seguir o fluxo autorizado pelo semáforo.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Hierarquia e Prevalência da Sinalização",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
+      "provision": "Art. 89, II",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#art89",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-003",
+    "version": 1,
+    "statement": "Um proprietário de imóvel lindeiro instala iluminação de alta intensidade e um cartaz publicitário fixado diretamente no poste de suporte de uma placa oficial de 'Parada Obrigatória' (R-1). De acordo com os preceitos de segurança viária do CTB, a respeito dessa instalação é correto afirmar que:",
+    "options": [
+      {
+        "id": "a",
+        "text": "É autorizada desde que a publicidade não ultrapasse a área útil da placa regulamentar."
+      },
+      {
+        "id": "b",
+        "text": "É expressamente proibida pelo CTB, sendo vedado afixar publicidade nos suportes de sinalização ou instalar luzes que perturbem sua visibilidade."
+      },
+      {
+        "id": "c",
+        "text": "É permitida exclusivamente nos fins de semana e feriados para apoiar a atividade comercial do bairro."
+      },
+      {
+        "id": "d",
+        "text": "É obrigatória quando a placa de trânsito oficial não dispuser de película refletiva homologada."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Os Arts. 81 e 82 do CTB proíbem a colocação de luzes, publicidade ou mobiliário nas vias e imóveis que possam gerar confusão, interferir na visibilidade da sinalização ou comprometer a segurança, vedando expressamente qualquer afixação de publicidade sobre os sinais de trânsito e seus respectivos suportes.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Regras Gerais de Instalação e Proibições",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
+      "provision": "Arts. 81 e 82",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#art81",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-004",
+    "version": 1,
+    "statement": "Em uma via urbana recém-aberta, a sinalização regulamentar de velocidade encontrava-se totalmente ilegível e encoberta por vegetação nativa descontrolada. Diante do descumprimento involuntário do limite por condutores que trafegavam pelo local, qual é a previsão legal estipulada pelo CTB?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A aplicação de penalidade pecuniária é mandatória, visto que a culpa de desconhecer a velocidade da via é sempre do motorista."
+      },
+      {
+        "id": "b",
+        "text": "Não serão aplicadas sanções por inobservância à sinalização quando esta for insuficiente ou incorreta, respondendo o órgão com circunscrição sobre a via por essa omissão."
+      },
+      {
+        "id": "c",
+        "text": "A infração deve ser automaticamente convertida na retenção do veículo até que o órgão conclua o corte da vegetação."
+      },
+      {
+        "id": "d",
+        "text": "O condutor autuado deve pagar a multa e requerer reembolso diretamente à concessionária responsável pelo fornecimento de energia elétrica."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "O Art. 90 do CTB estabelece expressamente que não serão aplicadas sanções previstas no Código por inobservância à sinalização quando esta for insuficiente ou incorreta, cabendo ao órgão ou entidade com circunscrição sobre a via responder pela falta, insuficiência ou colocação inadequada dos sinais viários.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Eficácia da Sinalização e Responsabilidade",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
+      "provision": "Art. 90, caput e § 1º",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#art90",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-005",
+    "version": 1,
+    "statement": "Uma equipe de engenharia viária concluiu obras de pavimentação em uma avenida de grande fluxo e procedeu à reabertura ao tráfego de veículos sem realizar a pintura das linhas horizontais nem fixar placas de sinalização vertical. Segundo o Art. 88 do CTB, essa conduta da administração viária:",
+    "options": [
+      {
+        "id": "a",
+        "text": "É plenamente legal, desde que a sinalização seja concluída no prazo máximo improrrogável de trinta dias."
+      },
+      {
+        "id": "b",
+        "text": "Contraria o CTB, pois nenhuma via pavimentada pode ser entregue ou reaberta sem estar devidamente sinalizada vertical e horizontalmente para garantir condições adequadas de segurança."
+      },
+      {
+        "id": "c",
+        "text": "É permitida apenas se o tráfego for restrito exclusivamente a veículos de socorro de urgência e transporte coletivo."
+      },
+      {
+        "id": "d",
+        "text": "É válida, pois a sinalização vertical dispensa a necessidade de qualquer pintura horizontal em pistas pavimentadas com asfalto novo."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "O Art. 88 do CTB determina de forma inequívoca que nenhuma via pavimentada poderá ser entregue após construção ou reaberta após obras de manutenção sem que esteja devidamente sinalizada vertical e horizontalmente, assegurando plenas condições de segurança à circulação viária.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Condições para Abertura e Obras em Vias",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
+      "provision": "Art. 88, caput",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#art88",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-006",
+    "version": 1,
+    "statement": "Em condomínios residenciais horizontais constituídos por unidades autônomas e em áreas de estacionamento de hipermercados e shoppings abertos ao público, a responsabilidade legal pela implantação e conservação da sinalização de trânsito é atribuída pelo CTB a quem?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ao órgão executivo rodoviário do Estado onde o empreendimento está sediado."
+      },
+      {
+        "id": "b",
+        "text": "Ao respectivo proprietário (do condomínio ou do estabelecimento privado de uso coletivo)."
+      },
+      {
+        "id": "c",
+        "text": "À Guarda Municipal exclusivamente, que deve instalar as placas mediante taxa de expediente."
+      },
+      {
+        "id": "d",
+        "text": "Ao CONTRAN diretamente, cabendo-lhe contratar prestadores de serviço locais."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "De acordo com o Art. 80, § 3º, do CTB, a responsabilidade pela instalação e manutenção da sinalização viária nas vias internas de condomínios por unidades autônomas e nas áreas de estacionamento de estabelecimentos privados de uso coletivo pertence diretamente ao seu proprietário.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Competência e Responsabilidade em Áreas Privadas",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
+      "provision": "Art. 80, § 3º",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#art80",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "2016-11-01",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-007",
+    "version": 1,
+    "statement": "O Código de Trânsito Brasileiro organiza a sinalização viária em grupos formais de comunicação no Art. 87. Assinale a alternativa que contempla de forma exata e completa as seis modalidades de sinais de trânsito consagradas na lei federal:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Verticais, horizontais, dispositivos de sinalização auxiliar, luminosos, sonoros e gestos do agente de trânsito e do condutor."
+      },
+      {
+        "id": "b",
+        "text": "Sinais estáticos, dinâmicos, sonoros, eletrônicos, judiciais e policiais."
+      },
+      {
+        "id": "c",
+        "text": "Lombadas físicas, semáforos digitais, avisos radiofônicos, radares de controle e balizadores refletivos."
+      },
+      {
+        "id": "d",
+        "text": "Placas de trânsito, faixas de asfalto, comandos por satélite e indicações por aplicativos de navegação."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "O Art. 87 do CTB estabelece a taxonomia oficial dos sinais viários brasileiros dividida exatamente em seis incisos: I - verticais; II - horizontais; III - dispositivos de sinalização auxiliar; IV - luminosos; V - sonoros; VI - gestos do agente de trânsito e do condutor.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Classificação Legal dos Sinais Viários",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro)",
+      "provision": "Art. 87",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#art87",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-008",
+    "version": 1,
+    "statement": "No sistema de trânsito brasileiro, a sinalização vertical de regulamentação desempenha papel impositivo nas vias. Qual é a finalidade precípua das placas desse grupo e qual a consequência jurídica direta decorrente da sua desobediência pelo condutor?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Informar perigos potenciais decorrentes do relevo da via, gerando mera recomendação de cautela ao motorista."
+      },
+      {
+        "id": "b",
+        "text": "Transmitir mensagens estritamente educativas e de cortesia no trânsito, sem previsão de qualquer sanção em caso de desrespeito."
+      },
+      {
+        "id": "c",
+        "text": "Informar aos usuários as condições, proibições, obrigações ou restrições no uso das vias, tendo mensagens imperativas cujo descumprimento configura infração de trânsito."
+      },
+      {
+        "id": "d",
+        "text": "Orientar o motorista sobre atrativos turísticos e distâncias quilométricas até os municípios limítrofes."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Conforme o Anexo II do CTB e o Regulamento de Sinalização Viária (Resolução CONTRAN nº 973/2022), as placas de regulamentação têm a finalidade imperativa de informar condições, proibições, obrigações ou restrições na via, sendo que a sua inobservância constitui infração às regras de circulação punível com sanções legais.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Vertical de Regulamentação",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 1.1",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-009",
+    "version": 1,
+    "statement": "As placas da sinalização vertical de advertência caracterizam-se pelo formato quadrado na posição diagonal (losango), fundo amarelo e símbolos pretos. Qual é o papel institucional e a natureza da mensagem transmitida por essa sinalização aos usuários da rodovia?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Alertar os usuários da via para condições potencialmente perigosas, indicando a sua natureza, tendo caráter preventivo e de recomendação."
+      },
+      {
+        "id": "b",
+        "text": "Impor a obrigação de imobilizar totalmente o veículo sob pena de autuação gravíssima imediata."
+      },
+      {
+        "id": "c",
+        "text": "Indicar o trajeto rodoviário alternativo e as taxas de pedágio cobradas nas praças de cobrança adiante."
+      },
+      {
+        "id": "d",
+        "text": "Estabelecer a velocidade máxima obrigatória permitida para a via sob fiscalização de medidores automáticos."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Segundo o Anexo II do CTB e o MBST Volume II, a sinalização vertical de advertência tem a finalidade precípua de alertar os usuários para situações e perigos potenciais na via (como curvas acentuadas, estreitamentos ou pistas escorregadias), indicando sua natureza com caráter de recomendação e prevenção de acidentes.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Vertical de Advertência",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 1.2",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-010",
+    "version": 1,
+    "statement": "No conjunto de placas de regulamentação do trânsito brasileiro, a forma geométrica padrão é a circular com orla vermelha. Contudo, para possibilitar rápida visualização até mesmo pelo verso, existem duas exceções universais de formato. Quais são essas placas e suas respectivas formas geométricas?",
+    "options": [
+      {
+        "id": "a",
+        "text": "R-1 (Parada Obrigatória), com formato octogonal; e R-2 (Dê a Preferência), com formato triangular com vértice voltado para baixo."
+      },
+      {
+        "id": "b",
+        "text": "R-3 (Sentido Proibido), em formato retangular; e R-4a (Proibido Virar à Esquerda), em formato hexagonal."
+      },
+      {
+        "id": "c",
+        "text": "R-19 (Velocidade Máxima Permitida), em formato de losango; e R-24a (Sentido de Circulação), em formato trapezoidal."
+      },
+      {
+        "id": "d",
+        "text": "R-6a (Proibido Estacionar), em formato oval; e R-6c (Proibido Parar e Estacionar), em formato quadrado."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "No Anexo II do CTB e no MBST Volume I (Resolução CONTRAN nº 973/2022), a regra geral é o formato circular para placas de regulamentação. As duas únicas exceções são a placa R-1 ('Parada Obrigatória'), com forma octogonal e fundo vermelho, e a placa R-2 ('Dê a Preferência'), com forma triangular de vértice para baixo e fundo branco.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Formatos e Exceções na Sinalização Vertical",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 1.1",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-011",
+    "version": 1,
+    "statement": "A sinalização vertical de indicação visa orientar os motoristas ao longo do percurso viário e fornecer subsídios informativos essenciais à viagem. Em quais subgrupos formais essa sinalização se subdivide de acordo com as normas de trânsito em vigor?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Placas de advertência climática, placas de socorro emergencial e placas de policiamento ostensivo."
+      },
+      {
+        "id": "b",
+        "text": "Placas de identificação, de orientação de destino, educativas, de serviços auxiliares e de atrativos turísticos."
+      },
+      {
+        "id": "c",
+        "text": "Placas de fiscalização de carga, de pedágio comunitário e de postos de pesagem móvel."
+      },
+      {
+        "id": "d",
+        "text": "Placas de velocidade máxima, de preferência de passagem e de sentido de circulação de pedestres."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "O Anexo II do CTB e o MBST Volume III categorizam a sinalização vertical de indicação exatamente nos seguintes grupos: placas de identificação (vias e rodovias), orientação de destino (sentido e distância), placas educativas, placas de serviços auxiliares (posto de combustível, alimentação, socorro mecânico) e placas de atrativos turísticos.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Vertical de Indicação",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 1.3",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-012",
+    "version": 1,
+    "statement": "Trafegando por uma rodovia de pista simples com duplo sentido de direção, o condutor pretende ultrapassar um caminhão e nota que a linha divisória central amarela é formada por uma linha contínua do seu lado e uma linha seccionada (tracejada) do lado do fluxo oposto. Segundo o Anexo II do CTB:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A manobra de ultrapassagem é permitida para o seu fluxo, bastando ligar os faróis altos durante o procedimento."
+      },
+      {
+        "id": "b",
+        "text": "A ultrapassagem é terminantemente proibida para o seu sentido de tráfego, pois a linha contínua adjacente veda a transposição da faixa."
+      },
+      {
+        "id": "c",
+        "text": "A ultrapassagem é livre para ambos os sentidos de circulação, visto que a presença de seccionamento parcial autoriza ultrapassagens gerais."
+      },
+      {
+        "id": "d",
+        "text": "O condutor só pode ultrapassar se o caminhão estiver a menos de 20 km/h e buzinar cedendo passagem."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Nos padrões de traçado de sinalização horizontal (Anexo II do CTB e MBST Volume IV), a linha contínua veda a transposição e a ultrapassagem. Na linha dupla mista (uma contínua e uma seccionada), a autorização de ultrapassagem beneficia unicamente os veículos que circulam do lado da linha seccionada. O fluxo do lado da linha contínua está rigorosamente impedido de ultrapassar.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Horizontal e Linhas Longitudinais",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 2",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-013",
+    "version": 1,
+    "statement": "No âmbito da sinalização horizontal viária, as cores das pinturas sobre a pista de rolamento possuem códigos visuais estritos. A cor AMARELA é empregada normativamente para qual finalidade principal nas vias públicas brasileiras?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Separar faixas de rolamento com tráfego no mesmo sentido e demarcar faixas de travessia exclusiva de pedestres."
+      },
+      {
+        "id": "b",
+        "text": "Regular fluxos veiculares de sentidos opostos, delimitar trechos com proibição de parada e estacionamento e sinalizar obstáculos na via."
+      },
+      {
+        "id": "c",
+        "text": "Pintar ciclovias segregadas e marcar áreas hospitalares com ambulâncias."
+      },
+      {
+        "id": "d",
+        "text": "Identificar vagas de estacionamento destinadas exclusivamente a pessoas idosas ou com deficiência."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "O Anexo II do CTB e o Manual de Sinalização Horizontal definem que a cor amarela é destinada à regulação de fluxos de sentidos opostos (divisão de pistas de mão dupla), marcação de obstáculos na pista e delimitação de espaços onde a parada e/ou estacionamento são proibidos (como junto a guias e meios-fios).",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Padrões de Cores na Sinalização Horizontal",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 2",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-014",
+    "version": 1,
+    "statement": "Em vias arteriais urbanas dotadas de múltiplas faixas de tráfego, as marcações longitudinais e transversais na cor BRANCA desempenham atribuições técnicas bem delineadas. De acordo com o Anexo II do CTB, a cor BRANCA é empregada para:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Regular fluxos veiculares de mesmo sentido, delimitar estacionamento regulamentado, pintar faixas de travessia de pedestres e inscrever símbolos e legendas."
+      },
+      {
+        "id": "b",
+        "text": "Separar correntes de tráfego de sentidos contrários em rodovias de pista simples sem canteiro central."
+      },
+      {
+        "id": "c",
+        "text": "Demarcar áreas exclusivas de embarque e desembarque de passageiros portadores de deficiência."
+      },
+      {
+        "id": "d",
+        "text": "Sinalizar proibições totais de parada e estacionamento ao longo do meio-fio da calçada."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "No regramento da sinalização horizontal (Anexo II do CTB e Volume IV do MBST), a cor branca possui aplicação estrita na regulação de fluxos veiculares no mesmo sentido direcional, delimitação de baias de estacionamento permitido, marcação das faixas de pedestres transversais e pintura de símbolos e setas direcionais no pavimento.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Padrões de Cores na Sinalização Horizontal",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 2",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-015",
+    "version": 1,
+    "statement": "As cores VERMELHA e AZUL constituem tintas especiais na sinalização horizontal viária, reservadas para finalidades demarcatórias exclusivas. Assinale a alternativa que relaciona de forma correta o significado regulamentar de cada uma dessas duas cores no CTB:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Vermelha: demarcação de ciclovias/ciclofaixas e símbolos de emergência/saúde; Azul: pintura de símbolos em vagas especiais para pessoas com deficiência ou mobilidade reduzida."
+      },
+      {
+        "id": "b",
+        "text": "Vermelha: separação de pistas de sentidos opostos; Azul: pintura de faixas de travessia de pedestres em áreas escolares."
+      },
+      {
+        "id": "c",
+        "text": "Vermelha: sinalização provisória em trechos de obras; Azul: divisão de faixas de mesmo sentido em vias expressas."
+      },
+      {
+        "id": "d",
+        "text": "Vermelha: proibição de parada junto ao meio-fio; Azul: autorização de velocidade livre em rodovias estaduais."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Conforme o Anexo II do CTB e a Resolução CONTRAN nº 973/2022 (MBST Volume IV), a cor vermelha é destinada à demarcação de ciclovias/ciclofaixas e símbolos de farmácias/hospitais e socorro de emergência, enquanto a cor azul é aplicada estritamente nos símbolos indicativos de vagas especiais de parada e estacionamento para pessoas com deficiência.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Padrões de Cores na Sinalização Horizontal",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 2",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-016",
+    "version": 1,
+    "statement": "O condutor de um automóvel trafega em velocidade regulamentar e, a poucos metros da faixa de retenção de um cruzamento, o foco semafórico veicular passa da cor verde para a cor AMARELA contínua. Qual é o dever e o comportamento seguro exigido do motorista de acordo com a sinalização semafórica do CTB?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Acelerar bruscamente o veículo para transpor o cruzamento antes que o foco vermelho se acenda."
+      },
+      {
+        "id": "b",
+        "text": "Parar o veículo com segurança antes da faixa de retenção, salvo se já estiver sobre a área de cruzamento ou se a frenagem brusca oferecer risco de colisão aos veículos de trás."
+      },
+      {
+        "id": "c",
+        "text": "Manter a velocidade regular, pois a fase amarela garante direito de preferência absoluto sobre os pedestres e vias transversais."
+      },
+      {
+        "id": "d",
+        "text": "Efetuar marcha à ré imediata para liberar espaço de passagem aos ciclistas."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "No Anexo II do CTB e no MBST Volume V (Resolução CONTRAN nº 973/2022), o foco luminoso amarelo indica atenção e alerta sobre o término iminente do direito de passagem. O motorista deve imobilizar o veículo antes da faixa de retenção, exceto quando já tiver adentrado a interseção ou quando a parada brusca criar risco manifestado à segurança viária.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Luminosa Semafórica",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 3.1",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-017",
+    "version": 1,
+    "statement": "Nos semáforos específicos para controle de fluxo de pedestres, a sinalização opera com comandos focais de pedestre. Quando o foco luminoso do semáforo de pedestres começa a piscar na luz VERMELHA INTERMITENTE, qual é a orientação normativa estabelecida pelo CTB?",
+    "options": [
+      {
+        "id": "a",
+        "text": "O pedestre deve retornar correndo à calçada de onde saiu, mesmo que já esteja próximo da calçada oposta."
+      },
+      {
+        "id": "b",
+        "text": "A fase de permissão está terminando: os pedestres não devem iniciar a travessia, e aqueles que já estiverem na pista devem concluí-la com rapidez e segurança."
+      },
+      {
+        "id": "c",
+        "text": "O semáforo entrou em curto-circuito elétrico, cabendo aos motoristas ignorar a presença de pessoas na faixa."
+      },
+      {
+        "id": "d",
+        "text": "Indica travessia plenamente liberada e prioritária por tempo indeterminado para quem estiver na calçada."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Conforme o Anexo II do CTB e o MBST Volume V, o foco semafórico de pedestres em vermelho intermitente avisa que a permissão de travessia está prestes a se esgotar. A norma determina que novos pedestres não devem iniciar o cruzamento da via, enquanto os pedestres que já ingressaram na faixa devem concluir a travessia com celeridade.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Semafórica para Pedestres",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 3.2",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-018",
+    "version": 1,
+    "statement": "No tráfego urbano intenso, os agentes de trânsito utilizam sinais sonoros emitidos por apito regulamentar para ordenar os fluxos de circulação. Ao emitir DOIS SILVOS BREVES no apito voltado para determinado sentido da via, qual comando a autoridade está transmitindo aos condutores?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Siga (ordem para que os veículos continuem em marcha na direção permitida)."
+      },
+      {
+        "id": "b",
+        "text": "Pare (ordem imperativa de parada obrigatória para a direção indicada)."
+      },
+      {
+        "id": "c",
+        "text": "Diminua a marcha (ordem para reduzir imediatamente a velocidade do fluxo)."
+      },
+      {
+        "id": "d",
+        "text": "Acenda os faróis baixos ao entrar em túneis ou passagens subterrâneas."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "No Anexo II do CTB (item 4 - Sinais Sonoros), a codificação por silvos de apito do agente é estrita: um silvo breve significa 'Siga'; dois silvos breves significam 'Pare'; e um silvo longo significa 'Diminua a marcha'. Portanto, dois silvos breves determinam parada obrigatória imediata.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Sinalização Sonora por Apito",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 4",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-019",
+    "version": 1,
+    "statement": "Ao se aproximar de uma área com bloqueio operacional na pista, o condutor visualiza o agente da autoridade de trânsito em pé na sua faixa, com o braço levantado verticalmente e a palma da mão voltada para a frente. De acordo com o Anexo II do CTB, esse gesto regulamentar expressa:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ordem de parada obrigatória para todos os veículos que venham de direções que cortem a direção indicada pelo agente."
+      },
+      {
+        "id": "b",
+        "text": "Autorização para ultrapassar viaturas oficiais pelo acostamento da via."
+      },
+      {
+        "id": "c",
+        "text": "Ordem para que os condutores acelerem a marcha com o objetivo de desocupar a pista rapidamente."
+      },
+      {
+        "id": "d",
+        "text": "Indicação de conversão compulsória de noventa graus à esquerda no próximo retorno."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "No catálogo de gestos regulamentares do agente de trânsito (Anexo II do CTB, sinal GA-01), o braço estendido verticalmente para cima com a palma da mão voltada para a frente impõe a 'Ordem de parada obrigatória para todos os veículos'. Essa instrução sobrepõe-se a qualquer outra sinalização fixada na via.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Gestos do Agente de Trânsito",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 5.1 (Sinal GA-01)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  },
+  {
+    "id": "sin-020",
+    "version": 1,
+    "statement": "Além do sistema luminoso de seta do veículo, o condutor pode utilizar gestos convencionais com o braço para comunicar suas manobras aos outros condutores. Quando o motorista estende o braço esquerdo para fora da janela e o dobra para cima em ângulo reto (90 graus) com o antebraço na vertical, ele está indicando a intenção de:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Dobrar ou mudar de direção para a direita."
+      },
+      {
+        "id": "b",
+        "text": "Dobrar ou virar para a esquerda."
+      },
+      {
+        "id": "c",
+        "text": "Diminuir a velocidade de circulação ou parar o veículo."
+      },
+      {
+        "id": "d",
+        "text": "Solicitar que o motorista de trás utilize a buzina para abrir passagem."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "O Anexo II do CTB estabelece a padronização dos gestos executados pelo condutor (item 5.2): braço esquerdo estendido na horizontal significa intenção de dobrar à esquerda; braço esquerdo para fora dobrado para cima em ângulo reto (90 graus) significa intenção de dobrar à direita; e braço esquerdo estendido com movimentos oscilantes para cima e para baixo significa diminuir a marcha ou parar.",
+    "topic": "Sinalização de Trânsito",
+    "subtopic": "Gestos do Condutor",
+    "ufs": [],
+    "categories": ["A", "B"],
+    "source": {
+      "kind": "official",
+      "document": "Lei Federal nº 9.503/1997 (Código de Trânsito Brasileiro) e Resolução CONTRAN nº 973/2022",
+      "provision": "Anexo II do CTB, item 5.2",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm#anexo2",
+      "checkedAt": "2026-11-06T15:00:00Z",
+      "effectiveFrom": "1998-01-22",
+      "effectiveUntil": null,
+      "sourceVersion": "Compilado até Lei nº 14.599/2023",
+      "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
+      "verificationStatus": "pending"
+    },
+    "status": "em_revisao",
+    "isExample": false,
+    "review": {
+      "generatorModel": "Antigravity/Gemini-3.8-Flash",
+      "verifierModel": null,
+      "verificationNotes": null,
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  }
+]
