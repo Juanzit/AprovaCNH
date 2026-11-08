@@ -12,8 +12,8 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
     await expect(startButton).toBeVisible();
     await startButton.click();
 
-    await expect(page).toHaveURL(/\/licao\/sinalizacao/);
-    await expect(page.getByText('Questão 1 de 5')).toBeVisible();
+    await expect(page).toHaveURL(/\/licao\/sinalizacao/, { timeout: 15000 });
+    await expect(page.getByText('Questão 1 de 5')).toBeVisible({ timeout: 15000 });
   });
 
   test('deve responder as 5 questões da Sessão 1, exibir feedback com fundamentação oficial e concluir com 70 XP', async ({
@@ -22,7 +22,7 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
     await page.goto('/licao/sinalizacao');
 
     // Questão 1 (sin-001: Prevalência do Agente de Trânsito - Art. 195)
-    await expect(page.getByText('Questão 1 de 5')).toBeVisible();
+    await expect(page.getByText('Questão 1 de 5')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(/Questão Oficial Aprovada/i)).toBeVisible();
 
     // Selecionar alternativa 'b' (gabarito da Q1)

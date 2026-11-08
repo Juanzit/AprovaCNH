@@ -168,3 +168,10 @@ CREATE POLICY "reviews_select_student"
             AND (questions.status = 'aprovada' OR (questions.is_example = true AND questions.status = 'rascunho'))
         )
     );
+
+-- 9. Permissões de Acesso (GRANTs para PostgREST)
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT SELECT ON TABLE public.questions TO anon, authenticated;
+GRANT SELECT ON TABLE public.question_sources TO anon, authenticated;
+GRANT SELECT ON TABLE public.question_reviews TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE ON TABLE public.profiles TO authenticated;

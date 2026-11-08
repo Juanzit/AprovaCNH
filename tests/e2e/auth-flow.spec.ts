@@ -16,6 +16,19 @@ test.describe('Fluxo de Autenticação — T003 (Persistência e Autenticação)
   });
 
   test('deve exibir validação acessível ao tentar submeter credenciais inválidas na tela de login', async ({ page }) => {
+    // Intercepta a chamada de autenticação para resposta determinística no teste E2E
+    await page.route('**/auth/v1/token*', async (route) => {
+      await route.fulfill({
+        status: 400,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          error: 'invalid_grant',
+          error_description: 'Invalid login credentials',
+          message: 'Invalid login credentials',
+        }),
+      });
+    });
+
     await page.goto('/login');
 
     const emailInput = page.getByLabel(/e-mail/i);
@@ -28,7 +41,7 @@ test.describe('Fluxo de Autenticação — T003 (Persistência e Autenticação)
 
     // Aguarda o alerta acessível
     const alert = page.locator('#login-error-alert');
-    await expect(alert).toBeVisible({ timeout: 10000 });
+    await expect(alert).toBeVisible();
     await expect(alert).toContainText(/credenciais inválidas|erro ao autenticar/i);
   });
 
