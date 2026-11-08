@@ -8,7 +8,7 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
       page.getByRole('heading', { name: /Sinalização de Trânsito/i })
     ).toBeVisible();
 
-    const startButton = page.getByRole('link', { name: /Continuar de onde parou/i });
+    const startButton = page.getByRole('link', { name: /Começar primeira sessão|Continuar estudando|Próxima sessão/i });
     await expect(startButton).toBeVisible();
     await startButton.click();
 

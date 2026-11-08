@@ -103,6 +103,8 @@ export function LessonContainer({
         xpBreakdown={xpBreakdown}
         serverResult={serverResult}
         onRestart={handleRestart}
+        sessionId={sessionId}
+        isReviewMode={isReviewMode}
         backHref={backHref ?? (isReviewMode ? '/revisao' : '/')}
         backLabel={backLabel ?? (isReviewMode ? 'Voltar ao Centro de Revisão' : 'Voltar à Trilha')}
         badgeText={isReviewMode ? 'Treino de Revisão Espaçada Concluído' : undefined}
@@ -144,7 +146,7 @@ export function LessonContainer({
               type="button"
               disabled={!selectedOptionId}
               onClick={submitAnswer}
-              className={`w-full py-3.5 px-6 rounded-xl font-bold text-white transition-all shadow-sm ${
+              className={`w-full min-h-11 py-3.5 px-6 rounded-xl font-bold text-white transition-all shadow-sm ${
                 selectedOptionId
                   ? 'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 cursor-pointer'
                   : 'bg-slate-300 cursor-not-allowed text-slate-500'

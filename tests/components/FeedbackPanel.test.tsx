@@ -7,8 +7,8 @@ import type { QuestionSource } from '@/features/lesson/types/question';
 const mockSource: QuestionSource = {
   kind: 'demo',
   document: 'CTB Demonstrativo',
-  provision: null,
-  url: null,
+  provision: 'Art. 195',
+  url: 'https://www.gov.br',
   checkedAt: null,
   effectiveFrom: null,
   effectiveUntil: null,
@@ -17,8 +17,8 @@ const mockSource: QuestionSource = {
   verificationStatus: 'pending',
 };
 
-describe('FeedbackPanel Component', () => {
-  it('deve anunciar status acessível para resposta correta com role status e aria-live', () => {
+describe('FeedbackPanel Component (Escaneabilidade em Blocos e Alto Contraste)', () => {
+  it('deve anunciar status acessível para resposta correta e renderizar blocos separados de explicação e legislação', () => {
     render(
       <FeedbackPanel
         isCorrect={true}
@@ -36,8 +36,19 @@ describe('FeedbackPanel Component', () => {
     const feedbackTitle = screen.getByText('Resposta correta!');
     expect(feedbackTitle).toBeInTheDocument();
 
-    const explanation = screen.getByText('Esta regra se aplica conforme o código de trânsito.');
-    expect(explanation).toBeInTheDocument();
+    // Bloco 1: Explicação didática
+    const explanationBlock = screen.getByTestId('explanation-block');
+    expect(explanationBlock).toHaveTextContent(
+      /Por que esta é a resposta correta \/ O que aprender/i
+    );
+    expect(explanationBlock).toHaveTextContent(
+      'Esta regra se aplica conforme o código de trânsito.'
+    );
+
+    // Bloco 2: Fundamentação normativa
+    const legalBlock = screen.getByTestId('legal-source-block');
+    expect(legalBlock).toHaveTextContent(/O que diz a legislação \(MBFT \/ CTB\)/i);
+    expect(screen.getByTestId('source-provision')).toHaveTextContent('Art. 195');
   });
 
   it('deve anunciar resposta incorreta com texto explícito', () => {

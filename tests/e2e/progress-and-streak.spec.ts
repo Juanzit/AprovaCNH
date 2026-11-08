@@ -1,26 +1,33 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Progresso, XP e Gamificação — T004 (Fase 4)', () => {
-  test('deve exibir o cabeçalho de gamificação e a trilha com livre acesso na home', async ({
+test.describe('Progresso, XP e Gamificação — T004 e T005.1 (Refinamento UX)', () => {
+  test('deve exibir o cabeçalho compacto com streak semanal, trilha vertical e card SRS em telas de 360px', async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
     await page.goto('/');
 
-    // 1. Cabeçalho do Estudante (Gamificação)
+    // 1. Cabeçalho Compacto do Estudante e Streak Semanal (S T Q Q S S D)
     await expect(page.getByTestId('student-uf-badge')).toBeVisible();
     await expect(page.getByTestId('student-category-badge')).toBeVisible();
     await expect(page.getByTestId('student-streak-badge')).toBeVisible();
     await expect(page.getByTestId('student-xp-badge')).toBeVisible();
+    await expect(page.getByTestId('weekly-streak-tracker')).toBeVisible();
 
-    // 2. Trilha de Aprendizagem
+    // 2. Trilha Vertical de Aprendizagem e CTA Inteligente na primeira dobra
     await expect(page.getByRole('heading', { name: /sinalização de trânsito/i })).toBeVisible();
+    const primaryCta = page.getByTestId('primary-unit-cta');
+    await expect(primaryCta).toBeVisible();
+    await expect(primaryCta).toHaveText(/Começar primeira sessão|Continuar estudando|Próxima sessão/i);
+
     await expect(page.getByTestId('session-card-1')).toBeVisible();
     await expect(page.getByTestId('session-card-2')).toBeVisible();
     await expect(page.getByTestId('session-card-3')).toBeVisible();
     await expect(page.getByTestId('session-card-4')).toBeVisible();
 
-    // 3. CTA Mobile para continuar
-    await expect(page.getByRole('link', { name: /continuar de onde parou/i })).toBeVisible();
+    // 3. Card Contextual do Algoritmo SRS ("Sua revisão de hoje")
+    await expect(page.getByTestId('daily-review-card')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /sua revisão de hoje/i })).toBeVisible();
   });
 
   test('deve abrir o modal de perfil e permitir alterar dados do estudante', async ({
@@ -49,7 +56,7 @@ test.describe('Progresso, XP e Gamificação — T004 (Fase 4)', () => {
     await expect(modal).not.toBeVisible();
   });
 
-  test('deve responder à Sessão 1 e exibir resumo com persistência no servidor', async ({
+  test('deve responder à Sessão 1 e exibir resumo gamificado com avanço percentual e persistência', async ({
     page,
   }) => {
     await page.goto('/licao/sinalizacao?sessao=1');
@@ -65,22 +72,31 @@ test.describe('Progresso, XP e Gamificação — T004 (Fase 4)', () => {
       // Confirma resposta
       await page.getByRole('button', { name: /confirmar resposta/i }).click();
 
-      // Aguarda feedback e clica em continuar
+      // Aguarda feedback estruturado em blocos e clica em continuar
       await expect(page.getByRole('status')).toBeVisible();
-      const nextBtn = i === 5 ? page.getByRole('button', { name: /finalizar lição/i }) : page.getByRole('button', { name: /continuar/i });
+      await expect(page.getByTestId('explanation-block')).toBeVisible();
+      await expect(page.getByTestId('legal-source-block')).toBeVisible();
+
+      const nextBtn =
+        i === 5
+          ? page.getByRole('button', { name: /finalizar lição/i })
+          : page.getByRole('button', { name: /continuar/i });
       await nextBtn.click();
     }
 
-    // Tela de Resumo
+    // Tela de Resumo Gamificada e confirmação da Server Action (streak badge)
     await expect(page.getByRole('heading', { name: /lição concluída/i })).toBeVisible();
     await expect(page.getByTestId('score-text')).toBeVisible();
     await expect(page.getByTestId('total-xp')).toBeVisible();
+    await expect(page.getByTestId('unit-progress-summary')).toContainText('25%');
+    await expect(page.getByTestId('next-session-cta')).toContainText('Avançar para Sessão 2');
+    await expect(page.getByTestId('summary-streak-badge')).toBeVisible({ timeout: 10000 });
 
     // Ação de retorno à trilha
     const backBtn = page.getByRole('link', { name: /voltar à trilha/i });
     await expect(backBtn).toBeVisible();
     await backBtn.click();
 
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/', { timeout: 10000 });
   });
 });
