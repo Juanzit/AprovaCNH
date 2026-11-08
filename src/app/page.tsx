@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   getStudentProfile,
   getLessonTopicProgress,
@@ -36,7 +37,7 @@ export default async function HomePage() {
           />
         </div>
 
-        {/* Coluna Lateral (Desktop Direita / Mobile Topo Compacto): Resumo do Estudante, Ofensiva Semanal e Card SRS */}
+        {/* Coluna Lateral (Desktop Direita / Mobile Topo Compacto): Resumo do Estudante, Ofensiva Semanal, Card SRS e Simulado */}
         <div className="md:col-span-5 space-y-4 order-1 md:order-2">
           <StudentHeader initialProfile={profile} />
           <DailyReviewCard
@@ -45,6 +46,40 @@ export default async function HomePage() {
             totalOverdue={reviewDashboard.totalOverdue}
             totalPracticedQuestions={reviewDashboard.totalPracticedQuestions}
           />
+
+          <section
+            aria-labelledby="dashboard-simulado-heading"
+            data-testid="dashboard-simulado-card"
+            className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-2.5"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-blue-700">
+                Prova Teórica Oficial (D007)
+              </span>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                30 questões • 60 min
+              </span>
+            </div>
+            <h2
+              id="dashboard-simulado-heading"
+              className="text-sm font-extrabold text-slate-900"
+            >
+              Simulado DETRAN-MG / SENATRAN
+            </h2>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Teste seus conhecimentos sob cronômetro regressivo de 60 minutos (corte: 20 acertos)
+              e receba o gabarito comentado ao final.
+            </p>
+            <div className="pt-1">
+              <Link
+                href="/simulado"
+                data-testid="dashboard-simulado-link"
+                className="inline-flex items-center justify-center w-full min-h-10 px-4 py-2 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-extrabold transition-colors"
+              >
+                Acessar Simulado Oficial →
+              </Link>
+            </div>
+          </section>
         </div>
       </div>
     </div>
