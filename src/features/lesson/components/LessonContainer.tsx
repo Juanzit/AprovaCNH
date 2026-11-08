@@ -8,14 +8,26 @@ import { OptionList } from './OptionList';
 import { FeedbackPanel } from './FeedbackPanel';
 import { LessonSummary } from './LessonSummary';
 import { submitSessionAnswersAction } from '@/features/progress/actions/sessionActions';
+import { submitReviewSessionAction } from '@/features/review/actions/reviewActions';
 import type { SessionSubmissionResult } from '@/features/progress/types/progress';
 
 interface LessonContainerProps {
   questions: Question[];
   sessionId?: number;
+  isReviewMode?: boolean;
+  customTopic?: string;
+  backHref?: string;
+  backLabel?: string;
 }
 
-export function LessonContainer({ questions, sessionId = 1 }: LessonContainerProps) {
+export function LessonContainer({
+  questions,
+  sessionId = 1,
+  isReviewMode = false,
+  customTopic,
+  backHref,
+  backLabel,
+}: LessonContainerProps) {
   const {
     currentQuestion,
     currentQuestionIndex,
@@ -39,25 +51,46 @@ export function LessonContainer({ questions, sessionId = 1 }: LessonContainerPro
     let isMounted = true;
 
     if (isCompleted && !serverResult && submittedAnswers.length > 0) {
-      submitSessionAnswersAction({
-        topic: questions[0]?.topic ?? 'Sinalização de Trânsito',
-        sessionId,
-        answers: submittedAnswers,
-      })
-        .then((res) => {
-          if (isMounted) {
-            setServerResult(res);
-          }
+      if (isReviewMode) {
+        submitReviewSessionAction(submittedAnswers)
+          .then(() => {
+            if (isMounted) {
+              setServerResult({
+                success: true,
+                score: submittedAnswers.length,
+                maxScore: submittedAnswers.length,
+                xpAwarded: 0,
+                isFirstCompletion: false,
+                currentStreak: 1,
+                longestStreak: 1,
+                results: [],
+              });
+            }
+          })
+          .catch(() => {
+            // Falha não-bloqueante
+          });
+      } else {
+        submitSessionAnswersAction({
+          topic: questions[0]?.topic ?? 'Sinalização de Trânsito',
+          sessionId,
+          answers: submittedAnswers,
         })
-        .catch(() => {
-          // Falha não-bloqueante: mantém a UI funcional com o resumo local
-        });
+          .then((res) => {
+            if (isMounted) {
+              setServerResult(res);
+            }
+          })
+          .catch(() => {
+            // Falha não-bloqueante: mantém a UI funcional com o resumo local
+          });
+      }
     }
 
     return () => {
       isMounted = false;
     };
-  }, [isCompleted, serverResult, submittedAnswers, questions, sessionId]);
+  }, [isCompleted, serverResult, submittedAnswers, questions, sessionId, isReviewMode]);
 
   const handleRestart = useCallback(() => {
     setServerResult(null);
@@ -70,6 +103,9 @@ export function LessonContainer({ questions, sessionId = 1 }: LessonContainerPro
         xpBreakdown={xpBreakdown}
         serverResult={serverResult}
         onRestart={handleRestart}
+        backHref={backHref ?? (isReviewMode ? '/revisao' : '/')}
+        backLabel={backLabel ?? (isReviewMode ? 'Voltar ao Centro de Revisão' : 'Voltar à Trilha')}
+        badgeText={isReviewMode ? 'Treino de Revisão Espaçada Concluído' : undefined}
       />
     );
   }
@@ -85,7 +121,7 @@ export function LessonContainer({ questions, sessionId = 1 }: LessonContainerPro
   return (
     <div className="w-full max-w-xl mx-auto px-4 py-6 md:py-10">
       <LessonHeader
-        topic={currentQuestion.topic}
+        topic={customTopic ?? currentQuestion.topic}
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={totalQuestions}
       />
@@ -108,11 +144,11 @@ export function LessonContainer({ questions, sessionId = 1 }: LessonContainerPro
               type="button"
               disabled={!selectedOptionId}
               onClick={submitAnswer}
-              className={`w-full py-3.5 px-6 rounded-xl font-semibold text-white shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${
+              className={`w-full py-3.5 px-6 rounded-xl font-bold text-white transition-all shadow-sm ${
                 selectedOptionId
-                  ? 'bg-blue-700 hover:bg-blue-800 cursor-pointer'
-                  : 'bg-slate-300 cursor-not-allowed opacity-70'
-              }`}
+                  ? 'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 cursor-pointer'
+                  : 'bg-slate-300 cursor-not-allowed text-slate-500'
+              } focus:outline-none`}
             >
               Confirmar resposta
             </button>
