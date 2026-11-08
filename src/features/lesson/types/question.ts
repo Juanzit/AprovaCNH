@@ -30,6 +30,14 @@ export interface QuestionSource {
   verificationStatus: SourceVerificationStatus;
 }
 
+export interface QuestionReview {
+  generatorModel: string | null;
+  verifierModel: string | null;
+  verificationNotes: string | null;
+  approvedBy: string | null;
+  approvedAt: string | null;
+}
+
 export interface QuestionOption {
   id: OptionId;
   text: string;
@@ -49,4 +57,5 @@ export interface Question {
   source: QuestionSource;
   status: QuestionStatus;
   isExample: boolean;
+  review?: QuestionReview | null;
 }
