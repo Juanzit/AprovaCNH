@@ -66,14 +66,10 @@ export function generateSimuladoQuestions(
     return [];
   }
 
-  const selectedQuestions: Question[] = [];
-  while (selectedQuestions.length < totalQuestions) {
-    const shuffledPass = shuffleArray(basePool, rng);
-    const remainingNeeded = totalQuestions - selectedQuestions.length;
-    selectedQuestions.push(...shuffledPass.slice(0, remainingNeeded));
-  }
+  const shuffledPass = shuffleArray(basePool, rng);
+  const selectedQuestions = shuffledPass.slice(0, totalQuestions);
 
-  return selectedQuestions.slice(0, totalQuestions).map((question, idx) => ({
+  return selectedQuestions.map((question, idx) => ({
     questionOrder: idx + 1,
     question,
   }));

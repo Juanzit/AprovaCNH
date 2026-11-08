@@ -59,7 +59,7 @@ export function SimuladoNavDrawer({
                 Respondida
               </span>
               <span className="inline-flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-xs border border-slate-300 bg-white inline-block" />
+                <span className="w-2.5 h-2.5 rounded-xs border-2 border-dashed border-slate-400 bg-white inline-block" />
                 Em branco
               </span>
               <span className="inline-flex items-center gap-1">
@@ -80,12 +80,12 @@ export function SimuladoNavDrawer({
               const isMarked = item.isMarkedForReview;
 
               let btnClasses =
-                'bg-white text-slate-700 border-slate-300 hover:border-blue-400 hover:bg-slate-50';
+                'bg-white text-slate-700 border-2 border-dashed border-slate-300 hover:border-blue-400 hover:bg-slate-50';
               if (isAnswered) {
-                btnClasses = 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700';
+                btnClasses = 'bg-blue-600 text-white border-2 border-blue-600 hover:bg-blue-700';
               }
               if (isMarked && !isAnswered) {
-                btnClasses = 'bg-amber-50 text-amber-900 border-amber-400 hover:bg-amber-100';
+                btnClasses = 'bg-amber-50 text-amber-900 border-2 border-amber-400 hover:bg-amber-100';
               }
 
               const currentRing = isCurrent ? 'ring-2 ring-blue-500 ring-offset-1' : '';
@@ -106,7 +106,7 @@ export function SimuladoNavDrawer({
                   data-testid={`nav-question-${item.questionOrder}`}
                   aria-label={`Ir para questão ${item.questionOrder}: ${statusDescription}`}
                   aria-current={isCurrent ? 'step' : undefined}
-                  className={`relative min-h-10 rounded-xl border text-xs font-extrabold flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 ${btnClasses} ${currentRing}`}
+                  className={`relative min-h-10 rounded-xl text-xs font-extrabold flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 ${btnClasses} ${currentRing}`}
                 >
                   <span>{item.questionOrder}</span>
                   {isMarked && (

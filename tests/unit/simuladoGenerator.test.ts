@@ -33,7 +33,7 @@ describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Av
     expect(invalid.success).toBe(false);
   });
 
-  it('gera exatamente 30 questões ordenadas de 1 a 30 cobrindo todas as 20 questões únicas da base', () => {
+  it('gera exatamente 30 questões ordenadas de 1 a 30 com 100% de questões únicas sem duplicação', () => {
     const items = generateSimuladoQuestions(questionBank, {
       totalQuestions: 30,
       uf: 'MG',
@@ -45,7 +45,7 @@ describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Av
     expect(items[29].questionOrder).toBe(30);
 
     const uniqueIds = new Set(items.map((i) => i.question.id));
-    expect(uniqueIds.size).toBe(20);
+    expect(uniqueIds.size).toBe(30);
   });
 
   it('produz a mesma sequência de questões quando a mesma semente (seed) é informada', () => {

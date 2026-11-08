@@ -46,7 +46,7 @@ export function SimuladoQuestionCard({
           data-testid="mark-review-btn"
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 ${
             isMarkedForReview
-              ? 'bg-amber-100 text-amber-950 border-amber-400'
+              ? 'bg-amber-100 text-amber-950 border-amber-400 font-extrabold'
               : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
           }`}
         >
@@ -69,28 +69,39 @@ export function SimuladoQuestionCard({
               <div key={opt.id}>
                 <label
                   htmlFor={inputId}
-                  className={`flex items-start gap-3 p-3.5 sm:p-4 rounded-xl border-2 cursor-pointer transition-all select-none ${
+                  className={`flex items-start justify-between gap-3 p-3.5 sm:p-4 rounded-xl border-2 cursor-pointer transition-all select-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-blue-600 has-[:focus-visible]:outline-none ${
                     isSelected
                       ? 'border-blue-600 bg-blue-50/70 text-slate-950 shadow-2xs'
                       : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60 text-slate-800'
                   } ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`}
                 >
-                  <input
-                    id={inputId}
-                    type="radio"
-                    name={`simulado-question-${questionOrder}`}
-                    value={opt.id}
-                    checked={isSelected}
-                    disabled={disabled}
-                    onChange={() => onSelectOption(opt.id)}
-                    className="mt-1 h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-600 shrink-0"
-                  />
-                  <span className="text-sm sm:text-base leading-snug font-medium">
-                    <strong className="font-extrabold uppercase mr-1.5 text-slate-900">
-                      {opt.id})
-                    </strong>
-                    {opt.text}
-                  </span>
+                  <div className="flex items-start gap-3">
+                    <input
+                      id={inputId}
+                      type="radio"
+                      name={`simulado-question-${questionOrder}`}
+                      value={opt.id}
+                      checked={isSelected}
+                      disabled={disabled}
+                      onChange={() => onSelectOption(opt.id)}
+                      className="mt-1 h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-600 shrink-0"
+                    />
+                    <span className="text-sm sm:text-base leading-snug font-medium">
+                      <strong className="font-extrabold uppercase mr-1.5 text-slate-900">
+                        {opt.id})
+                      </strong>
+                      {opt.text}
+                    </span>
+                  </div>
+
+                  {isSelected && (
+                    <span
+                      data-testid={`selected-badge-${opt.id}`}
+                      className="inline-flex items-center gap-1 text-[11px] font-extrabold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md shrink-0 self-center"
+                    >
+                      <span aria-hidden="true">✓</span> Selecionada
+                    </span>
+                  )}
                 </label>
               </div>
             );

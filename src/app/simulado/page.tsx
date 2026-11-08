@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import {
   getActiveExamConfig,
   getSimuladoHistory,
 } from '@/features/simulado/server/simuladoRepository';
 import { SimuladoHistoryList } from '@/features/simulado/components/SimuladoHistoryList';
+import { SimuladoDurationSelector } from '@/features/simulado/components/SimuladoDurationSelector';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,17 +33,17 @@ export default async function SimuladoLobbyPage() {
             id="simulado-lobby-heading"
             className="text-xl sm:text-2xl font-extrabold text-slate-900"
           >
-            Simulado Oficial da Prova Teórica de 1ª Habilitação
+            Simulado Prático da Prova Teórica de 1ª Habilitação
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-            Experimente as condições reais do exame teórico oficial. Durante a prova, não há dicas
-            nem correção imediata: você pode navegar livremente entre as questões, marcar itens para
-            revisar e conferir o gabarito comentado completo ao entregar.
+            Experimente as condições reais do exame teórico de trânsito (Padrão DETRAN-MG / SENATRAN).
+            Durante a prova, não há dicas nem correção imediata: você pode navegar livremente entre as questões,
+            marcar itens para revisar e conferir o gabarito comentado da plataforma com fundamentação legal ao entregar.
           </p>
         </div>
 
-        {/* Grade de Parâmetros Regulatórios Vigentes (D007) */}
+        {/* Grade de Parâmetros Regulatórios Vigentes (D007 / Res. CONTRAN 1.020/2025) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div
             data-testid="rule-total-questions"
@@ -81,7 +81,7 @@ export default async function SimuladoLobbyPage() {
             <strong className="mt-1 block text-xl font-extrabold text-emerald-700">
               {config.passingScore} acertos
             </strong>
-            <span className="text-xs text-slate-600">Aprovação oficial (~70% da prova)</span>
+            <span className="text-xs text-slate-600">Critério de aprovação (~70% da prova)</span>
           </div>
         </div>
 
@@ -99,28 +99,18 @@ export default async function SimuladoLobbyPage() {
               para retornar a elas antes de entregar.
             </li>
             <li>
-              Ao concluir (ou quando o tempo de 60 minutos chegar a zero), o gabarito comentado com
-              fundamentação legal será exibido.
+              Ao concluir (ou quando o cronômetro chegar a zero), o gabarito comentado da plataforma
+              com fundamentação legal no CTB e normas do CONTRAN será exibido.
             </li>
           </ul>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          <Link
-            href="/simulado/prova"
-            data-testid="start-simulado-cta"
-            className="inline-flex items-center justify-center min-h-12 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
-          >
-            Iniciar Simulado Oficial ({config.durationMinutes} min) →
-          </Link>
+        {/* Seletor de Tempo (Padrão 60 min vs Adaptação PCD 120 min) e CTA de Início */}
+        <SimuladoDurationSelector defaultDurationMinutes={config.durationMinutes} />
 
-          <Link
-            href="/simulado/historico"
-            className="inline-flex items-center justify-center min-h-12 px-4 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
-          >
-            Ver Histórico Completo
-          </Link>
-        </div>
+        <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+          Nota de transparência: A plataforma AprovaCNH é independente e não possui vínculo formal com o DETRAN ou a SENATRAN. Nossos simulados seguem estritamente as diretrizes da Resolução CONTRAN nº 1.020/2025, o Código de Trânsito Brasileiro e os temas do Banco Nacional de Questões (SENATRAN).
+        </p>
       </section>
 
       <section aria-labelledby="recent-simulados-heading" className="space-y-3">

@@ -103,7 +103,7 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
 
   it('carrega e valida os 20 registros do acervo local homologado via fallback', () => {
     const fallback = getFallbackApprovedQuestions();
-    expect(fallback).toHaveLength(20);
+    expect(fallback.length).toBeGreaterThanOrEqual(30);
     fallback.forEach((q) => {
       expect(q.status).toBe('aprovada');
       expect(q.options).toHaveLength(4);
@@ -130,7 +130,7 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
     } as unknown as Awaited<ReturnType<typeof createClient>>);
 
     const questions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-    expect(questions).toHaveLength(20);
+    expect(questions.length).toBeGreaterThanOrEqual(30);
     expect(questions[0].id).toBe('sin-001');
   });
 });

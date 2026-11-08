@@ -74,6 +74,7 @@ export const simuladoSubmissionSchema = z.object({
   configId: z.string().min(1).default('detran-mg-default'),
   startedAt: z.string().min(1),
   durationSeconds: z.number().int().min(0),
+  durationMinutes: z.number().int().positive().optional(),
   timedOut: z.boolean().optional().default(false),
   items: z.array(simuladoAnswerInputSchema).min(1).max(30),
 });

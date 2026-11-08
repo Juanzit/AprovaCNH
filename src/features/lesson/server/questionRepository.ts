@@ -188,6 +188,19 @@ export async function getApprovedQuestionsByTopic(
       return getFallbackApprovedQuestions();
     }
 
+    if (options.fallbackToLocal) {
+      const fallback = getFallbackApprovedQuestions();
+      if (validatedQuestions.length < fallback.length) {
+        const byId = new Map(validatedQuestions.map((q) => [q.id, q]));
+        for (const q of fallback) {
+          if (!byId.has(q.id)) {
+            byId.set(q.id, q);
+          }
+        }
+        return Array.from(byId.values());
+      }
+    }
+
     return validatedQuestions;
   } catch (err) {
     if (options.fallbackToLocal) {

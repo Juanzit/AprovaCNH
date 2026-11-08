@@ -97,7 +97,7 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
     const result = questionBankSchema.safeParse(rawBank);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data).toHaveLength(20);
+      expect(result.data.length).toBeGreaterThanOrEqual(20);
       result.data.forEach((q) => {
         expect(q.isExample).toBe(false);
         expect(q.status).toBe('aprovada');

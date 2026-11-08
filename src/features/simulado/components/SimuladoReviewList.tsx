@@ -1,21 +1,23 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { SimuladoEvaluatedItem } from '../types/simulado';
+import type { SimuladoEvaluatedItem, SimuladoResult } from '../types/simulado';
 
 interface SimuladoReviewListProps {
-  items: SimuladoEvaluatedItem[];
+  result?: SimuladoResult;
+  items?: SimuladoEvaluatedItem[];
 }
 
-type FilterMode = 'all' | 'errors' | 'correct';
+type FilterType = 'all' | 'errors' | 'correct';
 
-export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
-  const [filter, setFilter] = useState<FilterMode>('all');
+export function SimuladoReviewList({ result, items: propItems }: SimuladoReviewListProps) {
+  const [filter, setFilter] = useState<FilterType>('all');
+  const items = result ? result.evaluatedItems : (propItems ?? []);
 
-  const errorItems = items.filter((item) => !item.isCorrect);
-  const correctItems = items.filter((item) => item.isCorrect);
+  const errorItems = items.filter((i) => !i.isCorrect);
+  const correctItems = items.filter((i) => i.isCorrect);
 
-  const visibleItems =
+  const filteredItems =
     filter === 'errors'
       ? errorItems
       : filter === 'correct'
@@ -27,10 +29,10 @@ export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs">
         <div>
           <h2 id="gabarito-heading" className="text-base sm:text-lg font-extrabold text-slate-900">
-            Gabarito Oficial Comentado
+            Gabarito Comentado da Plataforma
           </h2>
           <p className="text-xs text-slate-600">
-            Confira questão por questão sua resposta, a alternativa correta e a explicação didática.
+            Confira questão por questão sua resposta, a alternativa correta e a fundamentação legal.
           </p>
         </div>
 
@@ -52,6 +54,7 @@ export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
           >
             Todas ({items.length})
           </button>
+
           <button
             type="button"
             onClick={() => setFilter('errors')}
@@ -59,12 +62,13 @@ export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
             data-testid="filter-errors-btn"
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 ${
               filter === 'errors'
-                ? 'bg-white text-red-700 shadow-2xs'
+                ? 'bg-white text-amber-950 shadow-2xs font-extrabold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Apenas Erros ({errorItems.length})
+            Erros ({errorItems.length})
           </button>
+
           <button
             type="button"
             onClick={() => setFilter('correct')}
@@ -72,57 +76,68 @@ export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
             data-testid="filter-correct-btn"
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 ${
               filter === 'correct'
-                ? 'bg-white text-emerald-700 shadow-2xs'
+                ? 'bg-white text-emerald-950 shadow-2xs font-extrabold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Apenas Acertos ({correctItems.length})
+            Acertos ({correctItems.length})
           </button>
         </div>
       </div>
 
-      {visibleItems.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-600">
-          Nenhuma questão encontrada para o filtro selecionado.
+      {filteredItems.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 text-center text-xs text-slate-600">
+          Nenhuma questão nesta categoria de filtro.
         </div>
       ) : (
         <div className="space-y-4">
-          {visibleItems.map((item) => {
-            const { question, questionOrder, selectedOptionId, isCorrect } = item;
-            const selectedOption = question.options.find((o) => o.id === selectedOptionId);
-            const correctOption = question.options.find((o) => o.id === question.correctOptionId);
+          {filteredItems.map((item) => {
+            const question = item.question;
+            const selectedOption = question.options.find(
+              (o) => o.id === item.selectedOptionId
+            );
+            const correctOption = question.options.find(
+              (o) => o.id === question.correctOptionId
+            );
 
             return (
               <article
-                key={questionOrder}
-                data-testid={`review-question-${questionOrder}`}
-                className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4"
+                key={item.questionOrder}
+                data-testid={`review-question-${item.questionOrder}`}
+                className={`bg-white rounded-2xl border p-4 sm:p-5 shadow-xs space-y-3.5 ${
+                  item.isCorrect
+                    ? 'border-emerald-200/90'
+                    : 'border-amber-300 bg-amber-50/20'
+                }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-extrabold text-slate-900">
-                      Questão {questionOrder}
+                    <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-800">
+                      Questão {item.questionOrder}
                     </span>
                     {question.subtopic && (
-                      <span className="text-xs text-slate-500">• {question.subtopic}</span>
+                      <span className="text-xs text-slate-500 font-medium">
+                        {question.subtopic}
+                      </span>
                     )}
                   </div>
 
-                  <span
-                    className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold ${
-                      isCorrect
-                        ? 'bg-emerald-100 text-emerald-900'
-                        : selectedOptionId === null
-                          ? 'bg-slate-200 text-slate-800'
-                          : 'bg-red-100 text-red-900'
-                    }`}
-                  >
-                    {isCorrect
-                      ? '✓ Acertou'
-                      : selectedOptionId === null
-                        ? '⚪ Deixada em branco'
-                        : '✕ Errou'}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    {item.isMarkedForReview && (
+                      <span className="text-xs text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md font-bold">
+                        🚩 Revisada
+                      </span>
+                    )}
+                    <span
+                      className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
+                        item.isCorrect
+                          ? 'bg-emerald-100 text-emerald-900'
+                          : 'bg-amber-100 text-amber-900'
+                      }`}
+                    >
+                      {item.isCorrect ? '✓ Acertou' : '✕ Errou'}
+                    </span>
+                  </div>
                 </div>
 
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">
@@ -132,9 +147,11 @@ export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
                   <div
                     className={`p-3 rounded-xl border ${
-                      isCorrect
+                      item.isCorrect
                         ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950'
-                        : 'bg-red-50/70 border-red-200 text-red-950'
+                        : item.selectedOptionId
+                          ? 'bg-red-50/70 border-red-200 text-red-950'
+                          : 'bg-slate-50 border-slate-200 text-slate-600'
                     }`}
                   >
                     <span className="block text-[11px] font-bold uppercase tracking-wider opacity-80">
@@ -149,7 +166,7 @@ export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
 
                   <div className="p-3 rounded-xl border bg-emerald-50/70 border-emerald-200 text-emerald-950">
                     <span className="block text-[11px] font-bold uppercase tracking-wider opacity-80">
-                      Gabarito oficial
+                      Resposta Correta (CTB / CONTRAN)
                     </span>
                     <p className="mt-1 font-semibold">
                       {correctOption
@@ -179,7 +196,7 @@ export function SimuladoReviewList({ items }: SimuladoReviewListProps) {
                         rel="noopener noreferrer"
                         className="font-bold text-blue-700 hover:underline"
                       >
-                        Consultar norma oficial ↗
+                        Consultar legislação (Planalto / Portal Oficial) ↗
                       </a>
                     )}
                   </div>
