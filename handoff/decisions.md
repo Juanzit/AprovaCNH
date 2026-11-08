@@ -8,7 +8,7 @@ Formato: ID — decisão — motivo — status — observação.
 - D004 — Sem frameworks de agentes (ADK, LangGraph etc.) no MVP; agentes serão scripts/serviços simples com entrada, saída, logs e limites — evitar complexidade prematura — **DECIDIDO**.
 - D005 — Comunicação por arquivos em `handoff/` (briefs, tasks, reports, decisions); pasta pode ser espelhada no Google Drive; repositório de código NÃO fica dentro do Drive — evitar conflitos de sincronização — **DECIDIDO**.
 - D006 — Nome e marca independentes, sem sugerir vínculo com DETRAN; pesquisar disponibilidade no INPI — independência institucional e segurança de marca — **PENDENTE**.
-- D007 — Parâmetros atuais da prova teórica (quantidade de questões, nota mínima, duração e regras aplicáveis) devem ser confirmados na fonte primária antes de codificar — evitar perpetuar informação desatualizada — **PENDENTE**.
+- D007 — Parâmetros da Prova Teórica para Simulado (Resolução CONTRAN nº 1.020/2025): fixação de 30 questões por simulado, duração máxima de 60 minutos (cronômetro regressivo) e nota de corte de 20 acertos (aproveitamento mínimo de ~70% para aprovação conforme CTB e BNQ/SENATRAN) — assegurar simulação fidedigna ao exame teórico oficial de 1ª habilitação sem distorções — **DECIDIDO**.
 - D008 — Provedor de hospedagem e orçamento/nível de faturamento para IA em produção — decisão depende de MVP, tráfego e custos medidos — **PENDENTE**.
 - D009 — T001 será uma fatia técnica com cinco questões seed demonstrativas, em rascunho; sem login, trilhas completas, simulado, IA ou banco real — validar estrutura, interação e fluxo de lição antes de ampliar — **DECIDIDO PELO ESCOPO DE T001**.
 - D010 — Trabalho em fases com porta de aprovação: o agente planeja, aguarda aprovação, implementa uma tarefa e entrega evidências antes de avançar — reduzir confusão, escopo indevido e regressões — **DECIDIDO**.
@@ -29,3 +29,4 @@ Formato: ID — decisão — motivo — status — observação.
 - v1.3 — 06/11/2026: D011 formalizado como DECIDIDO para execução da Fase 2 (T002).
 - v1.4 — 08/11/2026: D016 e D017 formalizados como DECIDIDO após aprovação do planejamento da Fase 4 (T004).
 - v1.5 — 08/11/2026: D018 formalizado como DECIDIDO após aprovação do plano T005 pelo responsável.
+- v1.6 — 08/11/2026: D007 formalizado como DECIDIDO com base na Resolução CONTRAN nº 1.020/2025 (30 questões, 60 minutos, 20 acertos) para subsidiar a Fase 6 (T006).
