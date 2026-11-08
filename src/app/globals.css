@@ -12,3 +12,14 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
+
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgb(15 23 42 / 0.5);
+  backdrop-filter: blur(2px);
+}
