@@ -8,12 +8,18 @@ interface LessonSummaryProps {
   xpBreakdown: XpBreakdown;
   serverResult?: SessionSubmissionResult | null;
   onRestart: () => void;
+  backHref?: string;
+  backLabel?: string;
+  badgeText?: string;
 }
 
 export function LessonSummary({
   xpBreakdown,
   serverResult,
   onRestart,
+  backHref = '/',
+  backLabel = 'Voltar à Trilha',
+  badgeText,
 }: LessonSummaryProps) {
   const { correctAnswersCount, totalQuestions, pointsFromAnswers, completionBonus, totalXp } =
     xpBreakdown;
@@ -30,6 +36,19 @@ export function LessonSummary({
       <p className="text-slate-600 mb-6">
         Você respondeu todas as {totalQuestions} questões de sinalização.
       </p>
+
+      {/* Badge de Modo de Revisão */}
+      {badgeText && (
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <span
+            data-testid="review-mode-badge"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-800 text-xs font-bold border border-indigo-200"
+          >
+            <span>⚡</span>
+            <span>{badgeText}</span>
+          </span>
+        </div>
+      )}
 
       {/* Badges de Gamificação do Servidor */}
       {serverResult && (
@@ -105,10 +124,10 @@ export function LessonSummary({
           Repetir lição
         </button>
         <Link
-          href="/"
+          href={backHref}
           className="flex-1 py-3 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 font-semibold text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
         >
-          Voltar à Trilha
+          {backLabel}
         </Link>
       </div>
     </div>

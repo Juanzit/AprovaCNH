@@ -86,16 +86,24 @@ export function TrackUnitCard({ sessions }: TrackUnitCardProps) {
         </div>
       </div>
 
-      {/* CTA Mobile: Continuar de onde parou */}
-      <div>
+      {/* CTAs Mobile: Continuar de onde parou e Centro de Revisão */}
+      <div className="flex flex-col sm:flex-row gap-2.5">
         <Link
           href={`/licao/sinalizacao?sessao=${nextPendingSession.sessionId}`}
-          className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+          className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
         >
           <span>▶</span>
           <span>
             Continuar de onde parou (Sessão {nextPendingSession.sessionId})
           </span>
+        </Link>
+
+        <Link
+          href="/revisao"
+          className="flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl border border-slate-300 hover:border-blue-400 bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-600"
+        >
+          <span>🎯</span>
+          <span>Centro de Revisão</span>
         </Link>
       </div>
 
