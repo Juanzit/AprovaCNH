@@ -1,5 +1,4 @@
-import rawQuestions from '@/data/questions-sinalizacao.json';
-import { questionBankSchema } from '@/features/lesson/schemas/questionSchema';
+import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
 import { LessonContainer } from '@/features/lesson/components/LessonContainer';
 
 interface LicaoPageProps {
@@ -10,16 +9,9 @@ interface LicaoPageProps {
 }
 
 export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPageProps) {
-  // Validação estrita do banco de questões aprovadas em runtime
-  const parseResult = questionBankSchema.safeParse(rawQuestions);
+  // Busca as questões aprovadas dinamicamente via repositório Supabase com validação Zod (Anti-Corruption Layer)
+  const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
 
-  if (!parseResult.success) {
-    throw new Error(
-      `Falha de integridade no banco de questões aprovadas: ${JSON.stringify(parseResult.error.format())}`
-    );
-  }
-
-  const allQuestions = parseResult.data;
   const resolvedParams = searchParams ? await searchParams : {};
 
   // Se 'todas=true', entrega as 20 questões do banco completo
