@@ -21,7 +21,8 @@ describe('Validação em Nuvem do Supabase (Live Integration)', () => {
         expect(q.options).toHaveLength(4);
         expect(q.source.kind).toBe('official');
         expect(q.source.verificationStatus).toBe('verified');
-        expect(q.source.document).toContain('Resolução CONTRAN nº 985/2022');
+        expect(q.source.document).toContain('Código de Trânsito Brasileiro');
+        expect(q.source.document).toContain('985/2022');
         expect(q.review?.approvedBy).toBe('Tech Lead / Responsável pelo Produto');
       }
 
