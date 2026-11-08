@@ -40,16 +40,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Fundamentado no trecho literal da Ficha 583-50 do MBFT (Pág 1): \"As ordens do agente de trânsito terão prevalência sobre as normas de circulação e outros sinais (art. 89, I)\".",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -93,16 +93,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Extraído literalmente do item 2 das Definições e Procedimentos da Ficha 583-50 do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -146,16 +146,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Fundamentado no item 3 de Definições e Procedimentos e item 1 de Informações Complementares da Ficha 583-50.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -199,16 +199,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Transcrição literal do item 5 de \"Quando AUTUAR\" da Ficha 583-50 do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -252,16 +252,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Transcrição literal do item 3 de \"Quando NÃO Autuar\" da Ficha 583-50 do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -305,16 +305,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 584-31 (Página 1, Quando Autuar item 2) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -358,16 +358,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Citação literal do Art. 35 do CTB no item 1 das Definições e Procedimentos da Ficha 584-31 do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -411,16 +411,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 584-32 (Página 1, Quando Autuar item 1) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -464,16 +464,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 584-32 (Página 1, Procedimento 3) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -517,16 +517,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 584-33 (Página 1, Quando Autuar 1) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -570,16 +570,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 584-33 (Página 1, Quando NÃO Autuar 1 e 2) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -623,16 +623,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 584-34 (Página 1, Quando Autuar 1) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -676,16 +676,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 584-34 (Procedimento 3 e Não Autuar 2) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -729,16 +729,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 605-01 (Página 1, Quando Autuar 1) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -782,16 +782,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 605-01 (Página 1, Quando Autuar 2) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -835,16 +835,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 605-01 (Amparo legal e Quando NÃO Autuar item 1) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -888,16 +888,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 605-01 (Quando NÃO Autuar itens 3 e 5) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -941,16 +941,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 605-02 (Quando Autuar item 1 e Inf. Compl. item 1) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -994,16 +994,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 605-02 (Página 1, Quando NÃO Autuar item 1) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   },
   {
@@ -1047,16 +1047,16 @@
       "effectiveUntil": null,
       "sourceVersion": "Resolução CONTRAN nº 985/2022",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
-      "verificationStatus": "pending"
+      "verificationStatus": "verified"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
       "verificationNotes": "Trecho literal da Ficha 605-02 (Página 1, Quando Autuar item 2 e Definições item 6) do MBFT.",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "Tech Lead / Responsável pelo Produto",
+      "approvedAt": "2026-11-07T23:43:10Z"
     }
   }
 ]

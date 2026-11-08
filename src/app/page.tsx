@@ -26,7 +26,7 @@ export default function HomePage() {
       {/* Módulos do piloto de 20 questões */}
       <div className="text-left bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">
-          Sessões Temáticas do Piloto (20 Questões em Revisão Editorial)
+          Sessões Temáticas Oficiais (20 Questões Aprovadas MBFT)
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Link

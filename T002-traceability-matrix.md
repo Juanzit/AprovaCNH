@@ -2,7 +2,7 @@
 
 **Fase:** 2 — Piloto Editorial de Sinalização
 **Tarefa:** T002
-**Status do Lote:** `em_revisao` (Etapa 1 Concluída — Aguardando Homologação Humana)
+**Status do Lote:** `aprovada` (Etapa 2 Concluída — Homologação Humana Registrada)
 **Data:** 07/11/2026
 **Branch de Trabalho:** `feat/T002-piloto-sinalizacao`
 **Decisões Vinculadas:** D003, D011, D014, D015
@@ -33,26 +33,26 @@
 
 | ID | Artigo CTB | Ficha MBFT | Subtema | Gabarito | Status |
 |---|:---:|:---:|---|:---:|:---:|
-| `sin-001` | Art. 195 | **583-50** | Ordens do Agente e Prevalência (Art. 195) | **b** | `em_revisao` |
-| `sin-002` | Art. 195 | **583-50** | Pressupostos de Autuação (Art. 195) | **a** | `em_revisao` |
-| `sin-003` | Art. 195 | **583-50** | Formas de Emissão de Ordem e Apito (Art. 195) | **b** | `em_revisao` |
-| `sin-004` | Art. 195 | **583-50** | Restrições Médicas da CNH (Art. 195) | **b** | `em_revisao` |
-| `sin-005` | Art. 195 | **583-50** | Conflito de Enquadramento Agente (Art. 195 vs 208) | **b** | `em_revisao` |
-| `sin-006` | Art. 196 | **584-31** | Início de Marcha e Sinalização (Art. 196 / 584-31) | **b** | `em_revisao` |
-| `sin-007` | Art. 196 | **584-31** | Meios de Indicação e Gestos (Art. 196 / Art. 35 CTB) | **b** | `em_revisao` |
-| `sin-008` | Art. 196 | **584-32** | Manobra de Parar Veículo (Art. 196 / 584-32) | **b** | `em_revisao` |
-| `sin-009` | Art. 196 | **584-32** | Concomitância com Defeito de Iluminação (Art. 196 c/c 230, XXII) | **b** | `em_revisao` |
-| `sin-010` | Art. 196 | **584-33** | Mudança de Direção e Lotes Lindeiros (Art. 196 / 584-33) | **b** | `em_revisao` |
-| `sin-011` | Art. 196 | **584-33** | Exceções na Mudança de Direção (Art. 196 / 584-33) | **b** | `em_revisao` |
-| `sin-012` | Art. 196 | **584-34** | Mudança de Faixa e Ultrapassagem (Art. 196 / 584-34) | **b** | `em_revisao` |
-| `sin-013` | Art. 196 | **584-34** | Conceito de Faixa e Linha LMS-1 (Art. 196 vs 185) | **b** | `em_revisao` |
-| `sin-014` | Art. 208 | **605-01** | Avanço de Sinal Vermelho e Linha de Retenção (Art. 208 / 605-01) | **b** | `em_revisao` |
-| `sin-015` | Art. 208 | **605-01** | Transposição Incompleta da Retenção no Vermelho (Art. 208 / 605-01) | **b** | `em_revisao` |
-| `sin-016` | Art. 208 | **605-01** | Livre Conversão à Direita no Foco Vermelho (Art. 208 c/c 44-A) | **b** | `em_revisao` |
-| `sin-017` | Art. 208 | **605-01** | Passagem no Verde e Retenção Posterior (Art. 208 vs 183 e 182, VII) | **b** | `em_revisao` |
-| `sin-018` | Art. 208 | **605-02** | Placa R-1 e Imobilização Total Obrigatória (Art. 208 / 605-02) | **b** | `em_revisao` |
-| `sin-019` | Art. 208 | **605-02** | Indispensabilidade da Sinalização Vertical R-1 (Art. 208 / 605-02) | **b** | `em_revisao` |
-| `sin-020` | Art. 208 | **605-02** | Ordem de Parada por Gesto do Agente (Art. 208 / 605-02) | **b** | `em_revisao` |
+| `sin-001` | Art. 195 | **583-50** | Ordens do Agente e Prevalência (Art. 195) | **b** | `aprovada` |
+| `sin-002` | Art. 195 | **583-50** | Pressupostos de Autuação (Art. 195) | **a** | `aprovada` |
+| `sin-003` | Art. 195 | **583-50** | Formas de Emissão de Ordem e Apito (Art. 195) | **b** | `aprovada` |
+| `sin-004` | Art. 195 | **583-50** | Restrições Médicas da CNH (Art. 195) | **b** | `aprovada` |
+| `sin-005` | Art. 195 | **583-50** | Conflito de Enquadramento Agente (Art. 195 vs 208) | **b** | `aprovada` |
+| `sin-006` | Art. 196 | **584-31** | Início de Marcha e Sinalização (Art. 196 / 584-31) | **b** | `aprovada` |
+| `sin-007` | Art. 196 | **584-31** | Meios de Indicação e Gestos (Art. 196 / Art. 35 CTB) | **b** | `aprovada` |
+| `sin-008` | Art. 196 | **584-32** | Manobra de Parar Veículo (Art. 196 / 584-32) | **b** | `aprovada` |
+| `sin-009` | Art. 196 | **584-32** | Concomitância com Defeito de Iluminação (Art. 196 c/c 230, XXII) | **b** | `aprovada` |
+| `sin-010` | Art. 196 | **584-33** | Mudança de Direção e Lotes Lindeiros (Art. 196 / 584-33) | **b** | `aprovada` |
+| `sin-011` | Art. 196 | **584-33** | Exceções na Mudança de Direção (Art. 196 / 584-33) | **b** | `aprovada` |
+| `sin-012` | Art. 196 | **584-34** | Mudança de Faixa e Ultrapassagem (Art. 196 / 584-34) | **b** | `aprovada` |
+| `sin-013` | Art. 196 | **584-34** | Conceito de Faixa e Linha LMS-1 (Art. 196 vs 185) | **b** | `aprovada` |
+| `sin-014` | Art. 208 | **605-01** | Avanço de Sinal Vermelho e Linha de Retenção (Art. 208 / 605-01) | **b** | `aprovada` |
+| `sin-015` | Art. 208 | **605-01** | Transposição Incompleta da Retenção no Vermelho (Art. 208 / 605-01) | **b** | `aprovada` |
+| `sin-016` | Art. 208 | **605-01** | Livre Conversão à Direita no Foco Vermelho (Art. 208 c/c 44-A) | **b** | `aprovada` |
+| `sin-017` | Art. 208 | **605-01** | Passagem no Verde e Retenção Posterior (Art. 208 vs 183 e 182, VII) | **b** | `aprovada` |
+| `sin-018` | Art. 208 | **605-02** | Placa R-1 e Imobilização Total Obrigatória (Art. 208 / 605-02) | **b** | `aprovada` |
+| `sin-019` | Art. 208 | **605-02** | Indispensabilidade da Sinalização Vertical R-1 (Art. 208 / 605-02) | **b** | `aprovada` |
+| `sin-020` | Art. 208 | **605-02** | Ordem de Parada por Gesto do Agente (Art. 208 / 605-02) | **b** | `aprovada` |
 
 ---
 
@@ -62,7 +62,7 @@
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 195 (Ficha MBFT 583-50, Procedimento 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -87,7 +87,7 @@ Item 'Definições e Procedimentos', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Fundamentado no trecho literal da Ficha 583-50 do MBFT (Pág 1): "As ordens do agente de trânsito terão prevalência sobre as normas de circulação e outros sinais (art. 89, I)".
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -95,7 +95,7 @@ Item 'Definições e Procedimentos', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 195 (Ficha MBFT 583-50, Procedimento 2)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -123,7 +123,7 @@ Item 'Definições e Procedimentos', item 2:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Extraído literalmente do item 2 das Definições e Procedimentos da Ficha 583-50 do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -131,7 +131,7 @@ Item 'Definições e Procedimentos', item 2:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 195 (Ficha MBFT 583-50, Procedimento 3 e Inf. Compl. 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -157,7 +157,7 @@ Item 'Definições e Procedimentos', item 3 e 'Informações Complementares', it
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Fundamentado no item 3 de Definições e Procedimentos e item 1 de Informações Complementares da Ficha 583-50.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -165,7 +165,7 @@ Item 'Definições e Procedimentos', item 3 e 'Informações Complementares', it
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 195 (Ficha MBFT 583-50, Quando AUTUAR 5)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -193,7 +193,7 @@ Item 'Quando AUTUAR', item 5:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Transcrição literal do item 5 de "Quando AUTUAR" da Ficha 583-50 do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -201,7 +201,7 @@ Item 'Quando AUTUAR', item 5:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 195 (Ficha MBFT 583-50, Quando NÃO Autuar 3)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -226,7 +226,7 @@ Item 'Quando NÃO Autuar', item 3:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Transcrição literal do item 3 de "Quando NÃO Autuar" da Ficha 583-50 do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -234,7 +234,7 @@ Item 'Quando NÃO Autuar', item 3:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-31, Quando Autuar 2)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -259,7 +259,7 @@ Item 'Quando Autuar:', item 2:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 584-31 (Página 1, Quando Autuar item 2) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -267,7 +267,7 @@ Item 'Quando Autuar:', item 2:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-31, Procedimento 1 / Art. 35 CTB)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -292,7 +292,7 @@ Item 'Definições e Procedimentos:', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Citação literal do Art. 35 do CTB no item 1 das Definições e Procedimentos da Ficha 584-31 do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -300,7 +300,7 @@ Item 'Definições e Procedimentos:', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-32, Quando Autuar 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -325,7 +325,7 @@ Item 'Quando Autuar:', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 584-32 (Página 1, Quando Autuar item 1) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -333,7 +333,7 @@ Item 'Quando Autuar:', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-32, Procedimento 3 c/c Art. 230, XXII)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -358,7 +358,7 @@ Item 'Definições e Procedimentos:', item 3:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 584-32 (Página 1, Procedimento 3) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -366,7 +366,7 @@ Item 'Definições e Procedimentos:', item 3:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-33, Quando Autuar 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -394,7 +394,7 @@ Item 'Quando Autuar:', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 584-33 (Página 1, Quando Autuar 1) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -402,7 +402,7 @@ Item 'Quando Autuar:', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-33, Quando NÃO Autuar 1 e 2)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -428,7 +428,7 @@ Item 'Quando NÃO Autuar:', itens 1 e 2:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 584-33 (Página 1, Quando NÃO Autuar 1 e 2) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -436,7 +436,7 @@ Item 'Quando NÃO Autuar:', itens 1 e 2:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-34, Quando Autuar 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -461,7 +461,7 @@ Item 'Quando Autuar:', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 584-34 (Página 1, Quando Autuar 1) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -469,7 +469,7 @@ Item 'Quando Autuar:', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 196 (Ficha MBFT 584-34, Procedimento 3 e Não Autuar 2)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -495,7 +495,7 @@ Item 'Definições e Procedimentos:', item 3 e 'Quando NÃO Autuar:', item 2:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 584-34 (Procedimento 3 e Não Autuar 2) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -503,7 +503,7 @@ Item 'Definições e Procedimentos:', item 3 e 'Quando NÃO Autuar:', item 2:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 208 (Ficha MBFT 605-01, Quando Autuar 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -528,7 +528,7 @@ Item 'Quando Autuar', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 605-01 (Página 1, Quando Autuar 1) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -536,7 +536,7 @@ Item 'Quando Autuar', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 208 (Ficha MBFT 605-01, Quando Autuar 2)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -561,7 +561,7 @@ Item 'Quando Autuar', item 2:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 605-01 (Página 1, Quando Autuar 2) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -569,7 +569,7 @@ Item 'Quando Autuar', item 2:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 208 (Ficha MBFT 605-01, Amparo Legal c/c Art. 44-A CTB)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -595,7 +595,7 @@ Item 'Tipificação do Enquadramento' e 'Quando NÃO Autuar', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 605-01 (Amparo legal e Quando NÃO Autuar item 1) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -603,7 +603,7 @@ Item 'Tipificação do Enquadramento' e 'Quando NÃO Autuar', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 208 (Ficha MBFT 605-01, Quando NÃO Autuar 3 e 5)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -629,7 +629,7 @@ Item 'Quando NÃO Autuar', itens 3 e 5:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 605-01 (Quando NÃO Autuar itens 3 e 5) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -637,7 +637,7 @@ Item 'Quando NÃO Autuar', itens 3 e 5:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 208 (Ficha MBFT 605-02, Quando Autuar 1 e Inf. Compl. 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -665,7 +665,7 @@ Item 'Quando Autuar', item 1 e 'Informações Complementares', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 605-02 (Quando Autuar item 1 e Inf. Compl. item 1) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -673,7 +673,7 @@ Item 'Quando Autuar', item 1 e 'Informações Complementares', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 208 (Ficha MBFT 605-02, Quando NÃO Autuar 1)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -699,7 +699,7 @@ Item 'Quando NÃO Autuar', item 1:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 605-02 (Página 1, Quando NÃO Autuar item 1) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
@@ -707,7 +707,7 @@ Item 'Quando NÃO Autuar', item 1:
 - **Dispositivo Legal:** Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT) — `Art. 208 (Ficha MBFT 605-02, Quando Autuar 2 e Definições 6)`
 - **URL Oficial:** [https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf)
 - **Categorias Aplicáveis:** A, B | **UFs:** `[]` (Âmbito Nacional / Resolução CONTRAN)
-- **Status Editorial:** `em_revisao` (Verificação da Fonte: `pending`)
+- **Status Editorial:** `aprovada` (Verificação da Fonte: `verified`)
 
 #### Evidência Normativa Literal (Extraída de `fichas_mbft_195_196_208.md`):
 ```text
@@ -733,18 +733,16 @@ Item 'Quando Autuar', item 2 e 'Definições e Procedimentos', item 6:
 - **Modelo Gerador:** `Antigravity/Gemini-3.8-Flash`
 - **Modelo Verificador:** `Independent/Auditor-Juridico-Editorial`
 - **Notas de Verificação:** Trecho literal da Ficha 605-02 (Página 1, Quando Autuar item 2 e Definições item 6) do MBFT.
-- **Homologação Humana (`approvedBy`):** `Pendente de Homologação Humana (Tech Lead)`
+- **Homologação Humana (`approvedBy`):** `Tech Lead / Responsável pelo Produto` em `2026-11-07T23:43:10Z`
 
 ---
 
 ## 4. Porta de Homologação Humana (Regra D011)
 
-Este lote piloto de 20 questões está fundamentado 100% no arquivo `fichas_mbft_195_196_208.md` da raiz do repositório, cumprindo integralmente os requisitos de rastreabilidade (D003).
+Este lote piloto de 20 questões foi integralmente fundamentado no arquivo `fichas_mbft_195_196_208.md` da raiz do repositório, cumprindo integralmente os requisitos de rastreabilidade (D003).
 
-Para concluir a transição da Etapa 1 para a Etapa 2 de D011, é necessária a validação humana formal pelo Tech Lead / Responsável pelo Produto:
-
-- [ ] **Homologação Técnica e Jurídica:**
-  - [ ] Responsável: `Tech Lead / Responsável pelo Produto`
-  - [ ] Data da Homologação: `____/____/2026`
-  - [ ] Parecer: `( ) APROVADO sem ressalvas   ( ) REJEITADO com apontamentos`
-  - [ ] Ação pós-homologação: Promover `status` de `em_revisao` para `aprovada` com registro de `approvedBy` e `approvedAt`.
+- [x] **Homologação Técnica e Jurídica Realizada:**
+  - **Responsável:** `Tech Lead / Responsável pelo Produto`
+  - **Data da Homologação:** `07/11/2026` às `23:43:10-03:00`
+  - **Parecer:** `(X) APROVADO sem ressalvas`
+  - **Ação Executada:** Promoção do lote de 20 questões para `status: "aprovada"`, registro formal dos metadados de auditoria (`approvedBy` e `approvedAt`) e conexão integral do banco oficial aprovado à rota `/licao/sinalizacao`.

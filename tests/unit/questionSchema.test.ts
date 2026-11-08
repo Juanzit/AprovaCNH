@@ -92,24 +92,29 @@ describe('questionSchema & lessonSeedSchema (T001)', () => {
   });
 });
 
-describe('questionSchema & questionBankSchema (T002 - Piloto Editorial)', () => {
-  it('deve validar com 100% de sucesso as 20 questões em status "em_revisao" de questions-sinalizacao.json', () => {
+describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)', () => {
+  it('deve validar com 100% de sucesso as 20 questões em status "aprovada" de questions-sinalizacao.json', () => {
     const result = questionBankSchema.safeParse(rawBank);
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data).toHaveLength(20);
       result.data.forEach((q) => {
         expect(q.isExample).toBe(false);
-        expect(q.status).toBe('em_revisao');
+        expect(q.status).toBe('aprovada');
         expect(q.source.kind).toBe('official');
-        expect(q.source.verificationStatus).toBe('pending');
+        expect(q.source.verificationStatus).toBe('verified');
         expect(q.source.document).toBeTruthy();
         expect(q.source.provision).toBeTruthy();
         expect(q.source.url).toBeTruthy();
         expect(q.source.checkedAt).toBeTruthy();
+        expect(q.source.effectiveFrom).toBeTruthy();
+        expect(q.source.sourceVersion).toBeTruthy();
+        expect(q.source.licenseNote).toBeTruthy();
         expect(q.review?.generatorModel).toBeTruthy();
-        expect(q.review?.approvedBy).toBeNull();
-        expect(q.review?.approvedAt).toBeNull();
+        expect(q.review?.verifierModel).toBeTruthy();
+        expect(q.review?.verifierModel).not.toBe(q.review?.generatorModel);
+        expect(q.review?.approvedBy).toBe('Tech Lead / Responsável pelo Produto');
+        expect(q.review?.approvedAt).toBeTruthy();
         expect(q.options).toHaveLength(4);
         expect(q.ufs).toHaveLength(0);
       });
@@ -119,6 +124,7 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial)', () => 
   it('deve rejeitar questão em status "em_revisao" (isExample: false) se source.kind for "demo"', () => {
     const invalidSourceKind = {
       ...rawBank[0],
+      status: 'em_revisao',
       source: {
         ...rawBank[0].source,
         kind: 'demo',
@@ -137,6 +143,7 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial)', () => 
   it('deve rejeitar questão em status "em_revisao" sem dispositivo legal (source.provision nulo)', () => {
     const missingProvision = {
       ...rawBank[0],
+      status: 'em_revisao',
       source: {
         ...rawBank[0].source,
         provision: null,

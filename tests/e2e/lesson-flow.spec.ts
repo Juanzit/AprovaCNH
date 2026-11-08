@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT em Revisão)', () => {
+test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)', () => {
   test('deve navegar da home para a lição de sinalização oficial', async ({ page }) => {
     await page.goto('/');
 
@@ -23,7 +23,7 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT em Revis�
 
     // Questão 1 (sin-001: Prevalência do Agente de Trânsito - Art. 195)
     await expect(page.getByText('Questão 1 de 5')).toBeVisible();
-    await expect(page.getByText(/Questão em Revisão/i)).toBeVisible();
+    await expect(page.getByText(/Questão Oficial Aprovada/i)).toBeVisible();
 
     // Selecionar alternativa 'b' (gabarito da Q1)
     const radioQ1 = page.getByLabel(/As ordens do agente de trânsito têm prevalência sobre as normas de circulação/i);
