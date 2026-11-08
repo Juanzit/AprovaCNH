@@ -23,7 +23,7 @@ export function OptionList({
 }: OptionListProps) {
   return (
     <fieldset className="w-full border-0 p-0 m-0">
-      {/* Banner de conteúdo demonstrativo ou oficial */}
+      {/* Banner de conteúdo demonstrativo ou em revisão */}
       {isExample ? (
         <div
           className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium"
@@ -34,11 +34,11 @@ export function OptionList({
         </div>
       ) : (
         <div
-          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium"
+          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-blue-50 border border-blue-200 text-blue-900 text-xs font-medium"
           role="note"
         >
-          <CheckIcon className="w-4 h-4 shrink-0 text-emerald-600" />
-          <span>Questão Oficial Aprovada — Legislação Vigente</span>
+          <AlertCircleIcon className="w-4 h-4 shrink-0 text-blue-600" />
+          <span>Questão em Revisão — Aguardando Homologação Humana</span>
         </div>
       )}
 

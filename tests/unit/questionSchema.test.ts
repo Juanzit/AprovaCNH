@@ -92,29 +92,24 @@ describe('questionSchema & lessonSeedSchema (T001)', () => {
   });
 });
 
-describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)', () => {
-  it('deve validar com 100% de sucesso as 20 questões em status "aprovada" de questions-sinalizacao.json', () => {
+describe('questionSchema & questionBankSchema (T002 - Piloto Editorial)', () => {
+  it('deve validar com 100% de sucesso as 20 questões em status "em_revisao" de questions-sinalizacao.json', () => {
     const result = questionBankSchema.safeParse(rawBank);
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data).toHaveLength(20);
       result.data.forEach((q) => {
         expect(q.isExample).toBe(false);
-        expect(q.status).toBe('aprovada');
+        expect(q.status).toBe('em_revisao');
         expect(q.source.kind).toBe('official');
-        expect(q.source.verificationStatus).toBe('verified');
+        expect(q.source.verificationStatus).toBe('pending');
         expect(q.source.document).toBeTruthy();
         expect(q.source.provision).toBeTruthy();
         expect(q.source.url).toBeTruthy();
         expect(q.source.checkedAt).toBeTruthy();
-        expect(q.source.effectiveFrom).toBeTruthy();
-        expect(q.source.sourceVersion).toBeTruthy();
-        expect(q.source.licenseNote).toBeTruthy();
         expect(q.review?.generatorModel).toBeTruthy();
-        expect(q.review?.verifierModel).toBeTruthy();
-        expect(q.review?.verifierModel).not.toBe(q.review?.generatorModel);
-        expect(q.review?.approvedBy).toBeTruthy();
-        expect(q.review?.approvedAt).toBeTruthy();
+        expect(q.review?.approvedBy).toBeNull();
+        expect(q.review?.approvedAt).toBeNull();
         expect(q.options).toHaveLength(4);
         expect(q.ufs).toHaveLength(0);
       });
@@ -124,7 +119,6 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
   it('deve rejeitar questão em status "em_revisao" (isExample: false) se source.kind for "demo"', () => {
     const invalidSourceKind = {
       ...rawBank[0],
-      status: 'em_revisao',
       source: {
         ...rawBank[0].source,
         kind: 'demo',
@@ -143,7 +137,6 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
   it('deve rejeitar questão em status "em_revisao" sem dispositivo legal (source.provision nulo)', () => {
     const missingProvision = {
       ...rawBank[0],
-      status: 'em_revisao',
       source: {
         ...rawBank[0].source,
         provision: null,
@@ -162,6 +155,17 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
       ...rawBank[0],
       status: 'aprovada',
       isExample: true,
+      source: {
+        ...rawBank[0].source,
+        verificationStatus: 'verified',
+      },
+      review: {
+        generatorModel: 'model-a',
+        verifierModel: 'model-b',
+        verificationNotes: 'OK',
+        approvedBy: 'Tech Lead',
+        approvedAt: '2026-11-06T15:00:00Z',
+      },
     };
     const result = questionSchema.safeParse(invalidApproved);
     expect(result.success).toBe(false);
@@ -177,9 +181,18 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
     const invalidKindApproved = {
       ...rawBank[0],
       status: 'aprovada',
+      isExample: false,
       source: {
         ...rawBank[0].source,
         kind: 'demo',
+        verificationStatus: 'verified',
+      },
+      review: {
+        generatorModel: 'model-a',
+        verifierModel: 'model-b',
+        verificationNotes: 'OK',
+        approvedBy: 'Tech Lead',
+        approvedAt: '2026-11-06T15:00:00Z',
       },
     };
     const result = questionSchema.safeParse(invalidKindApproved);
@@ -194,9 +207,17 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
     const unapproved = {
       ...rawBank[0],
       status: 'aprovada',
+      isExample: false,
+      source: {
+        ...rawBank[0].source,
+        verificationStatus: 'verified',
+      },
       review: {
-        ...rawBank[0].review,
+        generatorModel: 'model-a',
+        verifierModel: 'model-b',
+        verificationNotes: 'OK',
         approvedBy: null,
+        approvedAt: null,
       },
     };
     const result = questionSchema.safeParse(unapproved);
@@ -211,10 +232,17 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
     const sameModel = {
       ...rawBank[0],
       status: 'aprovada',
+      isExample: false,
+      source: {
+        ...rawBank[0].source,
+        verificationStatus: 'verified',
+      },
       review: {
-        ...rawBank[0].review,
         generatorModel: 'gemini-3.8-flash',
         verifierModel: 'gemini-3.8-flash',
+        verificationNotes: 'Audit notes',
+        approvedBy: 'Tech Lead',
+        approvedAt: '2026-11-06T15:00:00Z',
       },
     };
     const result = questionSchema.safeParse(sameModel);

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Fluxo da Lição de Sinalização — T002 (Piloto de Conteúdo Aprovado)', () => {
+test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT em Revisão)', () => {
   test('deve navegar da home para a lição de sinalização oficial', async ({ page }) => {
     await page.goto('/');
 
@@ -21,12 +21,12 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto de Conteúdo A
   }) => {
     await page.goto('/licao/sinalizacao');
 
-    // Questão 1 (sin-001: Prevalência do Agente de Trânsito)
+    // Questão 1 (sin-001: Prevalência do Agente de Trânsito - Art. 195)
     await expect(page.getByText('Questão 1 de 5')).toBeVisible();
-    await expect(page.getByText(/Questão Oficial Aprovada/i)).toBeVisible();
+    await expect(page.getByText(/Questão em Revisão/i)).toBeVisible();
 
     // Selecionar alternativa 'b' (gabarito da Q1)
-    const radioQ1 = page.getByLabel(/Obedecer à ordem de parada do agente de trânsito/i);
+    const radioQ1 = page.getByLabel(/As ordens do agente de trânsito têm prevalência sobre as normas de circulação/i);
     await radioQ1.check();
     await expect(radioQ1).toBeChecked();
 
@@ -38,8 +38,8 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto de Conteúdo A
     const feedbackStatus = page.getByRole('status');
     await expect(feedbackStatus).toBeVisible();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
-    await expect(page.getByTestId('source-document')).toContainText('Lei Federal nº 9.503/1997');
-    await expect(page.getByTestId('source-provision')).toContainText('Art. 89, I');
+    await expect(page.getByTestId('source-document')).toContainText('Resolução CONTRAN nº 985/2022');
+    await expect(page.getByTestId('source-provision')).toContainText('Art. 195 (Ficha MBFT 583-50');
 
     // Bloqueio de reenvio / alteração
     await expect(radioQ1).toBeDisabled();
@@ -47,33 +47,33 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto de Conteúdo A
     // Avançar para Q2
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 2 (sin-002: Semáforo prevalece sobre placa R-2)
+    // Questão 2 (sin-002: Três Pressupostos de Caracterização da Infração do Art. 195)
     await expect(page.getByText('Questão 2 de 5')).toBeVisible();
-    const radioQ2 = page.getByLabel(/A indicação do semáforo na fase verde/i);
+    const radioQ2 = page.getByLabel(/Ordem relativa à normatização do trânsito em geral; ordem emanada da autoridade ou do agente/i);
     await radioQ2.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 3 (sin-003: Vedação de publicidade em suporte de sinalização)
+    // Questão 3 (sin-003: Formas de emissão da ordem e uso conjunto de apito)
     await expect(page.getByText('Questão 3 de 5')).toBeVisible();
-    const radioQ3 = page.getByLabel(/É expressamente proibida pelo CTB/i);
+    const radioQ3 = page.getByLabel(/A ordem pode ser verbal ou escrita, bem como através de gestos ou sinais sonoros, sendo que os sinais sonoros de apito somente devem ser utilizados em conjunto com os gestos dos agentes/i);
     await radioQ3.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 4 (sin-004: Sinalização insuficiente isenta penalidade)
+    // Questão 4 (sin-004: Autuação por desobediência a restrição médica na CNH)
     await expect(page.getByText('Questão 4 de 5')).toBeVisible();
-    const radioQ4 = page.getByLabel(/Não serão aplicadas sanções por inobservância/i);
+    const radioQ4 = page.getByLabel(/Condutor que desobedecer restrição imposta pela autoridade de trânsito, com base no exame de saúde/i);
     await radioQ4.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 5 (sin-005: Reabertura de via recapeada exige sinalização prévia)
+    // Questão 5 (sin-005: Conflito de enquadramento ordem de parada por gesto)
     await expect(page.getByText('Questão 5 de 5')).toBeVisible();
-    const radioQ5 = page.getByLabel(/Contraria o CTB, pois nenhuma via pavimentada pode ser entregue/i);
+    const radioQ5 = page.getByLabel(/Não autuar pelo Art. 195, devendo utilizar o enquadramento específico: 605-02, Art. 208 do CTB/i);
     await radioQ5.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();

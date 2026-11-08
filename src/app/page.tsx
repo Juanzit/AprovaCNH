@@ -10,7 +10,7 @@ export default function HomePage() {
         Lição de Sinalização de Trânsito
       </h1>
       <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto">
-        Pratique com questões oficiais e fundamentadas na legislação primária vigente: Código de Trânsito Brasileiro compilado (Arts. 80 a 90 e Anexo II) e Resolução CONTRAN nº 973/2022.
+        Pratique com questões fundamentadas diretamente nas Fichas de Fiscalização do Manual Brasileiro de Fiscalização de Trânsito — MBFT (Resolução CONTRAN nº 985/2022, Arts. 195, 196 e 208 do CTB).
       </p>
 
       {/* Botão de ação principal */}
@@ -26,7 +26,7 @@ export default function HomePage() {
       {/* Módulos do piloto de 20 questões */}
       <div className="text-left bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">
-          Sessões Temáticas Disponíveis (20 Questões Aprovadas)
+          Sessões Temáticas do Piloto (20 Questões em Revisão Editorial)
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Link
@@ -35,7 +35,7 @@ export default function HomePage() {
           >
             <div className="text-xs font-semibold text-blue-700 mb-0.5">Sessão 1 (5 questões)</div>
             <div className="text-sm font-medium text-slate-900 group-hover:text-blue-900">
-              Regras Gerais e Prevalência da Sinalização
+              Art. 195: Ordens do Agente e Prevalência (Ficha 583-50)
             </div>
           </Link>
 
@@ -45,7 +45,7 @@ export default function HomePage() {
           >
             <div className="text-xs font-semibold text-blue-700 mb-0.5">Sessão 2 (5 questões)</div>
             <div className="text-sm font-medium text-slate-900 group-hover:text-blue-900">
-              Sinalização em Áreas Privadas e Vertical
+              Art. 196: Início de Marcha e Parada (Fichas 584-31 e 584-32)
             </div>
           </Link>
 
@@ -55,7 +55,7 @@ export default function HomePage() {
           >
             <div className="text-xs font-semibold text-blue-700 mb-0.5">Sessão 3 (5 questões)</div>
             <div className="text-sm font-medium text-slate-900 group-hover:text-blue-900">
-              Sinalização Horizontal e Padrões de Cores
+              Art. 196: Mudança de Direção e Faixa (Fichas 584-33 e 584-34)
             </div>
           </Link>
 
@@ -65,7 +65,7 @@ export default function HomePage() {
           >
             <div className="text-xs font-semibold text-blue-700 mb-0.5">Sessão 4 (5 questões)</div>
             <div className="text-sm font-medium text-slate-900 group-hover:text-blue-900">
-              Sinalização Semafórica, Sonora e Gestos
+              Art. 208: Sinal Vermelho e Parada Obrigatória (Fichas 605-01 e 605-02)
             </div>
           </Link>
         </div>
