@@ -13,25 +13,25 @@ export const SESSION_METADATA = [
   {
     sessionId: 1,
     title: 'Sessão 1',
-    description: 'Art. 195: Ordens do Agente e Prevalência (Ficha 583-50)',
+    description: 'Gestos do Agente, Sinais Sonoros (Apito) e Hierarquia da Sinalização (Arts. 89 e 195 do CTB)',
     questionsCount: 5,
   },
   {
     sessionId: 2,
     title: 'Sessão 2',
-    description: 'Art. 196: Início de Marcha e Parada (Fichas 584-31 e 584-32)',
+    description: 'Sinalização de Manobras, Luzes Indicadoras (Seta) e Gestos de Braço (Arts. 35 e 196 do CTB)',
     questionsCount: 5,
   },
   {
     sessionId: 3,
     title: 'Sessão 3',
-    description: 'Art. 196: Mudança de Direção e Faixa (Fichas 584-33 e 584-34)',
+    description: 'Conversões, Preferência em Cruzamentos, Rotatórias e Faixas (Arts. 29, 38 e 196 do CTB)',
     questionsCount: 5,
   },
   {
     sessionId: 4,
     title: 'Sessão 4',
-    description: 'Art. 208: Sinal Vermelho e Parada Obrigatória (Fichas 605-01 e 605-02)',
+    description: 'Semáforo, Parada Obrigatória (R-1 vs. R-2), Faixa de Pedestres e Infrações (Arts. 208 e 214 do CTB)',
     questionsCount: 5,
   },
 ];

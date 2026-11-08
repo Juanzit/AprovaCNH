@@ -1,14 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Progresso, XP e Gamificação — T004 e T005.1 (Refinamento UX)', () => {
-  test('deve exibir o cabeçalho compacto com streak semanal, trilha vertical e card SRS em telas de 360px', async ({
+test.describe('Progresso, XP e Gamificação — T004 e T005.1 (Refinamento UX e Perfil MG)', () => {
+  test('deve exibir o cabeçalho compacto com UF padrão MG, streak semanal, trilha vertical e card SRS em telas de 360px', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 360, height: 740 });
     await page.goto('/');
 
-    // 1. Cabeçalho Compacto do Estudante, Streak Semanal (S T Q Q S S D) e Meta Diária
-    await expect(page.getByTestId('student-uf-badge')).toBeVisible();
+    // 1. Cabeçalho Compacto do Estudante com UF padrão MG, Streak Semanal (S T Q Q S S D) e Meta Diária
+    const ufBadge = page.getByTestId('student-uf-badge');
+    await expect(ufBadge).toBeVisible();
+    await expect(ufBadge).toContainText('MG • DETRAN-MG / Nacional');
+
     await expect(page.getByTestId('student-category-badge')).toBeVisible();
     await expect(page.getByTestId('student-streak-badge')).toBeVisible();
     await expect(page.getByTestId('student-xp-badge')).toBeVisible();
@@ -34,7 +37,7 @@ test.describe('Progresso, XP e Gamificação — T004 e T005.1 (Refinamento UX)'
     await expect(page.getByRole('heading', { name: /sua revisão de hoje/i })).toBeVisible();
   });
 
-  test('deve abrir o modal de perfil e permitir alterar dados do estudante', async ({
+  test('deve abrir o modal de perfil no modo visitante e salvar alterações sem erro de autenticação', async ({
     page,
   }) => {
     await page.goto('/');
@@ -47,17 +50,19 @@ test.describe('Progresso, XP e Gamificação — T004 e T005.1 (Refinamento UX)'
     await expect(modal).toBeVisible();
     await expect(page.getByRole('heading', { name: /ajustar perfil de estudo/i })).toBeVisible();
 
-    // Modifica nome e categoria
+    // Modifica nome e categoria e salva no Modo Visitante
     const nameInput = page.getByLabel(/nome de estudante/i);
-    await nameInput.fill('Aluno Teste Playwright');
+    await nameInput.fill('Aluno Teste DETRAN-MG');
 
     const catSelect = page.getByLabel(/categoria cnh/i);
-    await catSelect.selectOption('A');
+    await catSelect.selectOption('AB');
 
-    // Salva ou fecha
-    const cancelBtn = page.getByRole('button', { name: /cancelar/i });
-    await cancelBtn.click();
+    const saveBtn = page.getByRole('button', { name: /salvar alterações/i });
+    await saveBtn.click();
     await expect(modal).not.toBeVisible();
+
+    await expect(page.getByRole('heading', { name: /Aluno Teste DETRAN-MG/i })).toBeVisible();
+    await expect(page.getByTestId('student-category-badge')).toContainText('Cat. AB');
   });
 
   test('deve responder à Sessão 1 e exibir resumo gamificado com avanço percentual e persistência', async ({

@@ -1,44 +1,46 @@
 [
   {
     "id": "sin-001",
-    "version": 1,
-    "statement": "De acordo com as Definições e Procedimentos da Ficha de Fiscalização do Art. 195 do MBFT (Enquadramento 583-50), qual é a relação de prevalência entre as ordens emanadas pelo agente da autoridade de trânsito e os demais elementos viários?",
+    "version": 2,
+    "statement": "Ao se aproximar de um cruzamento onde o semáforo está verde para o seu sentido, o condutor observa que o agente de trânsito posicionado na via faz gesto determinando a parada imediata. Nessa situação, qual deve ser a conduta correta do condutor?",
     "options": [
       {
         "id": "a",
-        "text": "As normas gerais de circulação prevalecem sobre os gestos e ordens emitidas pelo agente de trânsito."
+        "text": "Seguir em frente, pois a sinalização luminosa do semáforo prevalece sobre os gestos do agente."
       },
       {
         "id": "b",
-        "text": "As ordens do agente de trânsito têm prevalência sobre as normas de circulação e outros sinais viários."
+        "text": "Parar o veículo, pois as ordens do agente de trânsito têm prevalência sobre as normas de circulação e outros sinais."
       },
       {
         "id": "c",
-        "text": "A sinalização horizontal viária possui prevalência absoluta sobre as determinações verbais do agente fiscalizador."
+        "text": "Acelerar e buzinar para alertar o agente de que o semáforo está aberto para os veículos."
       },
       {
         "id": "d",
-        "text": "As indicações luminosas do semáforo prevalecem sobre a ordem emitida pelo agente no centro do cruzamento."
+        "text": "Reduzir a velocidade e prosseguir caso não haja pedestres atravessando na faixa."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "Conforme dispõe expressamente o item 1 de Definições e Procedimentos da Ficha 583-50 do MBFT: \"As ordens do agente de trânsito terão prevalência sobre as normas de circulação e outros sinais (art. 89, I)\". Portanto, as determinações do agente sobrepõem-se a todos os sinais viários e regras de trânsito.",
+    "explanation": "Para a prova do DETRAN-MG, memorize a hierarquia da sinalização (Art. 89 do CTB): 1º) as ordens do agente de trânsito prevalecem sobre as normas de circulação e outros sinais; 2º) as indicações do semáforo prevalecem sobre os demais sinais; 3º) os sinais prevalecem sobre as demais normas de trânsito.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Ordens do Agente e Prevalência (Art. 195)",
-    "ufs": [],
+    "subtopic": "Gestos do Agente, Sinais Sonoros e Hierarquia (Arts. 89 e 195)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 195 (Ficha MBFT 583-50, Procedimento 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 89, I e 195 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -47,51 +49,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Fundamentado no trecho literal da Ficha 583-50 do MBFT (Pág 1): \"As ordens do agente de trânsito terão prevalência sobre as normas de circulação e outros sinais (art. 89, I)\".",
+      "verificationNotes": "Validado conforme Art. 89, I e Art. 195 do CTB para o exame teórico de 1ª Habilitação (DETRAN-MG / SENATRAN).",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-002",
-    "version": 1,
-    "statement": "Conforme as Definições e Procedimentos do MBFT para o enquadramento 583-50 (Art. 195 do CTB), são necessários três pressupostos para a caracterização da infração administrativa. Quais são eles?",
+    "version": 2,
+    "statement": "Durante o controle de tráfego em uma via urbana, o agente da autoridade de trânsito emite DOIS silvos breves com o apito, acompanhados de gesto de parada. O que esse sinal sonoro determina ao condutor?",
     "options": [
       {
         "id": "a",
-        "text": "Ordem relativa à normatização do trânsito em geral; ordem emanada da autoridade ou do agente; e participação do destinatário em qualquer situação de trânsito em sentido amplo."
+        "text": "Pare — o condutor deve imobilizar o veículo imediatamente com segurança."
       },
       {
         "id": "b",
-        "text": "Veículo registrado no município de fiscalização; presença de duas testemunhas civis; e abordagem obrigatória com teste de etilômetro."
+        "text": "Siga — o trânsito está liberado na direção indicada pelo agente."
       },
       {
         "id": "c",
-        "text": "Desobediência gravada por câmera de videomonitoramento; ocorrência de sinistro com vítima; e retenção física da CNH."
+        "text": "Diminua a marcha — o fluxo à frente exige redução gradual da velocidade."
       },
       {
         "id": "d",
-        "text": "Notificação postal prévia em 30 dias; histórico de reincidência anual; e ordem expedida exclusivamente por escrito."
+        "text": "Acenda os faróis — uso obrigatório de luz baixa no trecho fiscalizado."
       }
     ],
     "correctOptionId": "a",
-    "explanation": "A Ficha 583-50 do MBFT (Procedimento 2) define expressamente: \"Para caracterização da infração administrativa prevista no art. 195 são necessários 3 (três) pressupostos: 2.1. que a ordem seja relativa à normatização do trânsito em geral; 2.2. que a ordem seja emanada da autoridade de trânsito ou do agente; ou e 2.3. a participação do destinatário da ordem em qualquer situação de trânsito, em sentido amplo\".",
+    "explanation": "Os sinais sonoros de apito do agente cobrados na prova do DETRAN-MG são apenas três (Anexo II do CTB): • 1 silvo breve = Siga; • 2 silvos breves = Pare; • 1 silvo longo = Diminua a marcha. Eles são sempre empregados em conjunto com os gestos do agente.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Pressupostos de Autuação (Art. 195)",
-    "ufs": [],
+    "subtopic": "Gestos do Agente, Sinais Sonoros e Hierarquia (Arts. 89 e 195)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 195 (Ficha MBFT 583-50, Procedimento 2)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 89 e 195 • Anexo II CONTRAN (Sinais Sonoros)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -100,51 +104,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Extraído literalmente do item 2 das Definições e Procedimentos da Ficha 583-50 do MBFT.",
+      "verificationNotes": "Fundamentado na tabela oficial de Sinais Sonoros do Anexo II do CTB (2 silvos breves = Pare).",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-003",
-    "version": 1,
-    "statement": "Segundo a Ficha de Fiscalização do Art. 195 do MBFT (Enquadramento 583-50), como as ordens do agente de trânsito podem ser emitidas e qual é a regra obrigatória para o uso de sinais sonoros de apito?",
+    "version": 2,
+    "statement": "De acordo com o Anexo II do Código de Trânsito Brasileiro (Sinalização), qual é o significado correto de UM silvo breve e de UM silvo longo emitidos pelo apito do agente de trânsito, respectivamente?",
     "options": [
       {
         "id": "a",
-        "text": "A ordem só tem eficácia jurídica se for lavrada por escrito, sendo vedado o emprego de apito em áreas urbanas residenciais."
+        "text": "Um silvo breve significa 'Pare' e um silvo longo significa 'Estacionamento proibido'."
       },
       {
         "id": "b",
-        "text": "A ordem pode ser verbal ou escrita, bem como através de gestos ou sinais sonoros, sendo que os sinais sonoros de apito somente devem ser utilizados em conjunto com os gestos dos agentes."
+        "text": "Um silvo breve significa 'Siga' e um silvo longo significa 'Diminua a marcha'."
       },
       {
         "id": "c",
-        "text": "Os sinais sonoros de apito do agente dispensam qualquer gesto de braço e prevalecem isoladamente sobre os semáforos."
+        "text": "Um silvo breve significa 'Diminua a marcha' e um silvo longo significa 'Pare imediatamente'."
       },
       {
         "id": "d",
-        "text": "O agente de trânsito só pode emitir comandos sonoros por meio de autofalantes de viaturas oficiais padronizadas."
+        "text": "Um silvo breve significa 'Atenção' e um silvo longo significa 'Conversão obrigatória'."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "Conforme o item 3 das Definições e Procedimentos e o item 1 das Informações Complementares da Ficha 583-50 do MBFT: \"A ordem pode ser verbal ou escrita, bem como através de gestos ou sinais sonoros\" e \"Os sinais sonoros de apito somente devem ser utilizados em conjunto com os gestos dos agentes\".",
+    "explanation": "Esta é uma das questões mais frequentes no exame teórico do DETRAN-MG: • 1 silvo breve = Siga (libera o trânsito na direção indicada); • 2 silvos breves = Pare; • 1 silvo longo = Diminua a marcha.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Formas de Emissão de Ordem e Apito (Art. 195)",
-    "ufs": [],
+    "subtopic": "Gestos do Agente, Sinais Sonoros e Hierarquia (Arts. 89 e 195)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 195 (Ficha MBFT 583-50, Procedimento 3 e Inf. Compl. 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 89 e 195 • Anexo II CONTRAN (Sinais Sonoros)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -153,51 +159,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Fundamentado no item 3 de Definições e Procedimentos e item 1 de Informações Complementares da Ficha 583-50.",
+      "verificationNotes": "Conferido com a tabela de Sinais Sonoros do Anexo II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-004",
-    "version": 1,
-    "statement": "De acordo com o campo \"Quando AUTUAR\" da Ficha 583-50 do MBFT (Art. 195), qual conduta do condutor caracteriza expressamente a infração de desobediência a ordem da autoridade de trânsito?",
+    "version": 2,
+    "statement": "Quando o agente de trânsito está no centro de uma interseção com o braço levantado verticalmente e a palma da mão voltada para a frente, qual é a ordem transmitida aos condutores?",
     "options": [
       {
         "id": "a",
-        "text": "Deixar de efetuar a transferência de propriedade do veículo dentro do prazo legal de 30 dias contados da aquisição."
+        "text": "Ordem de parada apenas para veículos de carga e transporte coletivo."
       },
       {
         "id": "b",
-        "text": "Condutor que desobedecer restrição imposta pela autoridade de trânsito, com base no exame de saúde, e que conste no campo de observações de seu documento de habilitação (ex.: vedado dirigir após o pôr-do-sol)."
+        "text": "Ordem de seguir em frente com velocidade reduzida para desobstruir a via."
       },
       {
         "id": "c",
-        "text": "Transitar em velocidade inferior à metade da máxima da via quando as condições de tráfego permitirem fluidez."
+        "text": "Ordem de parada obrigatória para todos os veículos que se aproximam, salvo os que já não possam parar com segurança."
       },
       {
         "id": "d",
-        "text": "Estacionar o veículo afastado da guia da calçada a mais de um metro em via pública urbana local."
+        "text": "Indicação de que apenas os veículos que vêm pela direita podem realizar conversão."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 583-50 prevê explicitamente no item 5 do campo \"Quando AUTUAR\": \"Condutor que desobedecer restrição imposta pela autoridade de trânsito, com base no exame de saúde, e que conste no campo de observações do seu documento de habilitação: 5.1. vedado dirigir em rodovias e vias de trânsito rápido; 5.2. vedado dirigir após o pôr-do-sol; ou 5.3. outras restrições\".",
+    "correctOptionId": "c",
+    "explanation": "Nos gestos de agentes do Anexo II do CTB: • Braço levantado verticalmente = Ordem de parada obrigatória para TODOS os veículos; • Braço(s) estendido(s) horizontalmente = Ordem de parada apenas para os veículos cuja direção corte ortogonalmente a direção indicada pelos braços estendidos.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Restrições Médicas da CNH (Art. 195)",
-    "ufs": [],
+    "subtopic": "Gestos do Agente, Sinais Sonoros e Hierarquia (Arts. 89 e 195)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 195 (Ficha MBFT 583-50, Quando AUTUAR 5)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 89 e 195 • Anexo II CONTRAN (Gestos de Agentes)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -206,51 +214,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Transcrição literal do item 5 de \"Quando AUTUAR\" da Ficha 583-50 do MBFT.",
+      "verificationNotes": "Item 5.1 (Gestos de Agentes da Autoridade de Trânsito) do Anexo II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-005",
-    "version": 1,
-    "statement": "O campo \"Quando NÃO Autuar\" da Ficha 583-50 do MBFT (Art. 195) orienta sobre enquadramentos específicos. Se a ordem do agente for especificamente relativa à parada do veículo mediante uso de gestos, qual é o enquadramento correto?",
+    "version": 2,
+    "statement": "Segundo o Art. 195 do Código de Trânsito Brasileiro, desobedecer às ordens emanadas da autoridade competente de trânsito ou de seus agentes constitui infração de qual natureza e penalidade?",
     "options": [
       {
         "id": "a",
-        "text": "Autuar no Art. 195 cumulado com apreensão sumária imediata do veículo pelo agente fiscalizador."
+        "text": "Infração leve (3 pontos), com advertência verbal obrigatória."
       },
       {
         "id": "b",
-        "text": "Não autuar pelo Art. 195, devendo utilizar o enquadramento específico: 605-02, Art. 208 do CTB."
+        "text": "Infração média (4 pontos), com recolhimento imediato do certificado de registro."
       },
       {
         "id": "c",
-        "text": "Enquadrar como infração média de recusa de entrega de documentos prevista no Art. 238 do CTB."
+        "text": "Infração gravíssima (7 pontos), com suspensão direta do direito de dirigir."
       },
       {
         "id": "d",
-        "text": "Desconsiderar a infração de trânsito aplicando sanção de perturbação exclusiva da esfera de segurança pública."
+        "text": "Infração grave (5 pontos), sujeita à penalidade de multa."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "Segundo o item 3 do campo \"Quando NÃO Autuar\" da Ficha 583-50 do MBFT: \"Se a ordem do agente for relativa à parada do veículo, através do uso dos gestos de agentes da autoridade de trânsito; utilizar enquadramento específico: 605-02, art. 208\".",
+    "correctOptionId": "d",
+    "explanation": "O Art. 195 do CTB tipifica que desobedecer às ordens da autoridade de trânsito ou de seus agentes é infração GRAVE (5 pontos no prontuário da CNH), com penalidade de multa.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Conflito de Enquadramento Agente (Art. 195 vs 208)",
-    "ufs": [],
+    "subtopic": "Gestos do Agente, Sinais Sonoros e Hierarquia (Arts. 89 e 195)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 195 (Ficha MBFT 583-50, Quando NÃO Autuar 3)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 89 e 195 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -259,51 +269,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Transcrição literal do item 3 de \"Quando NÃO Autuar\" da Ficha 583-50 do MBFT.",
+      "verificationNotes": "Texto literal do Art. 195 do CTB: Infração - grave; Penalidade - multa.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-006",
-    "version": 1,
-    "statement": "Conforme a Ficha 584-31 do MBFT (Art. 196), além de deixar de sinalizar com antecedência, em qual situação específica de início de marcha o condutor deve ser autuado sob esse código?",
+    "version": 2,
+    "statement": "Conforme o Art. 35 do Código de Trânsito Brasileiro, antes de iniciar a marcha, parar o veículo, mudar de direção ou realizar qualquer deslocamento lateral, o condutor deve:",
     "options": [
       {
         "id": "a",
-        "text": "Veículo estacionado que aciona o pisca-alerta por menos de 30 segundos antes de dar partida no motor."
+        "text": "Indicar seu propósito de forma clara e com a devida antecedência, por meio da luz indicadora de direção (seta) ou fazendo gesto convencional de braço."
       },
       {
         "id": "b",
-        "text": "Veículo estacionado/parado, que sinaliza que vai iniciar a marcha em uma direção, mas que inicia a marcha pelo lado oposto."
+        "text": "Acionar o pisca-alerta por três segundos antes de girar o volante para a faixa vizinha."
       },
       {
         "id": "c",
-        "text": "Condutor que buzina duas vezes antes de sair com o veículo em declive acentuado."
+        "text": "Dar dois toques breves na buzina e ligar o farol alto para alertar os veículos à frente."
       },
       {
         "id": "d",
-        "text": "Veículo que inicia marcha a ré em via urbana com limite de velocidade máxima regulamentada de 40 km/h."
+        "text": "Sinalizar apenas se houver veículos a menos de 10 metros de distância no retrovisor."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 584-31 do MBFT estabelece expressamente em \"Quando Autuar\", item 2: \"Veículo estacionado/parado, que sinaliza que vai iniciar a marcha em uma direção, mas que inicia a marcha pelo lado oposto\". A sinalização contraditória engana os demais condutores e configura a infração grave.",
+    "correctOptionId": "a",
+    "explanation": "O Art. 35 do CTB determina que todo deslocamento lateral (iniciar a marcha, encostar para parar, mudar de faixa ou converter) exige sinalização prévia e clara mediante a seta do veículo ou gesto convencional de braço. O pisca-alerta NUNCA deve ser usado para indicar mudança de direção.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Início de Marcha e Sinalização (Art. 196 / 584-31)",
-    "ufs": [],
+    "subtopic": "Sinalização de Manobras, Seta e Gestos de Braço (Arts. 35 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-31, Quando Autuar 2)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 35 e 196 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -312,51 +324,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 584-31 (Página 1, Quando Autuar item 2) do MBFT.",
+      "verificationNotes": "Art. 35 caput e parágrafo único do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-007",
-    "version": 1,
-    "statement": "De acordo com o Art. 35 do CTB, citado nas Definições e Procedimentos das Fichas do Art. 196 do MBFT, como o condutor deve indicar seu propósito com antecedência ao realizar deslocamento lateral?",
+    "version": 2,
+    "statement": "Em caso de falha momentânea na seta do veículo, o condutor pode utilizar os gestos convencionais de braço previstos no Anexo II do CTB. Para indicar que vai DOBRAR À DIREITA, como o condutor deve posicionar o braço esquerdo para fora do veículo?",
     "options": [
       {
         "id": "a",
-        "text": "Apenas mediante acionamento contínuo da buzina ou relampejo intermitente dos faróis altos."
+        "text": "Totalmente estendido na horizontal, com a mão aberta apontando para o lado esquerdo."
       },
       {
         "id": "b",
-        "text": "Por meio da luz indicadora de direção de seu veículo (seta), ou fazendo gesto convencional de braço."
+        "text": "Dobrado para cima em ângulo reto (antebraço na vertical com a palma da mão voltada para a frente)."
       },
       {
         "id": "c",
-        "text": "Exclusivamente por meio do pisca-alerta acionado com três segundos de antecedência à manobra."
+        "text": "Estendido na horizontal, fazendo movimentos verticais contínuos para cima e para baixo."
       },
       {
         "id": "d",
-        "text": "Somente por meio de toques no pedal do freio para acender repetidamente a luz de freio traseira."
+        "text": "Inclinado para baixo, apontando para o pavimento junto à porta do motorista."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "Conforme o item 1 de Definições e Procedimentos da Ficha 584-31 (reproduzindo o Art. 35 do CTB): \"Art. 35. Antes de iniciar qualquer manobra que implique um deslocamento lateral, o condutor deverá indicar seu propósito de forma clara e com a devida antecedência, por meio da luz indicadora de direção de seu veículo, ou fazendo gesto convencional de braço\".",
+    "explanation": "Para acertar os gestos de condutores na prova do DETRAN-MG (Anexo II do CTB): • Dobrar à esquerda = braço esquerdo totalmente estendido na horizontal; • Dobrar à direita = braço esquerdo dobrado para cima em ângulo reto (90º); • Diminuir a marcha ou parar = braço esquerdo estendido na horizontal fazendo movimento para cima e para baixo.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Meios de Indicação e Gestos (Art. 196 / Art. 35 CTB)",
-    "ufs": [],
+    "subtopic": "Sinalização de Manobras, Seta e Gestos de Braço (Arts. 35 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-31, Procedimento 1 / Art. 35 CTB)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 35 e 196 • Anexo II CONTRAN (Gestos de Condutores)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -365,51 +379,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Citação literal do Art. 35 do CTB no item 1 das Definições e Procedimentos da Ficha 584-31 do MBFT.",
+      "verificationNotes": "Item 5.2 (Gestos de Condutores) do Anexo II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-008",
-    "version": 1,
-    "statement": "Conforme o campo \"Quando Autuar\" da Ficha 584-32 do MBFT (Art. 196), em qual circunstância prática resta configurada a infração de deixar de indicar manobra de parar o veículo?",
+    "version": 2,
+    "statement": "Qual é o gesto convencional de braço que o condutor deve executar para sinalizar aos veículos que vêm atrás a intenção de DIMINUIR A MARCHA OU PARAR?",
     "options": [
       {
         "id": "a",
-        "text": "Veículo imobilizado em fila dupla que mantém as luzes de posição acesas sem condutor ao volante."
+        "text": "Manter o antebraço erguido verticalmente para cima com o punho fechado."
       },
       {
         "id": "b",
-        "text": "Veículo em movimento que ao parar para efetuar embarque/desembarque ou estacionar, não sinaliza com antecedência, mediante luz ou gesto, essa manobra."
+        "text": "Estender o braço esquerdo horizontalmente e mantê-lo imóvel apontando para a esquerda."
       },
       {
         "id": "c",
-        "text": "Condutor que para antes da linha de retenção ao comando do semáforo no início da fase amarela."
+        "text": "Estender o braço esquerdo horizontalmente para fora e movimentá-lo verticalmente (para cima e para baixo) com a palma da mão voltada para baixo."
       },
       {
         "id": "d",
-        "text": "Veículo que desliga os faróis durante parada temporária em acostamento de rodovia sob fiscalização."
+        "text": "Fazer movimentos circulares com a mão esquerda indicando rotação das rodas."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 584-32 do MBFT (Quando Autuar, item 1) prevê: \"Veículo em movimento que ao parar para efetuar embarque/desembarque ou estacionar, não sinaliza com antecedência, mediante luz ou gesto, essa manobra\". Trata-se de infração de gravidade grave punida com multa e 5 pontos.",
+    "correctOptionId": "c",
+    "explanation": "De acordo com o Anexo II do CTB (Gestos de Condutores), para diminuir a marcha ou parar o veículo, o condutor deve estender o braço esquerdo na horizontal para fora da janela e movimentá-lo para cima e para baixo.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Manobra de Parar Veículo (Art. 196 / 584-32)",
-    "ufs": [],
+    "subtopic": "Sinalização de Manobras, Seta e Gestos de Braço (Arts. 35 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-32, Quando Autuar 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 35 e 196 • Anexo II CONTRAN (Gestos de Condutores)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -418,51 +434,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 584-32 (Página 1, Quando Autuar item 1) do MBFT.",
+      "verificationNotes": "Item 5.2 (Gestos de Condutores) do Anexo II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-009",
-    "version": 1,
-    "statement": "Segundo as Definições e Procedimentos das Fichas do Art. 196 do MBFT, se o agente constatar que o veículo não sinalizou a manobra por apresentar defeito no sistema ou lâmpadas queimadas, qual é o procedimento fiscalizatório?",
+    "version": 2,
+    "statement": "O condutor que estiver estacionado junto ao meio-fio e desejar sair para entrar no fluxo de veículos da via deve adotar qual procedimento obrigatório (Arts. 35 e 36 do CTB)?",
     "options": [
       {
         "id": "a",
-        "text": "Dispensar a autuação do Art. 196, pois a falha do componente elétrico isenta o motorista de responsabilidade."
+        "text": "Ingressar rapidamente na faixa principal, pois quem sai de vaga regulamentada tem preferência."
       },
       {
         "id": "b",
-        "text": "Autuar concomitantemente com o enquadramento: 676-90, art. 230, XXII (defeito no sistema de iluminação, de sinalização ou com lâmpadas queimadas)."
+        "text": "Ligar o pisca-alerta e avançar lentamente forçando a parada dos veículos que vêm na via."
       },
       {
         "id": "c",
-        "text": "Reter a CNH do condutor para instauração imediata de processo de suspensão do direito de dirigir."
+        "text": "Buzinar duas vezes e entrar na pista sem acionar a seta caso a rua seja de mão única."
       },
       {
         "id": "d",
-        "text": "Emitir apenas advertência verbal ao condutor sem lavratura de qualquer auto de infração de trânsito."
+        "text": "Acionar a luz indicadora de direção (seta) com antecedência e dar preferência aos veículos e pedestres em circulação na via."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "Conforme o item 3 de Definições e Procedimentos da Ficha 584-32 (e correlatas do Art. 196): \"Constatado defeito no sistema de iluminação, de sinalização ou com lâmpadas queimadas, autuar concomitantemente com o enquadramento: 676-90, art. 230, XXII\".",
+    "correctOptionId": "d",
+    "explanation": "Conforme os Arts. 35 e 36 do CTB, quem vai entrar no fluxo vindo de estacionamento, garagem ou imóvel lindeiro deve SEMPRE sinalizar com a seta antes de iniciar a marcha e dar preferência aos veículos e pedestres que já estão circulando na via.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Concomitância com Defeito de Iluminação (Art. 196 c/c 230, XXII)",
-    "ufs": [],
+    "subtopic": "Sinalização de Manobras, Seta e Gestos de Braço (Arts. 35 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-32, Procedimento 3 c/c Art. 230, XXII)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 35, 36 e 196 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -471,51 +489,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 584-32 (Página 1, Procedimento 3) do MBFT.",
+      "verificationNotes": "Fundamentado nos Arts. 35, 36 e 196 do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-010",
-    "version": 1,
-    "statement": "A Ficha 584-33 do MBFT regulamenta a fiscalização da manobra de mudança de direção (Art. 196). Quais manobras são expressamente tipificadas em que a ausência de sinalização prévia gera a autuação nesse código?",
+    "version": 2,
+    "statement": "De acordo com o Art. 196 do CTB, deixar de indicar com antecedência, mediante gesto regulamentar de braço ou luz indicadora de direção do veículo (seta), o início da marcha, a manobra de parar, a mudança de direção ou de faixa de circulação configura:",
     "options": [
       {
         "id": "a",
-        "text": "Apenas ultrapassagens realizadas em trechos sinuosos de rodovias federais não pavimentadas."
+        "text": "Infração grave, com penalidade de multa (5 pontos no prontuário da CNH)."
       },
       {
         "id": "b",
-        "text": "Conversão à esquerda ou à direita; retorno à esquerda ou à direita; ou entrada/saída de lote lindeiro."
+        "text": "Infração leve, passível apenas de advertência educativa."
       },
       {
         "id": "c",
-        "text": "Mudança simples de faixa de rolamento em linha reta dentro do mesmo sentido de fluxo viário."
+        "text": "Infração média, com retenção obrigatória do veículo até troca da lâmpada."
       },
       {
         "id": "d",
-        "text": "Pequeno desvio lateral dentro da própria faixa de circulação para evitar poça d'água na pista."
+        "text": "Infração gravíssima multiplicada por três, com cassação da Permissão para Dirigir."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 584-33 (Quando Autuar, item 1) prevê a autuação para: \"Veículo que não sinaliza com antecedência a manobra de: 1.1. conversão à esquerda ou à direita; 1.2. retorno à esquerda ou à direita; ou 1.3. entrada/saída de lote lindeiro\".",
+    "correctOptionId": "a",
+    "explanation": "Atenção para a prova prática e teórica do DETRAN-MG: não dar seta (ou desligá-la antes de concluir a manobra) é infração GRAVE pelo Art. 196 do CTB (5 pontos e multa), além de ser falta eliminatória/grave no exame prático de direção!",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Mudança de Direção e Lotes Lindeiros (Art. 196 / 584-33)",
-    "ufs": [],
+    "subtopic": "Sinalização de Manobras, Seta e Gestos de Braço (Arts. 35 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-33, Quando Autuar 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 35 e 196 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -524,51 +544,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 584-33 (Página 1, Quando Autuar 1) do MBFT.",
+      "verificationNotes": "Texto literal do Art. 196 do CTB: Infração - grave; Penalidade - multa.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-011",
-    "version": 1,
-    "statement": "De acordo com o campo \"Quando NÃO Autuar\" da Ficha 584-33 do MBFT (Art. 196), em quais situações o condutor NÃO deve ser autuado sob o enquadramento de deixar de sinalizar mudança de direção?",
+    "version": 2,
+    "statement": "Quando veículos, transitando por fluxos que se cruzam, se aproximarem de um local NÃO sinalizado, como o Código de Trânsito Brasileiro (Art. 29, inciso III) define a preferência de passagem?",
     "options": [
       {
         "id": "a",
-        "text": "Ao realizar conversão à direita em cruzamento urbano dotado de faixa exclusiva de pedestres."
+        "text": "Tem preferência sempre o veículo de maior porte ou que estiver desenvolvendo maior velocidade."
       },
       {
         "id": "b",
-        "text": "Veículo que não sinaliza a manobra de conversão em entroncamento que tenha uma única direção a seguir, ou saída de lote lindeiro quando a via for de mão única."
+        "text": "Tem preferência: no caso de apenas um fluxo provir de rodovia, aquele que estiver circulando por ela; no caso de rotatória, aquele que estiver circulando por ela; e, nos demais casos, o que vier pela direita do condutor."
       },
       {
         "id": "c",
-        "text": "Em rotatórias de tráfego intenso quando o condutor pretende seguir reto pela via arterial principal."
+        "text": "Tem preferência quem vier pela esquerda do condutor ou quem piscar os faróis primeiro no cruzamento."
       },
       {
         "id": "d",
-        "text": "No período noturno quando as lanternas do veículo estiverem ligadas no modo automático crepuscular."
+        "text": "Na rotatória, a preferência é sempre de quem vai entrar nela; nos cruzamentos comuns, de quem segue em linha reta."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "A Ficha 584-33 do MBFT estabelece expressamente em \"Quando NÃO Autuar\", itens 1 e 2: \"1. Veículo que não sinaliza a manobra de conversão em entroncamento que tenha uma única direção a seguir. 2. Veículo que não sinaliza a manobra de saída de lote lindeiro quando a via for de mão única\".",
+    "explanation": "Regra de ouro do Art. 29, III do CTB para cruzamentos SEM sinalização: 1) Rodovia (quem circula nela tem preferência); 2) Rotatória (quem já está circulando dentro da rotatória tem preferência); 3) Demais cruzamentos não sinalizados: preferência de quem vem pela DIREITA do condutor.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Exceções na Mudança de Direção (Art. 196 / 584-33)",
-    "ufs": [],
+    "subtopic": "Conversões, Preferência em Cruzamentos e Faixas (Arts. 29, 38 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-33, Quando NÃO Autuar 1 e 2)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 29, 38 e 196 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -577,51 +599,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 584-33 (Página 1, Quando NÃO Autuar 1 e 2) do MBFT.",
+      "verificationNotes": "Art. 29, inciso III, alíneas 'a', 'b' e 'c' do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-012",
-    "version": 1,
-    "statement": "Conforme estabelece a Ficha 584-34 do MBFT (Art. 196), qual conduta do condutor caracteriza a autuação sob o código 584-34?",
+    "version": 2,
+    "statement": "De acordo com o Art. 38, inciso II do CTB, antes de realizar uma conversão à ESQUERDA para entrar em outra via, como o condutor deve posicionar seu veículo com antecedência?",
     "options": [
       {
         "id": "a",
-        "text": "Conduzir o veículo pela faixa da direita em velocidade inferior ao limite máximo estabelecido para a via."
+        "text": "Aproximar-se o máximo possível do bordo esquerdo da pista (se for via de sentido único) ou da linha divisória da pista/centro (se for via de sentido duplo)."
       },
       {
         "id": "b",
-        "text": "Veículo que não sinaliza com luz ou gesto com antecedência a manobra de mudança de faixa, inclusive para efetuar passagem ou ultrapassagem."
+        "text": "Deslocar-se sempre para o bordo direito da via, independentemente de a rua ser de mão única ou mão dupla."
       },
       {
         "id": "c",
-        "text": "Acionar a seta para a esquerda antes de iniciar ultrapassagem em via de sentido duplo com linha tracejada."
+        "text": "Invadir a faixa de sentido contrário 50 metros antes da esquina para facilitar o giro do volante."
       },
       {
         "id": "d",
-        "text": "Desligar a luz indicadora de direção imediatamente após completar a transposição de pista."
+        "text": "Parar sobre a faixa de pedestres no centro do cruzamento e aguardar o fechamento do semáforo."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 584-34 do MBFT fixa em \"Quando Autuar\", item 1: \"Veículo que não sinaliza com luz ou gesto com antecedência a manobra de mudança de faixa, inclusive para efetuar passagem ou ultrapassagem\". A antecedência na sinalização é elemento essencial de segurança.",
+    "correctOptionId": "a",
+    "explanation": "Para converter à ESQUERDA (Art. 38, II do CTB): • Em via de mão única (sentido único): posicione-se o mais à esquerda possível; • Em via de mão dupla (sentido duplo): posicione-se junto à linha divisória central da pista (sem invadir a contramão). Em rodovias dotadas de acostamento e sem local próprio para conversão à esquerda, deve-se aguardar no acostamento à direita (Art. 37).",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Mudança de Faixa e Ultrapassagem (Art. 196 / 584-34)",
-    "ufs": [],
+    "subtopic": "Conversões, Preferência em Cruzamentos e Faixas (Arts. 29, 38 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-34, Quando Autuar 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 29, 38 e 196 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -630,51 +654,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 584-34 (Página 1, Quando Autuar 1) do MBFT.",
+      "verificationNotes": "Art. 38, inciso II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-013",
-    "version": 1,
-    "statement": "Segundo as Definições e Procedimentos da Ficha 584-34 do MBFT, como são conceituadas as faixas de trânsito e como deve ser autuado o veículo que transpuser local com Linha Simples Contínua (LMS-1) e placa R-8a ou R-8b?",
+    "version": 2,
+    "statement": "Ao realizar uma conversão à DIREITA ou à ESQUERDA em uma interseção urbana (Art. 38, parágrafo único do CTB), de quem é a preferência de passagem durante a manobra?",
     "options": [
       {
         "id": "a",
-        "text": "Faixas são áreas exclusivas de pedestres; e a transposição com LMS-1 é infração média do Art. 181 do CTB."
+        "text": "Do veículo automotor que acionou a seta com antecedência regulamentar."
       },
       {
         "id": "b",
-        "text": "Faixas de trânsito são áreas longitudinais em que a pista pode ser subdividida, sinalizadas ou não por marcas viárias; e transpor com LMS-1 e placa R-8a/b exige enquadramento específico no Art. 185 (código 570-30)."
+        "text": "Exclusivamente dos ônibus e caminhões que estiverem contornando a esquina."
       },
       {
         "id": "c",
-        "text": "Faixas existem unicamente onde houver tachões refletivos amarelos; e a transposição é isenta de multa em pontes."
+        "text": "Dos pedestres e dos ciclistas que estiverem atravessando a via na qual o veículo vai entrar."
       },
       {
         "id": "d",
-        "text": "Faixas são pistas de aceleração obrigatoriamente delimitadas por blocos de concreto e placa de advertência A-15."
+        "text": "Do condutor que buzinar primeiro antes de iniciar a conversão."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 584-34 define em Procedimentos, item 3: \"FAIXAS DE TRÂNSITO - qualquer uma das áreas longitudinais em que a pista pode ser subdividida, sinalizada ou não por marcas viárias longitudinais, que tenham uma largura suficiente para permitir a circulação de veículos automotores\". E em Quando NÃO Autuar, item 2: \"Em local sinalizado com Linha Simples Contínua - LMS-1 (contínua branca) e placa R-8a ou R-8b, veículo que transpor da faixa esquerda para a direita ou vice-versa, utilizar enquadramento específico: 570,30, art. 185\".",
+    "correctOptionId": "c",
+    "explanation": "O parágrafo único do Art. 38 do CTB estabelece que, durante a manobra de mudança de direção (conversão), o condutor deverá ceder passagem aos pedestres e ciclistas, aos veículos que transitem em sentido contrário pela pista da via da qual vai sair, respeitadas as normas de preferência de passagem.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Conceito de Faixa e Linha LMS-1 (Art. 196 vs 185)",
-    "ufs": [],
+    "subtopic": "Conversões, Preferência em Cruzamentos e Faixas (Arts. 29, 38 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 196 (Ficha MBFT 584-34, Procedimento 3 e Não Autuar 2)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 29, 38 e 196 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -683,51 +709,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 584-34 (Procedimento 3 e Não Autuar 2) do MBFT.",
+      "verificationNotes": "Art. 38, parágrafo único do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-014",
-    "version": 1,
-    "statement": "De acordo com o campo \"Quando Autuar\" da Ficha 605-01 do MBFT (Art. 208), qual é a condição fática necessária para caracterizar a infração de avançar o sinal vermelho do semáforo?",
+    "version": 2,
+    "statement": "Em uma via com várias faixas de circulação no mesmo sentido, qual é a regra para a circulação e para a mudança de faixa segundo o Art. 29, inciso IV e Art. 35 do CTB?",
     "options": [
       {
         "id": "a",
-        "text": "O semáforo estar no foco amarelo quando as rodas traseiras do veículo ultrapassarem o centro geométrico da via."
+        "text": "Os veículos mais lentos devem circular obrigatoriamente pela faixa da esquerda."
       },
       {
         "id": "b",
-        "text": "O semáforo estar efetivamente no foco vermelho no momento do início da passagem do veículo pela linha de retenção."
+        "text": "A faixa da esquerda é destinada exclusivamente ao estacionamento temporário de emergência."
       },
       {
         "id": "c",
-        "text": "O condutor não acelerar de forma suficiente para liberar o cruzamento antes do foco verde transversal."
+        "text": "O condutor pode mudar de faixa sem acionar a seta desde que a linha no pavimento seja tracejada."
       },
       {
         "id": "d",
-        "text": "O foco vermelho acender enquanto o veículo já se encontra imobilizado além da linha de bordo da calçada."
+        "text": "As faixas da direita destinam-se aos veículos mais lentos e de maior porte, e as da esquerda à ultrapassagem e aos veículos de maior velocidade, exigindo-se seta prévia a cada mudança de faixa."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 605-01 do MBFT determina em \"Quando Autuar\", item 1: \"Semáforo efetivamente no vermelho, no início da passagem do veículo pela linha de retenção\". É no momento exato em que o veículo inicia a transposição da linha de retenção que se afere a cor do semáforo.",
+    "correctOptionId": "d",
+    "explanation": "Em pistas com várias faixas de mesmo sentido (Art. 29, IV do CTB): as da direita são para veículos mais lentos e de maior porte, e as da esquerda são para ultrapassagem e maior velocidade. Qualquer transposição de faixa exige sinalização prévia com a seta (Art. 35 e Art. 196).",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Avanço de Sinal Vermelho e Linha de Retenção (Art. 208 / 605-01)",
-    "ufs": [],
+    "subtopic": "Conversões, Preferência em Cruzamentos e Faixas (Arts. 29, 38 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 208 (Ficha MBFT 605-01, Quando Autuar 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 29, 38 e 196 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -736,51 +764,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 605-01 (Página 1, Quando Autuar 1) do MBFT.",
+      "verificationNotes": "Art. 29, IV e Art. 35 do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-015",
-    "version": 1,
-    "statement": "Segundo a Ficha 605-01 do MBFT (Art. 208), o condutor comete a infração de avançar sinal vermelho se transpor a linha de retenção no vermelho, mas parar antes de concluir o cruzamento?",
+    "version": 2,
+    "statement": "Na sinalização horizontal (pintada no pavimento), o que significam as cores AMARELA e BRANCA nas linhas longitudinais que dividem as faixas de trânsito?",
     "options": [
       {
         "id": "a",
-        "text": "Não, pois a ausência de travessia integral do cruzamento descaracteriza o avanço e impede a lavratura do auto."
+        "text": "A cor amarela indica via urbana de baixa velocidade e a cor branca indica rodovia federal."
       },
       {
         "id": "b",
-        "text": "Sim, autua-se mesmo que não complete o movimento, tendo transposto a linha de retenção na fase vermelha, parando na área de cruzamento ou sobre faixa de pedestre."
+        "text": "A cor amarela separa fluxos de sentidos opostos (mão dupla) e a cor branca separa fluxos de mesmo sentido (mão única)."
       },
       {
         "id": "c",
-        "text": "Apenas se o veículo bloquear fisicamente a passagem de viatura de emergência ou ambulância oficial."
+        "text": "A cor branca proíbe qualquer mudança de faixa e a cor amarela permite ultrapassagem livre."
       },
       {
         "id": "d",
-        "text": "Configura unicamente infração leve de parada indevida sem registro de pontuação na Carteira Nacional de Habilitação."
+        "text": "Ambas separam fluxos de mesmo sentido, variando apenas conforme a iluminação pública da via."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "A Ficha 605-01 do MBFT estabelece textualmente em \"Quando Autuar\", item 2: \"Mesmo que não complete o movimento, tendo transposto a linha de retenção na fase vermelha, parando na área de cruzamento ou sobre faixa de pedestre\". A infração é consumada no momento da transposição indevida da linha de retenção.",
+    "explanation": "Resumo essencial de Sinalização Horizontal para a prova do DETRAN-MG (Anexo II do CTB): • Linha AMARELA = separa fluxos de sentidos OPOSTOS (mão dupla); • Linha BRANCA = separa fluxos de MESMO sentido (mão única); • Linha Contínua = proíbe ultrapassagem/transposição; • Linha Tracejada (Seccionada) = permite ultrapassagem/transposição com segurança.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Transposição Incompleta da Retenção no Vermelho (Art. 208 / 605-01)",
-    "ufs": [],
+    "subtopic": "Conversões, Preferência em Cruzamentos e Faixas (Arts. 29, 38 e 196)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 208 (Ficha MBFT 605-01, Quando Autuar 2)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 29, 38 e 196 • Anexo II CONTRAN (Sinalização Horizontal)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -789,51 +819,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 605-01 (Página 1, Quando Autuar 2) do MBFT.",
+      "verificationNotes": "Item 2 (Sinalização Horizontal - Padrão de Cores) do Anexo II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-016",
-    "version": 1,
-    "statement": "Conforme a tipificação do enquadramento e o campo \"Quando NÃO Autuar\" da Ficha 605-01 do MBFT, em qual situação o avanço do foco vermelho do semáforo é expressamente permitido pela legislação vigente?",
+    "version": 2,
+    "statement": "Ao se aproximar de um cruzamento controlado por semáforo, o condutor percebe que o sinal muda do verde para o AMARELO. Qual deve ser a sua conduta correta?",
     "options": [
       {
         "id": "a",
-        "text": "Em qualquer cruzamento urbano entre as 23 horas e 5 horas da manhã, independentemente de sinalização viária."
+        "text": "Reduzir a marcha e parar o veículo antes da linha de retenção, salvo se já estiver tão próximo que a frenagem brusca crie risco de acidente."
       },
       {
         "id": "b",
-        "text": "Onde houver sinalização que permita a livre conversão à direita prevista no art. 44-A deste Código."
+        "text": "Acelerar o veículo imediatamente para aproveitar os últimos segundos antes da luz vermelha."
       },
       {
         "id": "c",
-        "text": "Sempre que o motorista acionar o pisca-alerta e não observar pedestres atravessando num raio de 50 metros."
+        "text": "Parar sobre a faixa de pedestres e acionar o pisca-alerta até o sinal voltar a ficar verde."
       },
       {
         "id": "d",
-        "text": "Quando a fase verde do fluxo perpendicular durar menos de dez segundos segundo cronômetro visual."
+        "text": "Buzinar continuamente e avançar o cruzamento mantendo a mesma velocidade."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "O Art. 208 do CTB e a Ficha 605-01 do MBFT prescrevem a ressalva explícita: \"Avançar o sinal vermelho do semáforo ou o de parada obrigatória, exceto onde houver sinalização que permita a livre conversão à direita prevista no art. 44-A deste Código\". E em Quando NÃO Autuar, item 1: \"Veículo que faz a conversão à direita, mesmo na fase vermelha, quando houver sinalização que permita esse movimento\".",
+    "correctOptionId": "a",
+    "explanation": "Na Sinalização Semafórica (Anexo II do CTB), a luz amarela indica 'Atenção', assinalando o término do direito de passagem. O condutor deve parar antes da linha de retenção, exceto se já estiver na zona de cruzamento ou tão próximo que parar bruscamente comprometa a segurança.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Livre Conversão à Direita no Foco Vermelho (Art. 208 c/c 44-A)",
-    "ufs": [],
+    "subtopic": "Semáforo, Parada Obrigatória (R-1/R-2) e Pedestres (Arts. 208 e 214)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 208 (Ficha MBFT 605-01, Amparo Legal c/c Art. 44-A CTB)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 44-A, 70, 208 e 214 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -842,51 +874,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 605-01 (Amparo legal e Quando NÃO Autuar item 1) do MBFT.",
+      "verificationNotes": "Item 4 (Sinalização Semafórica) do Anexo II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-017",
-    "version": 1,
-    "statement": "A Ficha 605-01 do MBFT estabelece regras claras para veículos que passam pela linha de retenção na fase verde ou amarela e ficam imobilizados sobre a faixa de pedestres ou área de cruzamento ao mudar para o vermelho. Qual enquadramento fiscalizatório deve ser adotado?",
+    "version": 2,
+    "statement": "De acordo com os Arts. 44-A e 208 do Código de Trânsito Brasileiro, transpor o sinal vermelho do semáforo é infração gravíssima, EXCETO quando:",
     "options": [
       {
         "id": "a",
-        "text": "Autuar no Art. 208 em qualquer dos casos, pois a retenção na fase vermelha equivale ao avanço semafórico."
+        "text": "O condutor estiver atrasado ou transitando entre 22h e 6h em qualquer avenida urbana."
       },
       {
         "id": "b",
-        "text": "Não autuar no Art. 208; utilizar o enquadramento específico 567-31 (Art. 183) se retido na faixa de pedestre, ou 563-00 (Art. 182, VII) se retido na área de cruzamento."
+        "text": "Não houver fiscalização eletrônica instalada no poste do semáforo."
       },
       {
         "id": "c",
-        "text": "Aplicar enquadramento de direção perigosa com recolhimento compulsório do veículo ao depósito municipal."
+        "text": "Houver sinalização indicativa permitindo a livre conversão à direita e o condutor realizar apenas essa conversão, respeitando a preferência de pedestres e outros veículos."
       },
       {
         "id": "d",
-        "text": "Isentar totalmente o motorista de penalidade atribuindo o erro ao órgão com circunscrição sobre a via."
+        "text": "O veículo for uma motocicleta realizando entrega urbana em faixa exclusiva."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 605-01 do MBFT define em \"Quando NÃO Autuar\", itens 3 e 5: \"3. Veículo que passa pela linha de retenção na fase do verde ou do amarelo ou na direita livre e, mudando o sinal para a fase vermelha, fica imobilizado sobre a faixa de pedestres, utilizar enquadramento específico: 567-31, art. 183.\" e \"5. Veículo que passa pela linha de retenção na fase do verde ou do amarelo, mas que fica imobilizado na área de cruzamento de vias, havendo mudança para a fase vermelha, utilizar enquadramento específico: 563-00, Art. 182, VII.\".",
+    "correctOptionId": "c",
+    "explanation": "Conforme o Art. 44-A e a parte final do Art. 208 do CTB (incluídos pela Lei nº 14.071/2020), é livre o movimento de conversão à direita diante de sinal vermelho do semáforo ONDE HOUVER sinalização indicativa que permita essa conversão, desde que o condutor dê preferência aos pedestres e aos demais veículos.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Passagem no Verde e Retenção Posterior (Art. 208 vs 183 e 182, VII)",
-    "ufs": [],
+    "subtopic": "Semáforo, Parada Obrigatória (R-1/R-2) e Pedestres (Arts. 208 e 214)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 208 (Ficha MBFT 605-01, Quando NÃO Autuar 3 e 5)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 44-A, 70, 208 e 214 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -895,51 +929,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 605-01 (Quando NÃO Autuar itens 3 e 5) do MBFT.",
+      "verificationNotes": "Arts. 44-A e 208 do CTB (Lei nº 14.071/2020).",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-018",
-    "version": 1,
-    "statement": "Conforme as instruções do campo \"Quando Autuar\" e Informações Complementares da Ficha 605-02 do MBFT, qual conduta a placa R-1 (Parada Obrigatória) exige do condutor ao se aproximar de uma via?",
+    "version": 2,
+    "statement": "Qual é a diferença de formato e de conduta obrigatória entre a placa de regulamentação R-1 ('Parada Obrigatória') e a placa R-2 ('Dê a Preferência')?",
     "options": [
       {
         "id": "a",
-        "text": "Apenas a redução prudente da marcha até 20 km/h para averiguar visualmente o tráfego da via preferencial."
+        "text": "Ambas têm formato circular e exigem apenas redução de velocidade para 20 km/h."
       },
       {
         "id": "b",
-        "text": "Imobilização total do veículo antes da linha de retenção ou antes da área de conflito do cruzamento, sendo insuficiente ou perigosa a simples redução da velocidade."
+        "text": "A placa R-1 tem formato octogonal e exige a parada total do veículo; a placa R-2 tem formato triangular e determina reduzir a velocidade e parar apenas se necessário para ceder passagem aos veículos da outra via."
       },
       {
         "id": "c",
-        "text": "Parada do veículo somente se houver outro automóvel ou pedestre efetivamente cruzando a pista no momento."
+        "text": "A placa R-1 é amarela de advertência e a placa R-2 é exclusiva para travessia de pedestres."
       },
       {
         "id": "d",
-        "text": "Acionamento de buzina breve e prosseguimento contínuo em marcha lenta sem frear antes da linha branca."
+        "text": "A placa R-2 obriga a imobilização completa do veículo por 5 segundos mesmo sem tráfego na via transversal."
       }
     ],
     "correctOptionId": "b",
-    "explanation": "A Ficha 605-02 do MBFT (Quando Autuar, item 1) exige: \"Na existência da placa R-1 ou R-21, não havendo imobilização total do veículo: 1.1. antes da área de conflito do cruzamento, na inexistência da linha de retenção; 1.2. antes da linha de retenção\". E suas Informações Complementares reforçam: \"Seu uso deve se restringir às situações em que a parada de veículos for realmente necessária, sendo insuficiente ou perigosa a simples redução da velocidade\".",
+    "explanation": "Dica clássica da prova do DETRAN-MG: as placas de regulamentação são circulares, com DUAS exceções de formato: • R-1 (Parada Obrigatória - PARE) = formato OCTOGONAL (8 lados), exigindo imobilização total do veículo; • R-2 (Dê a Preferência) = formato TRIANGULAR (vértice para baixo), exigindo ceder a preferência e parar somente se houver tráfego na via preferencial.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Placa R-1 e Imobilização Total Obrigatória (Art. 208 / 605-02)",
-    "ufs": [],
+    "subtopic": "Semáforo, Parada Obrigatória (R-1/R-2) e Pedestres (Arts. 208 e 214)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 208 (Ficha MBFT 605-02, Quando Autuar 1 e Inf. Compl. 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 44-A, 70, 208 e 214 • Anexo II CONTRAN (Placas R-1 e R-2)",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -948,51 +984,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 605-02 (Quando Autuar item 1 e Inf. Compl. item 1) do MBFT.",
+      "verificationNotes": "Item 1.1 (Sinalização Vertical de Regulamentação - R-1 e R-2) do Anexo II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-019",
-    "version": 1,
-    "statement": "Segundo o campo \"Quando NÃO Autuar\" e Procedimentos da Ficha 605-02 do MBFT, como deve proceder a fiscalização se houver marcação no solo de Linha de Retenção (LRE), porém faltar a placa vertical R-1?",
+    "version": 2,
+    "statement": "Em um cruzamento semafórico, o sinal fica verde para os veículos no momento em que um pedestre ainda está concluindo a travessia sobre a faixa de pedestres. De acordo com os Arts. 70 e 214 do CTB, o condutor deve:",
     "options": [
       {
         "id": "a",
-        "text": "Autuar normalmente no Art. 208, pois a linha de retenção horizontal tem suficiência probatória autônoma."
+        "text": "Iniciar a marcha imediatamente e buzinar para que o pedestre corra até a calçada."
       },
       {
         "id": "b",
-        "text": "Não autuar pelo Art. 208 (605-02), em virtude da falta ou deficiência da sinalização vertical (a linha de retenção não é obrigatória para a via, mas a placa vertical R-1 é indispensável para fundamentar a autuação)."
+        "text": "Desviar do pedestre acelerando pela faixa ao lado antes que outros carros avancem."
       },
       {
         "id": "c",
-        "text": "Autuar o condutor por infração genérica do Art. 195 por desrespeito às marcas transversais da via."
+        "text": "Avançar lentamente encostando o veículo próximo ao pedestre para impor a preferência do sinal verde."
       },
       {
         "id": "d",
-        "text": "Lavrar o auto de infração somente se houver testemunha civil que comprove a existência anterior de placa no local."
+        "text": "Aguardar que o pedestre conclua a travessia com segurança, pois a preferência é sempre do pedestre que já houver iniciado a passagem."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 605-02 do MBFT determina textualmente no item 1 de \"Quando NÃO Autuar\": \"1. Na falta ou deficiência da sinalização vertical (a linha de retenção não é obrigatória)\". Sem a presença visível e regulamentar da sinalização vertical (placa R-1 ou R-21), a simples marcação horizontal isolada não autoriza a autuação por avanço de parada obrigatória.",
+    "correctOptionId": "d",
+    "explanation": "Conforme o Art. 70, parágrafo único e o Art. 214, II do CTB, mesmo que o sinal abra (fique verde) para os veículos, os pedestres que já tenham iniciado a travessia têm prioridade para concluí-la. Deixar de dar preferência ao pedestre que esteja concluindo a travessia é infração GRAVÍSSIMA (7 pontos).",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Indispensabilidade da Sinalização Vertical R-1 (Art. 208 / 605-02)",
-    "ufs": [],
+    "subtopic": "Semáforo, Parada Obrigatória (R-1/R-2) e Pedestres (Arts. 208 e 214)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 208 (Ficha MBFT 605-02, Quando NÃO Autuar 1)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 44-A, 70, 208 e 214 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -1001,51 +1039,53 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 605-02 (Página 1, Quando NÃO Autuar item 1) do MBFT.",
+      "verificationNotes": "Arts. 70, parágrafo único e 214, inciso II do CTB.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   },
   {
     "id": "sin-020",
-    "version": 1,
-    "statement": "De acordo com o campo \"Quando Autuar\" (item 2) e Definições da Ficha 605-02 do MBFT, como deve ser autuado o condutor que não atender à ordem de parada obrigatória emitida por gesto do agente de trânsito?",
+    "version": 2,
+    "statement": "Segundo o Art. 208 do Código de Trânsito Brasileiro, avançar o sinal vermelho do semáforo ou o de parada obrigatória (Placa R-1) constitui infração de qual natureza e pontuação?",
     "options": [
       {
         "id": "a",
-        "text": "Autuar no Art. 195 como infração grave de desobediência a comando verbal geral de trânsito."
+        "text": "Infração gravíssima, com penalidade de multa e registro de 7 pontos no prontuário do condutor."
       },
       {
         "id": "b",
-        "text": "Autuar no Art. 208 (código 605-02), por não atender à ordem de parada obrigatória emanada pelo agente, por meio de gesto regulamentar, acompanhado ou não de sinal sonoro."
+        "text": "Infração grave, com penalidade de multa e registro de 5 pontos no prontuário."
       },
       {
         "id": "c",
-        "text": "Autuar no Art. 186 por circulação indevida na contramão de direção fixada pelo agente fiscalizador."
+        "text": "Infração média, com penalidade de advertência por escrito e 4 pontos."
       },
       {
         "id": "d",
-        "text": "Não lavrar auto de infração se o veículo estiver em velocidade compatível com a segurança local."
+        "text": "Infração gravíssima multiplicada por cinco, com recolhimento imediato da CNH."
       }
     ],
-    "correctOptionId": "b",
-    "explanation": "A Ficha 605-02 do MBFT tipifica no item 2 do campo \"Quando Autuar\": \"Veículo que não atender à ordem de parada obrigatória emanada pelo agente, por meio de gesto regulamentar, acompanhado ou não de sinal sonoro\". E suas Definições (item 6) reforçam que os gestos de agentes orientam, indicam passagem ou emitem ordens, sobrepondo-se às demais sinalizações viárias.",
+    "correctOptionId": "a",
+    "explanation": "O Art. 208 do CTB estabelece que avançar o sinal vermelho do semáforo ou o de parada obrigatória (exceto onde houver sinalização permitindo livre conversão à direita) é infração GRAVÍSSIMA, com penalidade de multa e 7 pontos na CNH.",
     "topic": "Sinalização de Trânsito",
-    "subtopic": "Ordem de Parada por Gesto do Agente (Art. 208 / 605-02)",
-    "ufs": [],
+    "subtopic": "Semáforo, Parada Obrigatória (R-1/R-2) e Pedestres (Arts. 208 e 214)",
+    "ufs": [
+      "MG"
+    ],
     "categories": [
       "A",
       "B"
     ],
     "source": {
       "kind": "official",
-      "document": "Resolução CONTRAN nº 985/2022 (Manual Brasileiro de Fiscalização de Trânsito – MBFT)",
-      "provision": "Art. 208 (Ficha MBFT 605-02, Quando Autuar 2 e Definições 6)",
-      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf",
-      "checkedAt": "2026-11-07T23:00:00Z",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resoluções CONTRAN nº 973/2022, nº 985/2022 e nº 1.020/2025",
+      "provision": "CTB Arts. 44-A, 70, 208 e 214 • Anexo II CONTRAN",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "checkedAt": "2026-11-08T17:20:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 985/2022",
+      "sourceVersion": "CTB Atualizado / BNQ SENATRAN (Res. CONTRAN nº 1.020/2025)",
       "licenseNote": "Domínio Público — Art. 8º, IV da Lei Federal nº 9.610/1998",
       "verificationStatus": "verified"
     },
@@ -1054,9 +1094,9 @@
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": "Independent/Auditor-Juridico-Editorial",
-      "verificationNotes": "Trecho literal da Ficha 605-02 (Página 1, Quando Autuar item 2 e Definições item 6) do MBFT.",
+      "verificationNotes": "Texto literal do Art. 208 do CTB: Infração - gravíssima; Penalidade - multa.",
       "approvedBy": "Tech Lead / Responsável pelo Produto",
-      "approvedAt": "2026-11-07T23:43:10Z"
+      "approvedAt": "2026-11-08T17:20:00Z"
     }
   }
 ]

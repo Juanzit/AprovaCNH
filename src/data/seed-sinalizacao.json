@@ -25,7 +25,7 @@
     "explanation": "As placas de advertência têm a função de alertar condutores sobre condições de risco à frente na via, para que adaptem a velocidade e atenção.",
     "topic": "Sinalização de Trânsito",
     "subtopic": "Placas de Advertência",
-    "ufs": [],
+    "ufs": ["MG"],
     "categories": ["A", "B"],
     "source": {
       "kind": "demo",
@@ -68,7 +68,7 @@
     "explanation": "A placa R-1 exige a imobilização completa do veículo antes do cruzamento, assegurando a prioridade dos que trafegam na via transversal.",
     "topic": "Sinalização de Trânsito",
     "subtopic": "Placas de Regulamentação",
-    "ufs": [],
+    "ufs": ["MG"],
     "categories": ["A", "B"],
     "source": {
       "kind": "demo",
@@ -111,7 +111,7 @@
     "explanation": "A linha contínua dupla amarela proíbe a manobra de ultrapassagem para os fluxos em ambos os sentidos da pista.",
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Horizontal",
-    "ufs": [],
+    "ufs": ["MG"],
     "categories": ["A", "B"],
     "source": {
       "kind": "demo",
@@ -154,7 +154,7 @@
     "explanation": "A luz amarela sinaliza o término da fase de direito de passagem. O condutor deve imobilizar o veículo, exceto se a parada repentina causar risco de colisão.",
     "topic": "Sinalização de Trânsito",
     "subtopic": "Sinalização Luminosa",
-    "ufs": [],
+    "ufs": ["MG"],
     "categories": ["A", "B"],
     "source": {
       "kind": "demo",
@@ -197,7 +197,7 @@
     "explanation": "Na ordem de prevalência da sinalização de trânsito, as ordens do agente prevalecem sobre as normas de circulação e sobre os demais sinais.",
     "topic": "Sinalização de Trânsito",
     "subtopic": "Hierarquia da Sinalização",
-    "ufs": [],
+    "ufs": ["MG"],
     "categories": ["A", "B"],
     "source": {
       "kind": "demo",

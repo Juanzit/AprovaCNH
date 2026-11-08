@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)', () => {
+test.describe('Fluxo da Lição de Sinalização — Estilo DETRAN-MG / SENATRAN (v2)', () => {
   test('deve navegar da home para a lição de sinalização oficial', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
@@ -19,23 +19,21 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
     await expect(page.getByText('Questão 1 de 5')).toBeVisible({ timeout: 15000 });
   });
 
-  test('deve responder as 5 questões da Sessão 1, exibir feedback com fundamentação oficial e concluir com 70 XP', async ({
+  test('deve responder as 5 questões da Sessão 1 (DETRAN-MG / SENATRAN), exibir micro-aula e concluir com 70 XP', async ({
     page,
   }) => {
     await page.goto('/licao/sinalizacao');
 
-    // Questão 1 (sin-001: Prevalência do Agente de Trânsito - Art. 195)
+    // Questão 1 (sin-001: Hierarquia da Sinalização - Art. 89, I do CTB)
     await expect(page.getByText('Questão 1 de 5')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(/Questão baseada no MBFT — Legislação Vigente/i)).toBeVisible();
 
-    // Selecionar alternativa 'b' (gabarito da Q1)
     const radioQ1 = page.getByLabel(
-      /As ordens do agente de trânsito têm prevalência sobre as normas de circulação/i
+      /Parar o veículo, pois as ordens do agente de trânsito têm prevalência sobre as normas de circulação/i
     );
     await radioQ1.check();
     await expect(radioQ1).toBeChecked();
 
-    // Confirmar resposta
     const confirmButton = page.getByRole('button', { name: /Confirmar resposta/i });
     await confirmButton.click();
 
@@ -46,49 +44,46 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
     await expect(page.getByTestId('explanation-block')).toBeVisible();
     await expect(page.getByTestId('rule-summary-block')).toBeVisible();
     await expect(page.getByTestId('legal-source-block')).toBeVisible();
-    await expect(page.getByTestId('source-document')).toContainText('Resolução CONTRAN nº 985/2022');
-    await expect(page.getByTestId('source-provision')).toContainText('Art. 195 (Ficha MBFT 583-50');
+    await expect(page.getByTestId('source-document')).toContainText('Código de Trânsito Brasileiro');
+    await expect(page.getByTestId('source-provision')).toContainText('CTB Arts. 89');
 
-    // Bloqueio de reenvio / alteração
     await expect(radioQ1).toBeDisabled();
-
-    // Avançar para Q2
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 2 (sin-002: Três Pressupostos de Caracterização da Infração do Art. 195)
+    // Questão 2 (sin-002: Sinais Sonoros de Apito — 2 silvos breves = Pare)
     await expect(page.getByText('Questão 2 de 5')).toBeVisible();
     const radioQ2 = page.getByLabel(
-      /Ordem relativa à normatização do trânsito em geral; ordem emanada da autoridade ou do agente/i
+      /Pare — o condutor deve imobilizar o veículo imediatamente com segurança/i
     );
     await radioQ2.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 3 (sin-003: Formas de emissão da ordem e uso conjunto de apito)
+    // Questão 3 (sin-003: Sinais Sonoros de Apito — 1 silvo breve = Siga / 1 longo = Diminua a marcha)
     await expect(page.getByText('Questão 3 de 5')).toBeVisible();
     const radioQ3 = page.getByLabel(
-      /A ordem pode ser verbal ou escrita, bem como através de gestos ou sinais sonoros, sendo que os sinais sonoros de apito somente devem ser utilizados em conjunto com os gestos dos agentes/i
+      /Um silvo breve significa 'Siga' e um silvo longo significa 'Diminua a marcha'/i
     );
     await radioQ3.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 4 (sin-004: Autuação por desobediência a restrição médica na CNH)
+    // Questão 4 (sin-004: Gesto do Agente — Braço levantado verticalmente)
     await expect(page.getByText('Questão 4 de 5')).toBeVisible();
     const radioQ4 = page.getByLabel(
-      /Condutor que desobedecer restrição imposta pela autoridade de trânsito, com base no exame de saúde/i
+      /Ordem de parada obrigatória para todos os veículos que se aproximam/i
     );
     await radioQ4.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
     await page.getByRole('button', { name: /Continuar/i }).click();
 
-    // Questão 5 (sin-005: Conflito de enquadramento ordem de parada por gesto)
+    // Questão 5 (sin-005: Natureza da Infração do Art. 195 — Grave, 5 pontos)
     await expect(page.getByText('Questão 5 de 5')).toBeVisible();
     const radioQ5 = page.getByLabel(
-      /Não autuar pelo Art. 195, devendo utilizar o enquadramento específico: 605-02, Art. 208 do CTB/i
+      /Infração grave \(5 pontos\), sujeita à penalidade de multa/i
     );
     await radioQ5.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();

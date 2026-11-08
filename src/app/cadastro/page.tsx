@@ -19,7 +19,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [uf, setUf] = useState('');
+  const [uf, setUf] = useState('MG');
   const [category, setCategory] = useState('B');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isRegistrationCompleted, setIsRegistrationCompleted] = useState(false);

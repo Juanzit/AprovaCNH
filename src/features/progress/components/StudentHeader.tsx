@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import type { StudentProfile } from '../types/progress';
-import { ProfileModal } from './ProfileModal';
+import { ProfileModal, VISITOR_PROFILE_STORAGE_KEY } from './ProfileModal';
 
 interface StudentHeaderProps {
   initialProfile: StudentProfile;
@@ -19,12 +19,39 @@ const WEEK_DAYS = [
 ];
 
 export function StudentHeader({ initialProfile }: StudentHeaderProps) {
-  const [profile, setProfile] = useState<StudentProfile>(initialProfile);
+  const [profile, setProfile] = useState<StudentProfile>(() => {
+    const baseProfile: StudentProfile = {
+      ...initialProfile,
+      uf: initialProfile.uf ?? 'MG',
+    };
+
+    if (initialProfile.id === 'guest' && typeof window !== 'undefined') {
+      try {
+        const raw = window.localStorage.getItem(VISITOR_PROFILE_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<StudentProfile>;
+          return {
+            ...baseProfile,
+            fullName: parsed.fullName ?? baseProfile.fullName,
+            uf: parsed.uf !== undefined ? parsed.uf : baseProfile.uf,
+            targetCategory: parsed.targetCategory ?? baseProfile.targetCategory,
+          };
+        }
+      } catch {
+        // Ignora falha de leitura de localStorage
+      }
+    }
+
+    return baseProfile;
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const initial = profile.fullName ? profile.fullName.charAt(0).toUpperCase() : 'E';
   const activeDaysCount = Math.min(7, Math.max(0, profile.currentStreak));
   const dailyGoalCompleted = profile.currentStreak > 0;
+  const ufDisplay = profile.uf
+    ? `${profile.uf} • DETRAN-${profile.uf} / Nacional`
+    : 'Nacional (SENATRAN)';
 
   const handleProfileUpdated = (updated: Partial<StudentProfile>) => {
     setProfile((prev) => ({
@@ -57,10 +84,10 @@ export function StudentHeader({ initialProfile }: StudentHeaderProps) {
 
                 <span
                   data-testid="student-uf-badge"
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-200"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-50 text-blue-900 text-[11px] font-bold border border-blue-200"
                 >
                   <span aria-hidden="true">📍</span>
-                  <span>{profile.uf ? `DETRAN/${profile.uf}` : 'Nacional'}</span>
+                  <span>{ufDisplay}</span>
                 </span>
 
                 <span

@@ -116,7 +116,7 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
         expect(q.review?.approvedBy).toBe('Tech Lead / Responsável pelo Produto');
         expect(q.review?.approvedAt).toBeTruthy();
         expect(q.options).toHaveLength(4);
-        expect(q.ufs).toHaveLength(0);
+        expect(q.ufs).toContain('MG');
       });
     }
   });

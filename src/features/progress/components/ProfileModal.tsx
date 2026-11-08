@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import type { StudentProfile } from '../types/progress';
 import { updateStudentProfileAction } from '../actions/sessionActions';
 
+export const VISITOR_PROFILE_STORAGE_KEY = 'aprovacnh_visitor_profile';
+
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,17 +26,52 @@ export function ProfileModal({
   onProfileUpdated,
 }: ProfileModalProps) {
   const [fullName, setFullName] = useState(profile.fullName ?? '');
-  const [uf, setUf] = useState(profile.uf ?? '');
+  const [uf, setUf] = useState(profile.uf ?? 'MG');
   const [targetCategory, setTargetCategory] = useState(profile.targetCategory ?? 'B');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
+  const saveVisitorProfileLocally = (updatedData: Partial<StudentProfile>) => {
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.setItem(
+          VISITOR_PROFILE_STORAGE_KEY,
+          JSON.stringify(updatedData)
+        );
+      } catch {
+        // Ignora erro de quota do localStorage
+      }
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrorMessage(null);
+
+    if (uf && uf.trim().toUpperCase() === 'BR') {
+      setErrorMessage('A sigla "BR" não é permitida como código de UF (D014).');
+      return;
+    }
+
+    const updatedPayload: Partial<StudentProfile> = {
+      fullName: fullName.trim() || 'Estudante Visitante',
+      uf: uf || null,
+      targetCategory,
+    };
+
+    // Se estiver em modo visitante, salva direto no localStorage sem disparar erro de autenticação
+    if (profile.id === 'guest') {
+      saveVisitorProfileLocally(updatedPayload);
+      if (onProfileUpdated) {
+        onProfileUpdated(updatedPayload);
+      }
+      onClose();
+      return;
+    }
+
+    setIsLoading(true);
 
     const result = await updateStudentProfileAction({
       fullName,
@@ -44,17 +81,23 @@ export function ProfileModal({
 
     setIsLoading(false);
 
+    // Fallback amigável caso a sessão tenha expirado (salva localmente sem bloquear o aluno)
     if (!result.success) {
+      if (result.error?.includes('não autenticado')) {
+        saveVisitorProfileLocally(updatedPayload);
+        if (onProfileUpdated) {
+          onProfileUpdated(updatedPayload);
+        }
+        onClose();
+        return;
+      }
+
       setErrorMessage(result.error ?? 'Falha ao atualizar dados de perfil.');
       return;
     }
 
     if (onProfileUpdated) {
-      onProfileUpdated({
-        fullName: fullName.trim() || null,
-        uf: uf || null,
-        targetCategory,
-      });
+      onProfileUpdated(updatedPayload);
     }
 
     onClose();
@@ -121,8 +164,9 @@ export function ProfileModal({
                 onChange={(e) => setUf(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
               >
-                <option value="">Nacional</option>
-                {UF_OPTIONS.map((sigla) => (
+                <option value="MG">MG — Minas Gerais (Padrão)</option>
+                <option value="">Nacional (SENATRAN)</option>
+                {UF_OPTIONS.filter((sigla) => sigla !== 'MG').map((sigla) => (
                   <option key={sigla} value={sigla}>
                     {sigla}
                   </option>
