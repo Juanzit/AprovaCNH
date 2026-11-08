@@ -16,7 +16,7 @@ export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPagePr
 
   // Se 'todas=true', entrega as 20 questões do banco completo
   if (resolvedParams.todas === 'true') {
-    return <LessonContainer questions={allQuestions} />;
+    return <LessonContainer questions={allQuestions} sessionId={1} />;
   }
 
   // Por padrão, divide em micro-lições de 5 questões (3-5 min) conforme metodologia do Plano Mestre
@@ -25,5 +25,5 @@ export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPagePr
   const startIndex = (validSession - 1) * 5;
   const sessionQuestions = allQuestions.slice(startIndex, startIndex + 5);
 
-  return <LessonContainer questions={sessionQuestions} />;
+  return <LessonContainer questions={sessionQuestions} sessionId={validSession} />;
 }

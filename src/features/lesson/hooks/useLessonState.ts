@@ -12,6 +12,7 @@ export interface UseLessonStateReturn {
   correctAnswersCount: number;
   isCompleted: boolean;
   xpBreakdown: XpBreakdown;
+  submittedAnswers: Array<{ questionId: string; selectedOptionId: string }>;
   selectOption: (id: OptionId) => void;
   submitAnswer: () => void;
   nextQuestion: () => void;
@@ -25,6 +26,9 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [submittedAnswers, setSubmittedAnswers] = useState<
+    Array<{ questionId: string; selectedOptionId: string }>
+  >([]);
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -35,12 +39,15 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
     return selectedOptionId === currentQuestion.correctOptionId;
   }, [isAnswerSubmitted, selectedOptionId, currentQuestion]);
 
-  const selectOption = useCallback((id: OptionId) => {
-    if (isAnswerSubmitted) {
-      return; // Bloqueia alteração após confirmação
-    }
-    setSelectedOptionId(id);
-  }, [isAnswerSubmitted]);
+  const selectOption = useCallback(
+    (id: OptionId) => {
+      if (isAnswerSubmitted) {
+        return; // Bloqueia alteração após confirmação
+      }
+      setSelectedOptionId(id);
+    },
+    [isAnswerSubmitted]
+  );
 
   const submitAnswer = useCallback(() => {
     if (isAnswerSubmitted || !selectedOptionId || !currentQuestion) {
@@ -51,6 +58,10 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
     if (correct) {
       setCorrectAnswersCount((prev) => prev + 1);
     }
+    setSubmittedAnswers((prev) => [
+      ...prev.filter((a) => a.questionId !== currentQuestion.id),
+      { questionId: currentQuestion.id, selectedOptionId },
+    ]);
     setIsAnswerSubmitted(true);
   }, [isAnswerSubmitted, selectedOptionId, currentQuestion]);
 
@@ -74,6 +85,7 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
     setIsAnswerSubmitted(false);
     setCorrectAnswersCount(0);
     setIsCompleted(false);
+    setSubmittedAnswers([]);
   }, []);
 
   const answeredCount = isCompleted
@@ -96,6 +108,7 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
     correctAnswersCount,
     isCompleted,
     xpBreakdown,
+    submittedAnswers,
     selectOption,
     submitAnswer,
     nextQuestion,

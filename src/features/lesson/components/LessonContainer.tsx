@@ -1,18 +1,21 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { Question } from '../types/question';
 import { useLessonState } from '../hooks/useLessonState';
 import { LessonHeader } from './LessonHeader';
 import { OptionList } from './OptionList';
 import { FeedbackPanel } from './FeedbackPanel';
 import { LessonSummary } from './LessonSummary';
+import { submitSessionAnswersAction } from '@/features/progress/actions/sessionActions';
+import type { SessionSubmissionResult } from '@/features/progress/types/progress';
 
 interface LessonContainerProps {
   questions: Question[];
+  sessionId?: number;
 }
 
-export function LessonContainer({ questions }: LessonContainerProps) {
+export function LessonContainer({ questions, sessionId = 1 }: LessonContainerProps) {
   const {
     currentQuestion,
     currentQuestionIndex,
@@ -22,14 +25,53 @@ export function LessonContainer({ questions }: LessonContainerProps) {
     isCorrect,
     isCompleted,
     xpBreakdown,
+    submittedAnswers,
     selectOption,
     submitAnswer,
     nextQuestion,
     resetLesson,
   } = useLessonState(questions);
 
+  const [serverResult, setServerResult] = useState<SessionSubmissionResult | null>(null);
+
+  // Submissão autoritativa no servidor ao concluir as questões da sessão
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isCompleted && !serverResult && submittedAnswers.length > 0) {
+      submitSessionAnswersAction({
+        topic: questions[0]?.topic ?? 'Sinalização de Trânsito',
+        sessionId,
+        answers: submittedAnswers,
+      })
+        .then((res) => {
+          if (isMounted) {
+            setServerResult(res);
+          }
+        })
+        .catch(() => {
+          // Falha não-bloqueante: mantém a UI funcional com o resumo local
+        });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isCompleted, serverResult, submittedAnswers, questions, sessionId]);
+
+  const handleRestart = useCallback(() => {
+    setServerResult(null);
+    resetLesson();
+  }, [resetLesson]);
+
   if (isCompleted) {
-    return <LessonSummary xpBreakdown={xpBreakdown} onRestart={resetLesson} />;
+    return (
+      <LessonSummary
+        xpBreakdown={xpBreakdown}
+        serverResult={serverResult}
+        onRestart={handleRestart}
+      />
+    );
   }
 
   if (!currentQuestion) {

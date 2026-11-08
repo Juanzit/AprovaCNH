@@ -1,16 +1,24 @@
 import React from 'react';
 import type { XpBreakdown } from '../utils/xpCalculator';
+import type { SessionSubmissionResult } from '@/features/progress/types/progress';
 import { AwardIcon } from '@/components/ui/Icons';
 import Link from 'next/link';
 
 interface LessonSummaryProps {
   xpBreakdown: XpBreakdown;
+  serverResult?: SessionSubmissionResult | null;
   onRestart: () => void;
 }
 
-export function LessonSummary({ xpBreakdown, onRestart }: LessonSummaryProps) {
+export function LessonSummary({
+  xpBreakdown,
+  serverResult,
+  onRestart,
+}: LessonSummaryProps) {
   const { correctAnswersCount, totalQuestions, pointsFromAnswers, completionBonus, totalXp } =
     xpBreakdown;
+
+  const isReview = serverResult && !serverResult.isFirstCompletion;
 
   return (
     <div className="w-full max-w-md mx-auto text-center py-8 px-4">
@@ -22,6 +30,41 @@ export function LessonSummary({ xpBreakdown, onRestart }: LessonSummaryProps) {
       <p className="text-slate-600 mb-6">
         Você respondeu todas as {totalQuestions} questões de sinalização.
       </p>
+
+      {/* Badges de Gamificação do Servidor */}
+      {serverResult && (
+        <div className="flex items-center justify-center gap-2 mb-6 flex-wrap">
+          {isReview ? (
+            <span
+              data-testid="review-notice"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200"
+            >
+              <span>🔄</span>
+              <span>Revisão — XP concedido na 1ª conclusão</span>
+            </span>
+          ) : (
+            <span
+              data-testid="first-completion-notice"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200"
+            >
+              <span>🎉</span>
+              <span>Primeira Conclusão (+{serverResult.xpAwarded} XP)</span>
+            </span>
+          )}
+
+          {serverResult.currentStreak > 0 && (
+            <span
+              data-testid="summary-streak-badge"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200"
+            >
+              <span>🔥</span>
+              <span>
+                {serverResult.currentStreak} {serverResult.currentStreak === 1 ? 'dia' : 'dias'} de ofensiva
+              </span>
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Card de desempenho e XP */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-8 text-left space-y-4">
@@ -65,7 +108,7 @@ export function LessonSummary({ xpBreakdown, onRestart }: LessonSummaryProps) {
           href="/"
           className="flex-1 py-3 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 font-semibold text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
         >
-          Voltar ao início
+          Voltar à Trilha
         </Link>
       </div>
     </div>
