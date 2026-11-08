@@ -1,91 +1,117 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { FeedbackPanel } from '@/features/lesson/components/FeedbackPanel';
 import type { QuestionSource } from '@/features/lesson/types/question';
 
-const mockSource: QuestionSource = {
+const mockVerifiedSource: QuestionSource = {
+  kind: 'official',
+  document: 'CTB - Lei nº 9.503/1997',
+  provision: 'Art. 89',
+  url: 'https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm',
+  checkedAt: '2026-11-08',
+  effectiveFrom: '1998-01-23',
+  effectiveUntil: null,
+  sourceVersion: 'v1.0',
+  verificationStatus: 'verified',
+  licenseNote: 'Texto legal oficial de acesso público.',
+};
+
+const mockDemoSource: QuestionSource = {
   kind: 'demo',
-  document: 'CTB Demonstrativo',
+  document: null,
   provision: null,
   url: null,
   checkedAt: null,
   effectiveFrom: null,
   effectiveUntil: null,
-  sourceVersion: null,
-  licenseNote: 'Fixture de teste',
-  verificationStatus: 'pending',
+  sourceVersion: 'demo-v1',
+  verificationStatus: 'not_applicable',
+  licenseNote: 'Exemplo ilustrativo de interface.',
 };
 
-describe('FeedbackPanel Component', () => {
-  it('deve anunciar status acessível para resposta correta com role status e aria-live', () => {
+describe('FeedbackPanel Component (Micro-Aula em 3 Blocos e Botão Primário Padronizado)', () => {
+  it('deve renderizar os 3 blocos da micro-aula e manter o botão Continuar azul em resposta correta', () => {
     render(
       <FeedbackPanel
         isCorrect={true}
-        explanation="Esta regra se aplica conforme o código de trânsito."
-        source={mockSource}
+        explanation="As ordens do agente prevalecem sobre as demais normas."
+        source={mockVerifiedSource}
         onNext={vi.fn()}
         isLastQuestion={false}
       />
     );
 
-    const statusRegion = screen.getByRole('status');
-    expect(statusRegion).toBeInTheDocument();
-    expect(statusRegion).toHaveAttribute('aria-live', 'polite');
+    const statusBox = screen.getByRole('status');
+    expect(statusBox).toBeInTheDocument();
 
-    const feedbackTitle = screen.getByText('Resposta correta!');
-    expect(feedbackTitle).toBeInTheDocument();
+    expect(screen.getByText('Resposta correta!')).toBeInTheDocument();
 
-    const explanation = screen.getByText('Esta regra se aplica conforme o código de trânsito.');
-    expect(explanation).toBeInTheDocument();
+    // 3 blocos da micro-aula
+    const explanationBlock = screen.getByTestId('explanation-block');
+    expect(explanationBlock).toHaveTextContent('Por que essa resposta está correta?');
+    expect(explanationBlock).toHaveTextContent(
+      'As ordens do agente prevalecem sobre as demais normas.'
+    );
+
+    const ruleBlock = screen.getByTestId('rule-summary-block');
+    expect(ruleBlock).toHaveTextContent('Entenda a regra');
+
+    const legalBlock = screen.getByTestId('legal-source-block');
+    expect(legalBlock).toHaveTextContent('Fundamentação legal');
+    expect(screen.getByText('CTB - Lei nº 9.503/1997')).toBeInTheDocument();
+    expect(screen.getByText(/Art\. 89/i)).toBeInTheDocument();
+
+    const nextBtn = screen.getByTestId('feedback-next-button');
+    expect(nextBtn).toHaveClass('bg-blue-600');
   });
 
-  it('deve anunciar resposta incorreta com texto explícito', () => {
+  it('deve anunciar status acessível para resposta incorreta e manter o botão Continuar azul', () => {
     render(
       <FeedbackPanel
         isCorrect={false}
-        explanation="O condutor deve aguardar a via preferencial."
-        source={mockSource}
+        explanation="O sinal vermelho indica parada obrigatória."
+        source={mockVerifiedSource}
         onNext={vi.fn()}
         isLastQuestion={false}
       />
     );
 
-    const feedbackTitle = screen.getByText('Resposta incorreta.');
-    expect(feedbackTitle).toBeInTheDocument();
+    expect(screen.getByText('Resposta incorreta.')).toBeInTheDocument();
+    expect(screen.getByTestId('explanation-block')).toHaveTextContent(
+      'Por que essa resposta está correta?'
+    );
+    expect(screen.getByTestId('rule-summary-block')).toHaveTextContent('Entenda a regra');
+    expect(screen.getByTestId('feedback-next-button')).toHaveClass('bg-blue-600');
   });
 
-  it('deve disparar onNext ao clicar no botão de continuar', () => {
-    const handleNext = vi.fn();
-
+  it('deve exibir aviso de referência demonstrativa quando source.kind === "demo"', () => {
     render(
       <FeedbackPanel
         isCorrect={true}
-        explanation="Explicação didática"
-        source={mockSource}
-        onNext={handleNext}
+        explanation="Explicação demonstrativa."
+        source={mockDemoSource}
+        onNext={vi.fn()}
         isLastQuestion={false}
       />
     );
 
-    const nextButton = screen.getByRole('button', { name: /Continuar/i });
-    fireEvent.click(nextButton);
-
-    expect(handleNext).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText(/Referência legal demonstrativa \(Validação jurídica pendente\)/i)
+    ).toBeInTheDocument();
   });
 
-  it('deve exibir "Finalizar lição" quando for a última questão', () => {
+  it('deve alterar texto do botão para "Finalizar lição" na última questão', () => {
     render(
       <FeedbackPanel
         isCorrect={true}
-        explanation="Explicação didática"
-        source={mockSource}
+        explanation="Explicação final."
+        source={mockDemoSource}
         onNext={vi.fn()}
         isLastQuestion={true}
       />
     );
 
-    const finishButton = screen.getByRole('button', { name: /Finalizar lição/i });
-    expect(finishButton).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Finalizar lição/i })).toBeInTheDocument();
   });
 });

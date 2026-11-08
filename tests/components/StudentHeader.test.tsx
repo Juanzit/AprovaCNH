@@ -8,7 +8,7 @@ vi.mock('@/features/progress/actions/sessionActions', () => ({
   updateStudentProfileAction: vi.fn().mockResolvedValue({ success: true }),
 }));
 
-describe('StudentHeader (Gamificação e Perfil Mobile-First)', () => {
+describe('StudentHeader (Gamificação, Streak Semanal e Perfil Compacto Mobile-First)', () => {
   const mockProfile: StudentProfile = {
     id: 'usr-123',
     email: 'aluno.mg@aprovacnh.com.br',
@@ -22,7 +22,7 @@ describe('StudentHeader (Gamificação e Perfil Mobile-First)', () => {
     lastActivityDate: '2026-11-08',
   };
 
-  it('renderiza corretamente os badges de gamificação e dados do aluno', () => {
+  it('renderiza corretamente os badges compactos de gamificação, streak semanal e dados do aluno', () => {
     render(<StudentHeader initialProfile={mockProfile} />);
 
     expect(screen.getByRole('heading', { name: /maria da silva/i })).toBeInTheDocument();
@@ -39,6 +39,10 @@ describe('StudentHeader (Gamificação e Perfil Mobile-First)', () => {
 
     const xpBadge = screen.getByTestId('student-xp-badge');
     expect(xpBadge).toHaveTextContent(/210 XP/);
+
+    const weeklyTracker = screen.getByTestId('weekly-streak-tracker');
+    expect(weeklyTracker).toBeInTheDocument();
+    expect(weeklyTracker).toHaveAttribute('aria-label', 'Hábito semanal: 3 de 7 dias ativos');
   });
 
   it('abre o modal acessível de perfil ao clicar no botão Editar', () => {

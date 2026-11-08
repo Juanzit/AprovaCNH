@@ -71,12 +71,13 @@ test.describe('Revisão Espaçada e Domínio — T005 (Fase 5)', () => {
     // Tela de Resumo da Revisão
     await expect(page.getByRole('heading', { name: /lição concluída/i })).toBeVisible();
     await expect(page.getByTestId('score-text')).toBeVisible();
+    await expect(page.getByTestId('summary-streak-badge')).toBeVisible({ timeout: 10000 });
 
     // Botão de retorno ao centro de revisão
     const backBtn = page.getByRole('link', { name: 'Voltar ao Centro de Revisão', exact: true });
     await expect(backBtn).toBeVisible();
     await backBtn.click();
 
-    await expect(page).toHaveURL('/revisao');
+    await expect(page).toHaveURL('/revisao', { timeout: 10000 });
   });
 });

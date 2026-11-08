@@ -23,7 +23,7 @@ export function OptionList({
 }: OptionListProps) {
   return (
     <fieldset className="w-full border-0 p-0 m-0">
-      {/* Banner de conteúdo demonstrativo ou oficial aprovado */}
+      {/* Banner de conteúdo demonstrativo ou baseado no MBFT */}
       {isExample ? (
         <div
           className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium"
@@ -34,11 +34,11 @@ export function OptionList({
         </div>
       ) : (
         <div
-          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium"
+          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold"
           role="note"
         >
           <CheckIcon className="w-4 h-4 shrink-0 text-emerald-600" />
-          <span>Questão Oficial Aprovada — Legislação Vigente (MBFT)</span>
+          <span>Questão baseada no MBFT — Legislação Vigente</span>
         </div>
       )}
 
@@ -54,7 +54,8 @@ export function OptionList({
           const isCorrectOption = option.id === correctOptionId;
 
           // Classes dinâmicas baseadas no estado
-          let stateStyle = 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800';
+          let stateStyle =
+            'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800';
 
           if (isAnswerSubmitted) {
             if (isCorrectOption) {

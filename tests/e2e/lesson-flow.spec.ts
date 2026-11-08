@@ -8,8 +8,11 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
       page.getByRole('heading', { name: /Sinalização de Trânsito/i })
     ).toBeVisible();
 
-    const startButton = page.getByRole('link', { name: /Continuar de onde parou/i });
+    const startButton = page.getByTestId('primary-unit-cta');
     await expect(startButton).toBeVisible();
+    await expect(startButton).toHaveText(
+      /Começar primeira sessão|Continuar estudando|Próxima sessão|Revisar unidade/i
+    );
     await startButton.click();
 
     await expect(page).toHaveURL(/\/licao\/sinalizacao/, { timeout: 15000 });
@@ -23,10 +26,12 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
 
     // Questão 1 (sin-001: Prevalência do Agente de Trânsito - Art. 195)
     await expect(page.getByText('Questão 1 de 5')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText(/Questão Oficial Aprovada/i)).toBeVisible();
+    await expect(page.getByText(/Questão baseada no MBFT — Legislação Vigente/i)).toBeVisible();
 
     // Selecionar alternativa 'b' (gabarito da Q1)
-    const radioQ1 = page.getByLabel(/As ordens do agente de trânsito têm prevalência sobre as normas de circulação/i);
+    const radioQ1 = page.getByLabel(
+      /As ordens do agente de trânsito têm prevalência sobre as normas de circulação/i
+    );
     await radioQ1.check();
     await expect(radioQ1).toBeChecked();
 
@@ -34,10 +39,13 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
     const confirmButton = page.getByRole('button', { name: /Confirmar resposta/i });
     await confirmButton.click();
 
-    // Feedback imediato
+    // Feedback imediato em formato de micro-aula (3 blocos)
     const feedbackStatus = page.getByRole('status');
     await expect(feedbackStatus).toBeVisible();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
+    await expect(page.getByTestId('explanation-block')).toBeVisible();
+    await expect(page.getByTestId('rule-summary-block')).toBeVisible();
+    await expect(page.getByTestId('legal-source-block')).toBeVisible();
     await expect(page.getByTestId('source-document')).toContainText('Resolução CONTRAN nº 985/2022');
     await expect(page.getByTestId('source-provision')).toContainText('Art. 195 (Ficha MBFT 583-50');
 
@@ -49,7 +57,9 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
 
     // Questão 2 (sin-002: Três Pressupostos de Caracterização da Infração do Art. 195)
     await expect(page.getByText('Questão 2 de 5')).toBeVisible();
-    const radioQ2 = page.getByLabel(/Ordem relativa à normatização do trânsito em geral; ordem emanada da autoridade ou do agente/i);
+    const radioQ2 = page.getByLabel(
+      /Ordem relativa à normatização do trânsito em geral; ordem emanada da autoridade ou do agente/i
+    );
     await radioQ2.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
@@ -57,7 +67,9 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
 
     // Questão 3 (sin-003: Formas de emissão da ordem e uso conjunto de apito)
     await expect(page.getByText('Questão 3 de 5')).toBeVisible();
-    const radioQ3 = page.getByLabel(/A ordem pode ser verbal ou escrita, bem como através de gestos ou sinais sonoros, sendo que os sinais sonoros de apito somente devem ser utilizados em conjunto com os gestos dos agentes/i);
+    const radioQ3 = page.getByLabel(
+      /A ordem pode ser verbal ou escrita, bem como através de gestos ou sinais sonoros, sendo que os sinais sonoros de apito somente devem ser utilizados em conjunto com os gestos dos agentes/i
+    );
     await radioQ3.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
@@ -65,7 +77,9 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
 
     // Questão 4 (sin-004: Autuação por desobediência a restrição médica na CNH)
     await expect(page.getByText('Questão 4 de 5')).toBeVisible();
-    const radioQ4 = page.getByLabel(/Condutor que desobedecer restrição imposta pela autoridade de trânsito, com base no exame de saúde/i);
+    const radioQ4 = page.getByLabel(
+      /Condutor que desobedecer restrição imposta pela autoridade de trânsito, com base no exame de saúde/i
+    );
     await radioQ4.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();
@@ -73,7 +87,9 @@ test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)
 
     // Questão 5 (sin-005: Conflito de enquadramento ordem de parada por gesto)
     await expect(page.getByText('Questão 5 de 5')).toBeVisible();
-    const radioQ5 = page.getByLabel(/Não autuar pelo Art. 195, devendo utilizar o enquadramento específico: 605-02, Art. 208 do CTB/i);
+    const radioQ5 = page.getByLabel(
+      /Não autuar pelo Art. 195, devendo utilizar o enquadramento específico: 605-02, Art. 208 do CTB/i
+    );
     await radioQ5.check();
     await page.getByRole('button', { name: /Confirmar resposta/i }).click();
     await expect(page.getByText('Resposta correta!')).toBeVisible();

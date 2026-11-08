@@ -7,7 +7,7 @@ export default async function ReviewPracticePage() {
   const questions = await getPriorityReviewQuestions(5);
 
   return (
-    <div className="w-full max-w-xl mx-auto px-4 py-4 md:py-6">
+    <div className="w-full max-w-2xl mx-auto px-4 sm:px-5 py-4 md:py-6">
       {/* Barra de Navegação Superior */}
       <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-200">
         <Link

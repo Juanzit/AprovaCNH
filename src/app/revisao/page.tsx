@@ -12,7 +12,7 @@ export default async function ReviewPage() {
   const dashboard = await getReviewDashboardData();
 
   return (
-    <div className="w-full max-w-xl mx-auto px-4 py-6 sm:py-8 space-y-6">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-5 py-5 sm:py-7 space-y-6">
       {/* Barra de Navegação Superior */}
       <div className="flex items-center justify-between pb-2 border-b border-slate-200">
         <Link
