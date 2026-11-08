@@ -113,8 +113,8 @@ export function mapAndValidateDatabaseQuestion(row: DatabaseQuestionRow): Valida
 
 /**
  * Busca questões aprovadas de um determinado tema no Supabase.
- * Se o banco ainda não contiver as tabelas ou se a consulta falhar,
- * recorre ao acervo local aprovado garantindo a continuidade do serviço.
+ * Se o banco ainda não contiver as tabelas, estiver em versão anterior ao acervo local
+ * ou se a consulta falhar, recorre ao acervo local aprovado (DETRAN-MG / SENATRAN v2).
  */
 export async function getApprovedQuestionsByTopic(
   topic = 'Sinalização de Trânsito',
@@ -181,6 +181,12 @@ export async function getApprovedQuestionsByTopic(
     const validatedQuestions = (data as unknown as DatabaseQuestionRow[]).map(
       mapAndValidateDatabaseQuestion
     );
+
+    // Se o banco ainda estiver na versão 1 (pré-atualização DETRAN-MG v2) e o fallback estiver ativo,
+    // entrega imediatamente a versão 2 atualizada sem quebrar o estudo do aluno.
+    if (options.fallbackToLocal && validatedQuestions.some((q) => q.version < 2)) {
+      return getFallbackApprovedQuestions();
+    }
 
     return validatedQuestions;
   } catch (err) {

@@ -33,7 +33,7 @@ describe('OptionList Component', () => {
     expect(demoNotice).toBeInTheDocument();
   });
 
-  it('deve renderizar exatamente quatro alternativas como inputs do tipo radio', () => {
+  it('deve renderizar o selo "Questão baseada no MBFT — Legislação Vigente" e quatro alternativas radio', () => {
     render(
       <OptionList
         statement="Qual a finalidade da sinalização?"
@@ -44,6 +44,10 @@ describe('OptionList Component', () => {
         onSelectOption={vi.fn()}
       />
     );
+
+    expect(
+      screen.getByText('Questão baseada no MBFT — Legislação Vigente')
+    ).toBeInTheDocument();
 
     const radios = screen.getAllByRole('radio');
     expect(radios).toHaveLength(4);

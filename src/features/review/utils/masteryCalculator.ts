@@ -1,5 +1,4 @@
 import type { UserAnswerRecord, MasteryStatus, SubtopicMastery } from '../types/review';
-import type { Question } from '@/features/lesson/types/question';
 
 export interface SubtopicMetadata {
   sessionId: number;
@@ -11,26 +10,26 @@ export interface SubtopicMetadata {
 export const UNIT_1_SUBTOPICS: SubtopicMetadata[] = [
   {
     sessionId: 1,
-    subtopic: 'Ordens do Agente e Prevalência (Art. 195)',
-    legalProvision: 'Art. 195 (Ficha MBFT 583-50)',
+    subtopic: 'Gestos do Agente, Sinais Sonoros e Hierarquia (Art. 89 e Art. 195)',
+    legalProvision: 'CTB Art. 89 e Art. 195 • Anexo II CONTRAN',
     questionIds: ['sin-001', 'sin-002', 'sin-003', 'sin-004', 'sin-005'],
   },
   {
     sessionId: 2,
-    subtopic: 'Início de Marcha e Parada (Art. 196)',
-    legalProvision: 'Art. 196 (Fichas MBFT 584-31 e 584-32)',
+    subtopic: 'Sinalização de Manobras, Seta e Gestos de Braço (Art. 35 e Art. 196)',
+    legalProvision: 'CTB Art. 35 e Art. 196 • Anexo II CONTRAN',
     questionIds: ['sin-006', 'sin-007', 'sin-008', 'sin-009', 'sin-010'],
   },
   {
     sessionId: 3,
-    subtopic: 'Mudança de Direção e Faixa (Art. 196)',
-    legalProvision: 'Art. 196 (Fichas MBFT 584-33 e 584-34)',
+    subtopic: 'Conversões, Preferência em Cruzamentos e Faixas (Art. 29, Art. 38 e Art. 196)',
+    legalProvision: 'CTB Art. 29, Art. 38 e Art. 196 • Anexo II CONTRAN',
     questionIds: ['sin-011', 'sin-012', 'sin-013', 'sin-014', 'sin-015'],
   },
   {
     sessionId: 4,
-    subtopic: 'Sinal Vermelho e Parada Obrigatória (Art. 208)',
-    legalProvision: 'Art. 208 (Fichas MBFT 605-01 e 605-02)',
+    subtopic: 'Semáforo, Parada Obrigatória (R-1/R-2) e Pedestres (Art. 208 e Art. 214)',
+    legalProvision: 'CTB Art. 44-A, Art. 70, Art. 208 e Art. 214 • Anexo II CONTRAN',
     questionIds: ['sin-016', 'sin-017', 'sin-018', 'sin-019', 'sin-020'],
   },
 ];

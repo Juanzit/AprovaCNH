@@ -13,7 +13,7 @@ export const GUEST_PROFILE: StudentProfile = {
   id: 'guest',
   email: 'visitante@aprovacnh.com.br',
   fullName: 'Estudante Visitante',
-  uf: null,
+  uf: 'MG',
   targetCategory: 'B',
   role: 'student',
   xpTotal: 0,
@@ -49,7 +49,7 @@ export async function getStudentProfile(): Promise<StudentProfile> {
         id: user.id,
         email: user.email ?? GUEST_PROFILE.email,
         fullName: user.user_metadata?.full_name ?? GUEST_PROFILE.fullName,
-        uf: user.user_metadata?.uf ?? null,
+        uf: user.user_metadata?.uf ?? 'MG',
         targetCategory: user.user_metadata?.target_category ?? 'B',
       };
     }
@@ -58,7 +58,7 @@ export async function getStudentProfile(): Promise<StudentProfile> {
       id: profile.id,
       email: profile.email,
       fullName: profile.full_name,
-      uf: profile.uf,
+      uf: profile.uf ?? 'MG',
       targetCategory: profile.target_category,
       role: (profile.role as StudentProfile['role']) ?? 'student',
       xpTotal: profile.xp_total ?? 0,
