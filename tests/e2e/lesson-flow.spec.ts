@@ -2,13 +2,13 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Fluxo da Lição de Sinalização — T002 (Piloto MBFT Aprovado)', () => {
   test('deve navegar da home para a lição de sinalização oficial', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'networkidle' });
 
     await expect(
-      page.getByRole('heading', { name: /Lição de Sinalização de Trânsito/i })
+      page.getByRole('heading', { name: /Sinalização de Trânsito/i })
     ).toBeVisible();
 
-    const startButton = page.getByRole('link', { name: /Iniciar lição de sinalização/i });
+    const startButton = page.getByRole('link', { name: /Continuar de onde parou/i });
     await expect(startButton).toBeVisible();
     await startButton.click();
 
