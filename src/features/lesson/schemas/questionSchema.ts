@@ -252,3 +252,16 @@ export type ValidatedQuestion = z.infer<typeof questionSchema>;
 export type ValidatedQuestionReview = z.infer<typeof questionReviewSchema>;
 export type ValidatedLessonSeed = z.infer<typeof lessonSeedSchema>;
 export type ValidatedQuestionBank = z.infer<typeof questionBankSchema>;
+
+/**
+ * Regra central e consistente de elegibilidade de questões para publicação e estudantes (Regra D010 / AGENTS.md).
+ * Uma questão SOMENTE é elegível para visualização do aluno (Lições, SRS, Simulado, Fallback) se possuir
+ * status editorial 'aprovada' e não for um rascunho/exemplo demonstrativo (isExample === false).
+ * Questões com status 'em_revisao', 'rascunho', 'suspensa' ou 'obsoleta' JAMAIS são elegíveis.
+ */
+export function isQuestionEligibleForStudents(q: {
+  status: string;
+  isExample?: boolean;
+}): boolean {
+  return q.status === 'aprovada' && !q.isExample;
+}

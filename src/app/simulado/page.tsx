@@ -2,16 +2,21 @@ import {
   getActiveExamConfig,
   getSimuladoHistory,
 } from '@/features/simulado/server/simuladoRepository';
+import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
 import { SimuladoHistoryList } from '@/features/simulado/components/SimuladoHistoryList';
 import { SimuladoDurationSelector } from '@/features/simulado/components/SimuladoDurationSelector';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SimuladoLobbyPage() {
-  const [config, history] = await Promise.all([
+  const [config, history, approvedQuestions] = await Promise.all([
     getActiveExamConfig('MG'),
     getSimuladoHistory(),
+    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
   ]);
+
+  const availableCount = approvedQuestions.length;
+  const isUnavailable = availableCount < config.totalQuestions;
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-5 py-5 sm:py-7 space-y-6">
@@ -118,8 +123,28 @@ export default async function SimuladoLobbyPage() {
           </ul>
         </div>
 
+        {isUnavailable && (
+          <div
+            role="alert"
+            data-testid="simulado-insufficient-alert"
+            className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs sm:text-sm space-y-1"
+          >
+            <strong className="block font-extrabold text-amber-900">
+              Simulado temporariamente indisponível:
+            </strong>
+            <p className="text-amber-900/90 leading-relaxed">
+              Simulado indisponível no momento: o acervo possui {availableCount} questões aprovadas, sendo necessárias {config.totalQuestions}. Nossa equipe editorial está revisando novas questões.
+            </p>
+          </div>
+        )}
+
         {/* Seletor de Duração (Padrão 60 min vs Tempo Dobrado 120 min Art. 33, § 2º) e CTA */}
-        <SimuladoDurationSelector defaultDurationMinutes={config.durationMinutes} />
+        <SimuladoDurationSelector
+          defaultDurationMinutes={config.durationMinutes}
+          isUnavailable={isUnavailable}
+          availableCount={availableCount}
+          requiredCount={config.totalQuestions}
+        />
 
         <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
           Nota de transparência: A plataforma AprovaCNH é independente e não possui vínculo com o DETRAN ou a SENATRAN. O conteúdo baseia-se em normas e dispositivos legais de domínio público (Art. 8º, IV da Lei nº 9.610/1998).

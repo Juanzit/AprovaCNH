@@ -4,12 +4,13 @@ import {
   getFallbackApprovedQuestions,
   getApprovedQuestionsByTopic,
 } from '@/features/lesson/server/questionRepository';
+import { isQuestionEligibleForStudents } from '@/features/lesson/schemas/questionSchema';
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(),
 }));
 
-describe('questionRepository (Anti-Corruption Layer)', () => {
+describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', () => {
   const validDbRow = {
     id: 'sin-db-001',
     version: 1,
@@ -101,28 +102,26 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
     expect(() => mapAndValidateDatabaseQuestion(invalidRow)).toThrow();
   });
 
-  it('carrega e valida os 30 registros do acervo local homologado via fallback (20 aprovadas e 10 em revisão)', () => {
+  // Requisito Obrigatório 1: Um conjunto com 20 aprovadas e 10 em revisão retorna somente 20 questões no fallback
+  it('carrega o acervo local via fallback e retorna EXCLUSIVAMENTE as 20 questões aprovadas (filtrando as 10 em revisão)', () => {
     const fallback = getFallbackApprovedQuestions();
-    expect(fallback.length).toBeGreaterThanOrEqual(30);
+    expect(fallback).toHaveLength(20);
 
-    const approved = fallback.filter((q) => q.status === 'aprovada');
-    expect(approved).toHaveLength(20);
-    approved.forEach((q) => {
+    fallback.forEach((q) => {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
       expect(q.options).toHaveLength(4);
       expect(q.source.verificationStatus).toBe('verified');
       expect(q.review?.approvedBy).toBeTruthy();
     });
 
-    const inReview = fallback.filter((q) => q.status === 'em_revisao');
-    expect(inReview).toHaveLength(10);
-    inReview.forEach((q) => {
-      expect(q.options).toHaveLength(4);
-      expect(q.source.verificationStatus).toBe('pending');
-      expect(q.review?.approvedBy).toBeNull();
-    });
+    const anyInReview = fallback.some((q) => q.status === 'em_revisao');
+    expect(anyInReview).toBe(false);
   });
 
-  it('retorna os dados do fallback quando o cliente Supabase lança exceção ou erro', async () => {
+  // Requisito Obrigatório 5: Nenhuma questão em revisão chega à lição, SRS, fallback ou simulado
+  it('garante que nenhuma questão com status em_revisao é retornada por getApprovedQuestionsByTopic via fallback', async () => {
     const { createClient } = await import('@/lib/supabase/server');
     vi.mocked(createClient).mockResolvedValueOnce({
       from: vi.fn().mockReturnValue({
@@ -131,7 +130,7 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
             ilike: vi.fn().mockReturnValue({
               order: vi.fn().mockResolvedValue({
                 data: null,
-                error: new Error('Tabela não encontrada'),
+                error: new Error('Tabela não migrada'),
               }),
             }),
           }),
@@ -140,7 +139,33 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
     } as unknown as Awaited<ReturnType<typeof createClient>>);
 
     const questions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-    expect(questions.length).toBeGreaterThanOrEqual(30);
-    expect(questions[0].id).toBe('sin-001');
+    expect(questions).toHaveLength(20);
+    questions.forEach((q) => {
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
+    });
+    expect(questions.some((q) => q.status === 'em_revisao')).toBe(false);
+  });
+
+  // Requisito Obrigatório 6: A ausência de questões aprovadas não causa retorno indiscriminado do JSON
+  it('a ausência de questões aprovadas no banco e no fallback não causa retorno indiscriminado do JSON (retorna array vazio)', async () => {
+    const { createClient } = await import('@/lib/supabase/server');
+    vi.mocked(createClient).mockResolvedValueOnce({
+      from: vi.fn().mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            ilike: vi.fn().mockReturnValue({
+              order: vi.fn().mockResolvedValue({
+                data: [],
+                error: null,
+              }),
+            }),
+          }),
+        }),
+      }),
+    } as unknown as Awaited<ReturnType<typeof createClient>>);
+
+    const questions = await getApprovedQuestionsByTopic('Topico Inexistente Sem Fallback', { fallbackToLocal: false });
+    expect(questions).toEqual([]);
   });
 });

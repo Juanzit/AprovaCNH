@@ -1,4 +1,5 @@
 import type { Question } from '@/features/lesson/types/question';
+import { isQuestionEligibleForStudents } from '@/features/lesson/schemas/questionSchema';
 import type {
   ExamConfig,
   SimuladoEvaluatedItem,
@@ -47,6 +48,24 @@ export function shuffleArray<T>(items: readonly T[], rng: () => number = Math.ra
  * das questões e das alternativas, até que o acervo seja expandido com os demais módulos
  * (Direção Defensiva, Primeiros Socorros, Mecânica Básica e Meio Ambiente).
  */
+/**
+ * Erro de domínio controlado quando o acervo de questões aprovadas é insuficiente
+ * para compor um simulado completo e fidedigno (Regra D010 / AGENTS.md).
+ */
+export class InsufficientApprovedQuestionsError extends Error {
+  readonly requiredCount: number;
+  readonly availableCount: number;
+
+  constructor(requiredCount: number, availableCount: number) {
+    super(
+      `Acervo insuficiente para gerar simulado oficial: são necessárias ${requiredCount} questões aprovadas, mas apenas ${availableCount} estão elegíveis.`
+    );
+    this.name = 'InsufficientApprovedQuestionsError';
+    this.requiredCount = requiredCount;
+    this.availableCount = availableCount;
+  }
+}
+
 export function generateSimuladoQuestions(
   questionBank: readonly Question[],
   options: {
@@ -59,19 +78,31 @@ export function generateSimuladoQuestions(
   const targetUf = options.uf?.trim().toUpperCase() || null;
   const rng = createRng(options.seed);
 
+  // 1. Filtragem estrita: EXCLUSIVAMENTE questões com status 'aprovada' e isExample === false
   const eligiblePool = questionBank.filter((q) => {
-    if (q.isExample) return false;
-    if (q.status !== 'aprovada' && q.status !== 'em_revisao') return false;
+    if (!isQuestionEligibleForStudents(q)) return false;
     if (!targetUf || q.ufs.length === 0) return true;
     return q.ufs.includes(targetUf);
   });
 
-  const basePool = eligiblePool.length > 0 ? eligiblePool : [...questionBank];
-  if (basePool.length === 0) {
-    return [];
+  // 2. Deduplicação por ID para garantir 100% de questões distintas
+  const uniqueById = new Map<string, Question>();
+  for (const q of eligiblePool) {
+    if (!uniqueById.has(q.id)) {
+      uniqueById.set(q.id, q);
+    }
+  }
+  const distinctQuestions = Array.from(uniqueById.values());
+
+  // 3. Regra Mandatória: Não utilizar questionBank integral como fallback
+  // Se o número de questões aprovadas e distintas for menor que o total exigido (ex: 30),
+  // falha imediatamente com erro de domínio controlado (não gerar prova incompleta ou adulterada).
+  if (distinctQuestions.length < totalQuestions) {
+    throw new InsufficientApprovedQuestionsError(totalQuestions, distinctQuestions.length);
   }
 
-  const shuffledPass = shuffleArray(basePool, rng);
+  // 4. Embaralhamento determinístico e seleção
+  const shuffledPass = shuffleArray(distinctQuestions, rng);
   const selectedQuestions = shuffledPass.slice(0, totalQuestions);
 
   return selectedQuestions.map((question, idx) => ({

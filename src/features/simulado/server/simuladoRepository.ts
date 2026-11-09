@@ -16,6 +16,7 @@ import {
   evaluateSimuladoSubmission,
   generateSimuladoQuestions,
 } from '../utils/simuladoGenerator';
+export { InsufficientApprovedQuestionsError } from '../utils/simuladoGenerator';
 
 interface DbExamConfigRow {
   id: string;

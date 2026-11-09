@@ -1,5 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
-import { questionSchema, type ValidatedQuestion } from '../schemas/questionSchema';
+import {
+  isQuestionEligibleForStudents,
+  questionSchema,
+  type ValidatedQuestion,
+} from '../schemas/questionSchema';
 import fallbackQuestionsRaw from '@/data/questions-sinalizacao.json';
 
 interface DatabaseQuestionRow {
@@ -178,9 +182,9 @@ export async function getApprovedQuestionsByTopic(
     }
 
     // Passa todos os registros pela Anti-Corruption Layer do Zod
-    const validatedQuestions = (data as unknown as DatabaseQuestionRow[]).map(
-      mapAndValidateDatabaseQuestion
-    );
+    const validatedQuestions = (data as unknown as DatabaseQuestionRow[])
+      .map(mapAndValidateDatabaseQuestion)
+      .filter(isQuestionEligibleForStudents);
 
     // Se o banco ainda estiver na versão 1 (pré-atualização DETRAN-MG v2) e o fallback estiver ativo,
     // entrega imediatamente a versão 2 atualizada sem quebrar o estudo do aluno.
@@ -197,7 +201,7 @@ export async function getApprovedQuestionsByTopic(
             byId.set(q.id, q);
           }
         }
-        return Array.from(byId.values());
+        return Array.from(byId.values()).filter(isQuestionEligibleForStudents);
       }
     }
 
@@ -214,5 +218,5 @@ export async function getApprovedQuestionsByTopic(
  * Carrega e valida o acervo local homologado como fallback seguro.
  */
 export function getFallbackApprovedQuestions(): ValidatedQuestion[] {
-  return (fallbackQuestionsRaw as unknown[]).map((q) => questionSchema.parse(q));
+  return (fallbackQuestionsRaw as unknown[]).map((q) => questionSchema.parse(q)).filter(isQuestionEligibleForStudents);
 }
