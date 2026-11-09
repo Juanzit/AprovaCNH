@@ -8,10 +8,11 @@
   - **Commit 2 (Documentação e Testes):** `7c567a58ee73af2057c2ed490cb9d01b725aa001`
   - **Commit 3 (Auditoria de Colunas & Retificação RLS):** `58c70ae7db19a3fed25235fe0f3406cd083044b5`
   - **Commit 4 (Evidência CI Run #42699523402):** `8930e344c553a02b1cf4d0ec9f9f09245b260445`
-  - **Commit 5 (Exposição de Dados P0, Migration 000009 e it.skipIf na Integração):** *(A ser gerado nesta entrega)*
+  - **Commit 5 (Exposição de Dados P0, Migration 000009 e it.skipIf na Integração):** `6633a16914e80411e9d1730f4f6df53997cfa248`
 - **Execuções Homologadas na CI GitHub Actions:**
   - [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001` — **100% Green**)
   - [Run #42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (SHA `58c70ae7db19a3fed25235fe0f3406cd083044b5` — **100% Green**)
+  - [Run #42707277045](https://github.com/Juanzit/AprovaCNH/actions/runs/42707277045) (SHA `6633a16914e80411e9d1730f4f6df53997cfa248` — **100% Green**)
 - **Repositório:** Juanzit/AprovaCNH
 - **Responsável Técnico / Auditor:** Antigravity (Senior Software Engineer / Pair Programming)
 - **Status do Merge na Main:** **NÃO MERGEADO** (Branch isolada estritamente preservada)
@@ -254,9 +255,12 @@ A experiência discente e as travas de segurança foram verificadas de ponta a p
 - **Execuções Homologadas Recentes:**
   - [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001`) — `success`
   - [Run #42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (SHA `58c70ae7db19a3fed25235fe0f3406cd083044b5`) — `success`
+  - [Run #42707277045](https://github.com/Juanzit/AprovaCNH/actions/runs/42707277045) (SHA `6633a16914e80411e9d1730f4f6df53997cfa248`) — `success`
+- **Status do Job:** `completed` | **Conclusion:** `success` (**100% Green**)
+- **Checkout Confirmado:** SHA `6633a16914e80411e9d1730f4f6df53997cfa248`
 - **Resultados dos Gates na Nuvem do GitHub Actions:**
   1. `Set up job`: **success**
-  2. `Checkout repository`: **success**
+  2. `Checkout repository`: **success** (commit `6633a16`)
   3. `Install pnpm`: **success** (versão `12.18.0` configurada via action `setup-pnpm@v4`)
   4. `Setup Node.js`: **success** (Node.js 24 runner)
   5. `Install dependencies`: **success** (`pnpm install --frozen-lockfile`)
@@ -285,7 +289,7 @@ A experiência discente e as travas de segurança foram verificadas de ponta a p
 | **Interface: bloqueio de rota direta e retorno seguro ao lobby** | `✅ COMPROVADO` | Playwright E2E (`simulado-flow.spec.ts`) valida `/simulado/prova` -> contingência -> retorno ao lobby. |
 | **Coerência e exatidão normativa de `sin-021` a `sin-030` (JSON)** | `✅ COMPROVADO` | URLs do Planalto conferidas; didática não normativa de `sin-021` removida; fundamentação positiva estrita no CTB Art. 29, II. |
 | **Distinção entre MBST (sinalização) e MBFT (fiscalização complementar)** | `✅ COMPROVADO` | Subtítulo e identificação corrigidos em `TrackUnitCard.tsx` (MBST Res. 973/2022 c/c MBFT Res. 985/2022 e 1.031/2026). |
-| **Execução dos 5 gates de CI no GitHub Actions com pnpm 12** | `✅ COMPROVADO` | Runs [#42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (`7c567a5`) e [#42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (`58c70ae`) com 100% de sucesso. |
+| **Execução dos 5 gates de CI no GitHub Actions com pnpm 12** | `✅ COMPROVADO` | Runs [#42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (`7c567a5`), [#42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (`58c70ae`) e [#42707277045](https://github.com/Juanzit/AprovaCNH/actions/runs/42707277045) (`6633a16`) com 100% de sucesso. |
 | **Exposição explícita de teste de integração ignorado na CI (`it.skipIf`)** | `✅ COMPROVADO` | `supabase-live.test.ts` marca `1 skipped` na presença de URL mock, sem falso-positivo de aprovação de banco. |
 | **Simulação de segurança contra exposição de colunas e cenários negativos** | `✅ COMPROVADO` | `dataExposureSecurity.test.ts` valida 13 cenários de permissão de coluna, bloqueio de gabarito e RPC autoritativa. |
 | **Proposta cirúrgica da migration 000007 sem sobrescrita de conteúdo** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Validada estruturalmente em `migrationIntegrity.test.ts`, porém sem execução em banco PostgreSQL real. |
