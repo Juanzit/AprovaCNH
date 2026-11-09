@@ -159,9 +159,11 @@ describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Disc
     ).toThrow(InsufficientApprovedQuestionsError);
   });
 
-  // 8. Caminho 5: RLS PostgREST — Regra estrita de leitura discente no banco (P0)
-  it('Caminho 5 (RLS PostgREST): a regra estrita de RLS bloqueia rascunhos, revisões e exemplos em consultas diretas', () => {
-    // Função predicativa idêntica à cláusula USING da política questions_select_student (migration 000008)
+  // 8. Caminho 5: Lógica Predicativa em Memória — Simulação de regra booleana em TypeScript
+  // NOTA DE ESCOPO: Este teste unitário valida unicamente a álgebra booleana do predicado em memória.
+  // Ele NÃO executa chamadas PostgREST nem atesta a aplicação de políticas RLS em banco PostgreSQL real.
+  it('Caminho 5 (Validação Lógica em TypeScript): validação unitária em memória do predicado booleano de elegibilidade discente', () => {
+    // Função predicativa em memória equivalente à regra teórica de elegibilidade discente
     const canStudentSelectQuestion = (row: { status: string; is_example: boolean }): boolean => {
       return row.status === 'aprovada' && row.is_example === false;
     };
