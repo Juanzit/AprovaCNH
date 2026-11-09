@@ -97,7 +97,7 @@ export function SimuladoReviewList({ result, items: propItems }: SimuladoReviewL
               (o) => o.id === item.selectedOptionId
             );
             const correctOption = question.options.find(
-              (o) => o.id === question.correctOptionId
+              (o) => o.id === item.correctOptionId
             );
 
             return (
@@ -171,7 +171,7 @@ export function SimuladoReviewList({ result, items: propItems }: SimuladoReviewL
                     <p className="mt-1 font-semibold">
                       {correctOption
                         ? `${correctOption.id.toUpperCase()}) ${correctOption.text}`
-                        : question.correctOptionId.toUpperCase()}
+                        : item.correctOptionId.toUpperCase()}
                     </p>
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export function SimuladoReviewList({ result, items: propItems }: SimuladoReviewL
                     <strong className="font-extrabold text-slate-900 block mb-0.5">
                       Por que essa resposta está correta?
                     </strong>
-                    <p className="text-slate-700 leading-relaxed">{question.explanation}</p>
+                    <p className="text-slate-700 leading-relaxed">{item.explanation}</p>
                   </div>
 
                   <div className="pt-2 border-t border-slate-200/70 text-[11px] text-slate-600 flex flex-wrap items-center justify-between gap-2">

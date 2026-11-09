@@ -212,7 +212,8 @@ describe('Simulado Configurável — Regras D007, Segurança Editorial e Valida�
       durationSeconds: 1850,
       timedOut: false,
       items: items.map((item, idx) => {
-        const rightOpt = item.question.correctOptionId;
+        const fullQ = thirtyApproved.find((q) => q.id === item.question.id)!;
+        const rightOpt = fullQ.correctOptionId;
         const wrongOpt = rightOpt === 'a' ? 'b' : 'a';
         return {
           questionOrder: item.questionOrder,
@@ -242,12 +243,15 @@ describe('Simulado Configurável — Regras D007, Segurança Editorial e Valida�
       startedAt: '2026-11-08T18:00:00.000Z',
       durationSeconds: 3600,
       timedOut: true,
-      items: items.map((item, idx) => ({
-        questionOrder: item.questionOrder,
-        questionId: item.question.id,
-        selectedOptionId: idx < 19 ? item.question.correctOptionId : null,
-        isMarkedForReview: idx === 25,
-      })),
+      items: items.map((item, idx) => {
+        const fullQ = thirtyApproved.find((q) => q.id === item.question.id)!;
+        return {
+          questionOrder: item.questionOrder,
+          questionId: item.question.id,
+          selectedOptionId: idx < 19 ? fullQ.correctOptionId : null,
+          isMarkedForReview: idx === 25,
+        };
+      }),
     };
 
     const result = evaluateSimuladoSubmission(submission, thirtyApproved, DEFAULT_EXAM_CONFIG);

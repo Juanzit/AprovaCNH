@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
-import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
+import { getApprovedQuestionsByTopic, getAuthoritativeQuestionsForServer } from '@/features/lesson/server/questionRepository';
+import { toStudentQuestion } from '@/features/lesson/schemas/questionSchema';
 import { calculateDailyStreak } from '@/features/progress/utils/streakCalculator';
 import {
   DEFAULT_EXAM_CONFIG,
@@ -94,7 +95,7 @@ export async function initializeSimuladoSession(options?: {
 }> {
   const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig(options?.uf ?? 'MG'),
-    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    getAuthoritativeQuestionsForServer(),
   ]);
 
   const config: ExamConfig = options?.durationMinutes
@@ -153,7 +154,9 @@ export async function initializeSimuladoSession(options?: {
             if (q) {
               restoredItems.push({
                 questionOrder: ans.question_order,
-                question: q,
+                question: toStudentQuestion(q),
+
+
               });
             }
           }
@@ -242,7 +245,7 @@ export async function submitAndEvaluateSimulado(rawPayload: unknown): Promise<{
   const payload = parsed.data;
   const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig('MG'),
-    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    getAuthoritativeQuestionsForServer(),
   ]);
 
   const config: ExamConfig = payload.durationMinutes
@@ -398,7 +401,7 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
         .eq('simulado_id', simuladoId)
         .order('question_order', { ascending: true }),
       getActiveExamConfig('MG'),
-      getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+      getAuthoritativeQuestionsForServer(),
     ]);
 
     const questionMap = new Map(questions.map((q) => [q.id, q]));
@@ -413,7 +416,11 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
 
       evaluatedItems.push({
         questionOrder: row.question_order,
-        question: q,
+        question: toStudentQuestion(q),
+
+
+        correctOptionId: q.correctOptionId,
+        explanation: q.explanation,
         selectedOptionId,
         isMarkedForReview: Boolean(row.is_marked_for_review),
         isCorrect:

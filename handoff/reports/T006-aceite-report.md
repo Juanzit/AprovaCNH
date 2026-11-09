@@ -1,6 +1,6 @@
 # Relatório de Auditoria, Aceite Editorial e Homologação Técnica — Fase 6 (T006 P0)
 - **Data:** 09/11/2026
-- **Tarefa:** T006 — Simulado Configurável (Saneamento P0 de Publicação, Blindagem RLS, Resolução de Exposição de Colunas e Auditoria Normativa)
+- **Tarefa:** T006 — Simulado Configurável (Saneamento P0 de Publicação, Blindagem RLS, Resolução de Exposição de Colunas, Redesenho Anti-Oráculo da RPC e Isolamento de Gabarito no Frontend)
 - **Branch de Trabalho:** `fix/T006-publicacao-segura-pos-merge`
 - **Base da Main:** `b31937f2755d98c9f6dd7eb72d1bc22121d9307a`
 - **Rastreabilidade de Commits da Rodada:**
@@ -9,6 +9,7 @@
   - **Commit 3 (Auditoria de Colunas & Retificação RLS):** `58c70ae7db19a3fed25235fe0f3406cd083044b5`
   - **Commit 4 (Evidência CI Run #42699523402):** `8930e344c553a02b1cf4d0ec9f9f09245b260445`
   - **Commit 5 (Exposição de Dados P0, Migration 000009 e it.skipIf na Integração):** `6633a16914e80411e9d1730f4f6df53997cfa248`
+  - **Commit 6 (Eliminação da RPC Oráculo, Blindagem Anti-Força Bruta e Isolamento Físico no Frontend):** `4d0c2cc7c661288c4bd96d3b8c502248742d1e32`
 - **Execuções Homologadas na CI GitHub Actions:**
   - [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001` — **100% Green**)
   - [Run #42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (SHA `58c70ae7db19a3fed25235fe0f3406cd083044b5` — **100% Green**)
@@ -25,257 +26,157 @@
 
 ### 1.1 Diagnóstico de Prontidão da T006
 - **A T006 está pronta ou ainda não está pronta para homologação em produção?**
-  **A T006 NÃO ESTÁ FORMALMENTE HOMOLOGADA PARA PRODUÇÃO**, pois persistem bloqueadores editoriais e de infraestrutura inegociáveis:
+  **A T006 NÃO ESTÁ FORMALMENTE HOMOLOGADA PARA PRODUÇÃO**, pois persistem bloqueadores editoriais e de governança inegociáveis:
   1. **Aprovação Editorial Humana das 10 Questões Complementares (`sin-021` a `sin-030`):** O acervo da aplicação dispõe de **20 questões aprovadas** (`sin-001` a `sin-020`) e **10 questões em revisão** (`sin-021` a `sin-030`). As 10 questões aguardam aprovação nominal humana do Tech Lead para integrarem o acervo oficial.
   2. **Regra de Segurança de Publicação (D010 e AGENTS.md):** Questões em revisão ou exemplos jamais são disponibilizadas para estudantes. O gerador de simulado temático recusa-se a iniciar provas com estoque inferior a 30 questões aprovadas (`InsufficientApprovedQuestionsError`).
   3. **Interface e Contingência Segura:** A tela inicial mantém o botão `Acessar Simulado Temático →` ativo para conduzir o estudante ao lobby informativo (`/simulado`). No lobby, o sistema exibe o alerta `simulado-insufficient-alert` ("20/30 questões aprovadas") com o botão de início desabilitado (`Simulado Indisponível`). Qualquer tentativa de acesso direto a `/simulado/prova` é bloqueada com mensagem clara de acervo em homologação e botão de retorno seguro ao lobby.
-  4. **Exposição de Colunas Sensíveis e Metadados Editoriais (P0):** A arquitetura de contenção foi projetada por meio da migration incremental `20261109000009_protect_internal_columns_and_reviews.sql` (Column-Level Security, View Sanitizada `student_questions` com `security_invoker = true` e RPC autoritativa `verify_student_answer`). Por diretriz de governança, o script permanece versionado localmente e **não foi aplicado no banco Supabase remoto**.
-  5. **Separação Rigorosa do Teste de Integração Remota:** O arquivo `tests/integration/supabase-live.test.ts` foi refatorado para utilizar `it.skipIf(isMockOrMissing)`. Em ambientes de CI onde a URL é mockada (`https://mock.supabase.co`), o teste é formalmente **IGNORADO (skipped)** e não é contabilizado como teste aprovado. A ausência de falhas na CI decorre do isolamento dos testes e não comprova conectividade remota ou aplicação de RLS no banco em nuvem.
+  4. **Eliminação do Oráculo de Respostas e Blindagem de Submissão (P0):** A versão anterior da RPC `verify_student_answer` aceitava combinações avulsas de `(p_question_id, p_selected_option_id)` e retornava imediatamente o gabarito. Essa vulnerabilidade foi totalmente erradicada: a migration 000009 foi reestruturada para vincular toda resposta a uma tentativa real persistida (`record_simulado_answer`), impor imutabilidade à primeira submissão, proibir respostas repetidas (anti-força bruta) e liberar gabaritos exclusivamente após o término da tentativa (`finish_and_evaluate_simulado`).
+  5. **Isolamento Físico de Dados no Frontend (P0):** Criado o DTO público `StudentQuestion` (isento de `correctOptionId`, `explanation` e `review`) consumido estritamente pelos componentes visuais (`SimuladoQuestionCard`, `LessonContainer`, `OptionList`). A validação pedagógica de lições foi migrada para a Server Action `verifyLessonAnswerAction`, impedindo que os payloads RSC e o HTML transmitam antecipadamente o gabarito aos navegadores.
+  6. **Governança de Migrations:** Por diretriz estrita de segurança, as migrations incrementais `000007`, `000008` e `000009` permanecem versionadas no repositório e **não foram executadas no banco Supabase remoto**.
 
 ---
 
-## 2. P0 — Auditoria e Blindagem das Políticas RLS do Supabase (Migration 000008)
+## 2. P0 — Eliminação do Oráculo de Respostas e Redesenho Anti-Força Bruta (Migration 000009)
 
-### 2.1 Diagnóstico da Exposição nas Políticas da Migration 000000
-A inspeção da migration inicial [`supabase/migrations/20261108000000_create_initial_schema.sql`](file:///c:/Projetos/AprovaCNH/supabase/migrations/20261108000000_create_initial_schema.sql) revelou que as políticas de leitura discente (`questions_select_student`, `sources_select_student` e `reviews_select_student`) utilizavam a cláusula permissiva:
-```sql
-status = 'aprovada' OR (is_example = true AND status = 'rascunho')
+### 2.1 Análise da Vulnerabilidade da Versão Anterior
+A primeira proposta da RPC `verify_student_answer(p_question_id, p_selected_option_id)` sofria de fraquezas de segurança:
+1. **Oráculo de Gabarito:** Como a função era stateless (não exigia tentativa criada), um agente externo ou script no navegador podia enviar chamadas sequenciais para `'a'`, `'b'`, `'c'`, `'d'`, descobrindo o gabarito instantaneamente sem registro de prova.
+2. **Retorno Inoportuno:** A função retornava `correct_option_id` diretamente no payload mesmo em caso de erro, facilitando a extração do acervo.
+3. **Ausência de Vínculo de Tentativa:** Não havia correlação com uma sessão em andamento nem controle de propriedade do usuário.
+
+### 2.2 Nova Arquitetura de RPCs Stateful e Vinculadas à Tentativa
+A migration incremental [`supabase/migrations/20261109000009_protect_internal_columns_and_reviews.sql`](file:///c:/Projetos/AprovaCNH/supabase/migrations/20261109000009_protect_internal_columns_and_reviews.sql) foi completamente redesenhada com base em princípios de menor privilégio e integridade transacional:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Aluno as Estudante / Visitante
+    participant Client as Frontend (StudentQuestion DTO)
+    participant RPC_Rec as RPC record_simulado_answer
+    participant DB as Postgres (simulado_sessions / answers)
+    participant RPC_Fin as RPC finish_and_evaluate_simulado
+
+    Note over Client: Início do Simulado (sem gabarito)
+    Aluno->>Client: Seleciona alternativa "b"
+    Client->>RPC_Rec: record_simulado_answer(session_id, q_id, "b", guest_token)
+    RPC_Rec->>DB: Valida sessão 'in_progress', posse (auth.uid/token) e questão
+    RPC_Rec->>DB: Verifica duplicidade: SE JÁ RESPONDIDA -> REJEITA (Imutabilidade)
+    RPC_Rec->>DB: INSERT INTO simulado_answers
+    RPC_Rec-->>Client: { success: true, recorded: true } (SEM GABARITO)
+    Note over Client: Término da prova
+    Aluno->>Client: Clica em "Finalizar Simulado"
+    Client->>RPC_Fin: finish_and_evaluate_simulado(session_id, guest_token)
+    RPC_Fin->>DB: UPDATE session status = 'completed', calcula score
+    RPC_Fin->>DB: Carrega gabaritos e explicações oficiais
+    RPC_Fin-->>Client: { success: true, score: 20, items: [gabarito + fundamentacao] }
 ```
-Como o banco concedia `GRANT SELECT` genérico aos papéis `anon` e `authenticated`, essa política permitia que qualquer cliente consultando a API PostgREST diretamente obtivesse:
-1. Questões marcadas como `status = 'rascunho'` desde que possuíssem `is_example = true`.
-2. Questões marcadas como `status = 'aprovada'` mesmo quando marcadas como `is_example = true` (questões demonstrativas).
-3. Fontes e revisões associadas a essas questões em `question_sources` e `question_reviews`.
 
-### 2.2 Proposta de Migration Incremental Corretiva (000008)
-Foi criada a migration incremental [`supabase/migrations/20261109000008_harden_rls_student_eligibility.sql`](file:///c:/Projetos/AprovaCNH/supabase/migrations/20261109000008_harden_rls_student_eligibility.sql), **sem alterar retroativamente a migration inicial da main** e **sem execução remota**:
-1. **`questions_select_student`:** Exige estritamente `status = 'aprovada' AND is_example = false`.
-2. **`sources_select_student`:** Condicionada a `EXISTS (SELECT 1 FROM questions WHERE id = question_sources.question_id AND status = 'aprovada' AND is_example = false)`.
-3. **`reviews_select_student`:** Condicionada a `EXISTS (SELECT 1 FROM questions WHERE id = question_reviews.question_id AND status = 'aprovada' AND is_example = false)`.
-
----
-
-## 3. P0 — Resolução de Exposição de Colunas e Dados Internos (Migration 000009)
-
-### 3.1 Mapeamento e Inspeção de Consumidores Atuais das Tabelas
-Foi realizada uma auditoria exaustiva em todos os pontos de consumo de banco na base de código:
-1. **`src/features/lesson/server/questionRepository.ts` (`getApprovedQuestionsByTopic`):**
-   - Consome a tabela `questions` unindo `question_sources` e `question_reviews` para renderizar as lições interativas.
-   - Utiliza `createServerClient` do Supabase via cookies/sessão discente.
-   - *Impacto e Resolução:* A leitura discente não deve receber `question_reviews`. O schema Zod (`questionSchema.ts`) define `review: questionReviewSchema.nullable().optional()`, permitindo que o cliente de estudante receba `review: null` sem violar a validação.
-2. **`src/features/simulado/server/simuladoRepository.ts` (`startSimuladoSession` e `submitAndEvaluateSimulado`):**
-   - Consome `questions` para gerar os itens da prova e realiza a avaliação das respostas **autoritativamente no servidor** (`evaluateSimuladoSubmission`).
-   - *Impacto e Resolução:* Em exames sob cronômetro, os estudantes não podem ter acesso ao gabarito (`correct_option_id`) ou explicação didática (`explanation`) na requisição de rede ou no PostgREST antes da finalização do exame.
-3. **`src/features/progress/server/progressRepository.ts` e `src/features/review/server/reviewRepository.ts`:**
-   - Consomem `profiles`, `lesson_progress`, `user_answers` e `xp_transactions`. Não realizam leitura de dados sensíveis nem expõem colunas internas de auditoria.
-
-### 3.2 Arquitetura de Contenção da Migration 000009
-Como a RLS restringe apenas linhas (tuplas) e não colunas quando há `GRANT SELECT` amplo, foi desenvolvida a migration incremental [`supabase/migrations/20261109000009_protect_internal_columns_and_reviews.sql`](file:///c:/Projetos/AprovaCNH/supabase/migrations/20261109000009_protect_internal_columns_and_reviews.sql):
-
-1. **Revogação Total de Acesso a `question_reviews`:**
-   ```sql
-   REVOKE ALL ON public.question_reviews FROM anon, authenticated;
-   DROP POLICY IF EXISTS reviews_select_student ON public.question_reviews;
-   ```
-   - *Efeito:* Estudantes e usuários anônimos são completamente impedidos de ler `verification_notes` (anotações de auditoria), `generator_model`, `verifier_model`, `approved_by` e `approved_at`.
-   - *Preservação Editorial:* O painel editorial e tarefas administrativas preservam seu acesso pleno no servidor via papel de serviço (`service_role`) ou funções com privilégios elevados.
-2. **Column-Level Security (CLS) em `public.questions`:**
-   ```sql
-   REVOKE SELECT ON public.questions FROM anon, authenticated;
-
-   GRANT SELECT (
-     id,
-     version,
-     statement,
-     options,
-     topic,
-     subtopic,
-     ufs,
-     categories,
-     status,
-     is_example
-   ) ON public.questions TO anon, authenticated;
-   ```
-   - *Efeito:* Tentativas diretas de consulta a `correct_option_id` ou `explanation` por clientes `anon` ou `authenticated` resultam imediatamente em `403 Forbidden` (`permission denied for column ... of relation questions`).
-3. **Interface Sanitizada Discente (View `public.student_questions`):**
-   ```sql
-   CREATE OR REPLACE VIEW public.student_questions
-   WITH (security_invoker = true)
-   AS
-   SELECT
-     q.id,
-     q.version,
-     q.statement,
-     q.options,
-     q.topic,
-     q.subtopic,
-     q.ufs,
-     q.categories,
-     q.status,
-     q.is_example
-   FROM public.questions q
-   WHERE q.status = 'aprovada' AND q.is_example = false;
-
-   GRANT SELECT ON public.student_questions TO anon, authenticated;
-   ```
-   - *Avaliação de RLS e Security Invoker:* A cláusula `WITH (security_invoker = true)` assegura que o PostgreSQL execute a consulta da View sob o contexto do usuário chamador (`anon`/`authenticated`), aplicando estritamente as políticas de RLS e os grants de coluna da tabela base `questions`. Não há risco de bypass de privilégios como ocorreria em views com `SECURITY DEFINER`.
-4. **RPC Autoritativa para Verificação de Respostas (`verify_student_answer`):**
-   ```sql
-   CREATE OR REPLACE FUNCTION public.verify_student_answer(
-     p_question_id text,
-     p_selected_option_id text
-   )
-   RETURNS jsonb
-   LANGUAGE plpgsql
-   SECURITY DEFINER
-   SET search_path = public
-   AS $$
-   DECLARE
-     v_correct_option_id text;
-     v_explanation text;
-     v_status text;
-     v_is_example boolean;
-   BEGIN
-     SELECT correct_option_id, explanation, status, is_example
-     INTO v_correct_option_id, v_explanation, v_status, v_is_example
-     FROM public.questions
-     WHERE id = p_question_id;
-
-     IF NOT FOUND OR v_status != 'aprovada' OR v_is_example = true THEN
-       RETURN jsonb_build_object(
-         'success', false,
-         'error', 'Questão não encontrada ou não elegível para resolução.'
-       );
-     END IF;
-
-     RETURN jsonb_build_object(
-       'success', true,
-       'question_id', p_question_id,
-       'is_correct', (v_correct_option_id = p_selected_option_id),
-       'correct_option_id', v_correct_option_id,
-       'explanation', v_explanation
-     );
-   END;
-   $$;
-
-   GRANT EXECUTE ON FUNCTION public.verify_student_answer(text, text) TO anon, authenticated;
-   ```
-   - *Efeito:* O estudante recebe o feedback formativo e a justificativa didática **apenas após submeter sua alternativa**, eliminando qualquer possibilidade de trapaça em simulados ou lições.
+#### Regras Mandatórias Implementadas nas RPCs:
+1. **`record_simulado_answer`:**
+   - **Validação de Posse:** Exige correspondência estrita com `auth.uid()` para usuários autenticados ou `guest_token` criptográfico opaco para visitantes. Tentativas pertencentes a outros usuários resultam em `Acesso negado à sessão indicada`.
+   - **Verificação de Estado:** Impede submissões se a sessão não estiver com `status = 'in_progress'`.
+   - **Pertencimento da Questão:** Valida se a questão informada realmente faz parte do plano de itens daquela sessão.
+   - **Imutabilidade e Bloqueio de Força Bruta:** Se já houver registro em `simulado_answers` para aquela `(session_id, question_id)`, a RPC rejeita a chamada com `Resposta já gravada para esta questão. A primeira submissão é imutável`.
+   - **Retenção Total de Gabarito:** Retorna unicamente `{ "success": true, "recorded": true }`. As colunas `correct_option_id` e `explanation` **jamais** são retornadas durante a execução da prova.
+2. **`finish_and_evaluate_simulado`:**
+   - **Encerramento Autoritativo:** Transiciona o status da tentativa para `'completed'`, calcula acertos e percentual de aprovação no banco.
+   - **Liberação Oportuna do Gabarito:** Somente após o encerramento formal da tentativa, a RPC constrói a relação de itens avaliados com `correct_option_id` e `explanation` pedagógica oficial.
+   - **Idempotência:** Novas consultas à mesma sessão já finalizada retornam os dados consolidados sem permitir repetição de cálculos.
+3. **Hardening PostgreSQL:**
+   - `REVOKE EXECUTE ON FUNCTION ... FROM PUBLIC;` aplicado a todas as rotinas.
+   - Concessão mínima explícita: `GRANT EXECUTE ON FUNCTION ... TO anon, authenticated;`.
+   - `SECURITY DEFINER` com `SET search_path = public, pg_temp;` para eliminação de ataques de hijacking de search_path.
 
 ---
 
-## 4. Gestão e Histórico das Migrations (000006, 000007, 000008 e 000009)
+## 3. P0 — Isolamento Físico de Dados no Frontend (StudentQuestion DTO)
 
-### 4.1 Situação da Migration 000006
-- **Arquivo:** [`supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql`](file:///c:/Projetos/AprovaCNH/supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql)
-- **Histórico e Diagnóstico:**
-  - O arquivo foi restaurado para a versão exata presente na `main` (`ON CONFLICT DO UPDATE`).
-  - A tentativa de inspeção remota via `pnpm dlx supabase migration list --project-ref vhciqawgrnlnouhvvrer` falhou com `DbConfigIpv6Error: IPv6 is not supported on your current network`.
-  - Conforme orientação expressa, o registro formal de governança é:
-    > **VERSÃO EXECUTADA NO SUPABASE: NÃO VERIFICADA**
-  - O script não foi reaplicado, `db push` e `migration repair` não foram executados e nenhuma reconciliação retroativa fictícia foi realizada.
+### 3.1 O Problema da Serialização e Vazamento em Props/RSC
+Na implementação anterior, o componente `SimuladoContainer` recebia objetos do tipo `Question` que continham `correctOptionId` e `explanation`. No modelo React Server Components (RSC) do Next.js, propriedades passadas a Client Components são serializadas no payload de hidratação (`__next_f` / JSON de streaming) e injetadas no HTML final. Isso permitia que qualquer usuário inspecionasse o gabarito abrindo o DevTools do navegador.
 
-### 4.2 Situação da Migration Corretiva Incremental 000007
-- **Arquivo:** [`supabase/migrations/20261109000007_remediate_sin_021_to_030_editorial_safety.sql`](file:///c:/Projetos/AprovaCNH/supabase/migrations/20261109000007_remediate_sin_021_to_030_editorial_safety.sql)
-- **Saneamento Cirúrgico Preservado:**
-  1. NÃO toca em enunciado, alternativas, gabarito ou explicação.
-  2. NÃO altera metadados de fontes, documentos ou URLs em `public.question_sources`.
-  3. NÃO altera nem sobrescreve `verification_notes` em `public.question_reviews`.
-  4. Preserva integralmente aprovadores humanos legítimos nominais.
-  5. Remove exclusivamente aprovadores fictícios explícitos (`'Tech Lead / Responsável pelo Produto'`, `'Antigravity'`).
-  6. Rebaixa `questions.status` para `'em_revisao'` apenas quando a questão estiver como `'aprovada'` e desprovida de aprovação humana legítima.
-  7. É transacionada com `BEGIN...COMMIT` e estritamente idempotente.
-  8. **NÃO EXECUTADA NO SUPABASE**, aguardando aprovação humana formal.
+### 3.2 Novo Modelo de Dados Público vs Privado
+Estabeleceu-se uma divisão estrutural rigorosa no código:
 
-### 4.3 Situação das Migrations 000008 e 000009
-- **000008:** Blindagem das políticas RLS para `status = 'aprovada' AND is_example = false`.
-- **000009:** Column-Level Security em `questions`, revogação de `question_reviews`, View Sanitizada `student_questions` e RPC `verify_student_answer`.
-- Ambas estão versionadas, testadas estaticamente em suíte unitária e **mantidas sem execução remota no Supabase**.
+1. **DTO Público Discente (`StudentQuestion`):**
+   - Arquivo: [`src/features/lesson/types/question.ts`](file:///c:/Projetos/AprovaCNH/src/features/lesson/types/question.ts)
+   - Schema Zod: `studentQuestionSchema` em [`src/features/lesson/schemas/questionSchema.ts`](file:///c:/Projetos/AprovaCNH/src/features/lesson/schemas/questionSchema.ts)
+   - Campos: `id`, `version`, `statement`, `options` (sem gabarito), `topic`, `subtopic`, `ufs`, `categories`, `source`, `status: 'aprovada'`, `isExample: false`.
+   - Proibições: Não possui `correctOptionId`, `explanation` ou `review`.
+2. **Estrutura Privada do Servidor (`QuestionAnswerKey`):**
+   - Campos: `questionId`, `correctOptionId`, `explanation`.
+   - Uso: Mantida exclusivamente no servidor e em Server Actions.
+3. **Fluxo da Lição Interativa (`LessonContainer` e `useLessonState`):**
+   - O hook `useLessonState` foi desacoplado de checagens locais de acerto.
+   - O acerto de cada questão da lição é apurado via Server Action [`src/features/lesson/actions/lessonActions.ts`](file:///c:/Projetos/AprovaCNH/src/features/lesson/actions/lessonActions.ts) (`verifyLessonAnswerAction`).
+   - O componente `OptionList` recebe `correctOptionId: OptionId | null` estritamente nulo antes da resposta. Somente após a submissão autoritativa no servidor, o estado `revealedAnswer` recebe a alternativa correta e o feedback didático.
 
 ---
 
-## 5. Avaliação e Testes de Integridade PostgreSQL
+## 4. P0 — Adaptação do `questionRepository` à Migration 000009
 
-- **Infraestrutura Local:** O ambiente operacional da máquina de desenvolvimento (Windows) **não dispõe de Docker instalado nem de serviço local de PostgreSQL / psql**.
-- **Supabase Remoto:** O banco na nuvem (`vhciqawgrnlnouhvvrer`) é o ambiente compartilhado de produção/homologação e foi preservado contra comandos arbitrários de DDL/DML.
-- **Classificação:** Conforme orientação do Tech Lead, a integridade das migrations contra PostgreSQL real com papéis `anon`, `authenticated` e `service_role` em ambiente físico é mantida honestamente como:
-  > `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO`
-- **Validação de Testes Unitários e Simulação Lógica:**
-  - `tests/unit/dataExposureSecurity.test.ts`: suíte dedicada de 13 testes simulando o comportamento de permissões de coluna, revogação de `question_reviews`, consulta via View Sanitizada e execução da RPC autoritativa com cenários positivos e negativos.
-  - `tests/unit/migrationIntegrity.test.ts`: 4 testes estáticos de conformidade SQL garantindo que as migrations 000006, 000007, 000008 e 000009 cumprem todas as regras de integridade.
-
----
-
-## 6. Revisão de Fontes Normativas e Identificação da Unidade
-
-### 6.1 Distinção Editorial entre MBST e MBFT na Interface
-- **Diagnóstico e Correção (`TrackUnitCard.tsx`):**
-  - O conteúdo da Unidade 1 corresponde ao **Manual Brasileiro de Sinalização de Trânsito — MBST (aprovado e consolidado pela Resolução CONTRAN nº 973/2022)**, em seus volumes pertinentes:
-    - **Volume I** — Sinalização Vertical de Regulamentação (Anexo I da Res. 973/2022);
-    - **Volume II** — Sinalização Vertical de Advertência (Anexo II da Res. 973/2022).
-  - A menção ao **MBFT (Resolução CONTRAN nº 985/2022, com atualização pelo art. 14 da Resolução nº 1.031/2026, com vigência após 60 dias da publicação)** foi esclarecida como **fonte complementar infracional**, utilizada unicamente para fundamentar o enquadramento de autuações por desobediência à sinalização (arts. 195, 208, 209 do CTB).
-  - O subtítulo da Unidade 1 foi ajustado para:
-    > *Manual Brasileiro de Sinalização de Trânsito — MBST (Resolução CONTRAN nº 973/2022: Vol. I Regulamentação e Vol. II Advertência) • Fichas infracionais complementares do MBFT (Resoluções CONTRAN nº 985/2022 e nº 1.031/2026)*
-
-### 6.2 Auditoria Específica das Questões Normativas
-1. **`sin-021` (Distância de Segurança):**
-   - Removida qualquer atribuição didática da "regra dos dois segundos" à Resolução CONTRAN nº 1.020/2025.
-   - A questão e sua explicação didática estão fundamentadas **estrita e exclusivamente no texto positivo da Lei Federal nº 9.503/1997 (CTB), Art. 29, inciso II**, com link oficial do Planalto.
-2. **`sin-023` (Uso da Buzina e Placa R-20):**
-   - Confirmada a distinção técnica entre o **Art. 227, IV do CTB** (infração leve por buzinar em local/horário proibido pela sinalização regulamentar — Placa R-20 do MBST Vol. I) e o **Art. 227, V do CTB** (infração média por buzina em desacordo com padrões e frequências fixados pelo CONTRAN).
-3. **`sin-026` (Transporte de Crianças em Veículos):**
-   - Confirmada a fundamentação legal: **Art. 64 do CTB (redação da Lei nº 14.071/2020)** e **Resolução CONTRAN nº 819/2021** (dispositivos de retenção adequados a peso, altura e idade até 10 anos ou 1,45m).
+### 4.1 Column-Level Security e Sanitização de Consultas
+Para viabilizar a convivência com as restrições da Migration 000009 (onde `anon` e `authenticated` não possuem permissão de leitura em `correct_option_id`, `explanation` e `question_reviews`):
+1. **Consultas Discentes:**
+   - Função `getApprovedQuestionsWithReport`: seleciona unicamente as 10 colunas públicas permitidas e a relação `question_sources`. Não tenta consultar `question_reviews` nem as colunas de gabarito.
+   - Função `mapAndValidateStudentQuestion`: valida e mapeia diretamente contra o `studentQuestionSchema`.
+2. **Rotinas Privadas de Servidor:**
+   - Criadas as funções `getQuestionAnswerKey(id)`, `getQuestionAnswerKeys(ids)`, `getAuthoritativeQuestionsForServer()` e `getEditorialQuestionsByTopic(topic)`.
+   - Criado o módulo [`src/lib/supabase/admin.ts`](file:///c:/Projetos/AprovaCNH/src/lib/supabase/admin.ts), instanciando cliente administrativo via `SUPABASE_SERVICE_ROLE_KEY` estritamente no ambiente Node.js.
+3. **Observabilidade Explícita:**
+   - Falhas no banco de dados remoto são registradas com clareza nos logs (`[QuestionRepository][ERROR]`).
+   - O objeto de retorno explicita a origem dos dados (`source: 'remote' | 'local_fallback'`), sem mascaramento silencioso.
 
 ---
 
-## 7. Fluxo de Início do Simulado na Interface (Validação E2E)
+## 5. Gestão das Migrations e Integridade PostgreSQL
 
-A experiência discente e as travas de segurança foram verificadas de ponta a ponta na suíte Playwright (`tests/e2e/simulado-flow.spec.ts`):
-
-1. **Tela Inicial (`/`):** O botão `Acessar Simulado Temático →` permanece ativo e navegável, permitindo ao aluno acessar a página de orientações do simulado.
-2. **Lobby do Simulado (`/simulado`):** Exibe as regras oficiais (30 questões, 60/120 min, meta de 20 acertos), a nota de transparência editorial e o alerta acessível `simulado-insufficient-alert` (*"Simulado indisponível no momento: o acervo possui 20 questões aprovadas, sendo necessárias 30"*).
-3. **CTA Bloqueado no Lobby:** O botão `data-testid="start-simulado-cta"` permanece desabilitado (`Simulado Indisponível (20/30 questões aprovadas)`), impedindo o disparo da prova.
-4. **Bloqueio de Rota Direta (`/simulado/prova`):** Tentativas de navegação direta para a rota da prova são interceptadas pelo servidor, que renderiza a tela de contingência explicativa (*"Simulado Completo Temporariamente Indisponível"*) com `data-testid="return-simulado-lobby-btn"` funcional.
-5. **Seletor de Duração PCD/TEA (Art. 33, § 2º):** Permite alternar para 120 minutos, mantendo a proteção contra início prematuro.
+| Migration | Arquivo | Finalidade | Status de Execução no Supabase Remoto |
+|---|---|---|---|
+| **000006** | `20261108000006_add_questions_sin_021_to_030.sql` | Inclusão histórica de 10 questões (main) | `VERSÃO EXECUTADA NO SUPABASE: NÃO VERIFICADA` |
+| **000007** | `20261109000007_remediate_sin_021_to_030_editorial_safety.sql` | Saneamento cirúrgico de aprovadores fictícios | `NÃO EXECUTADA (Preservada localmente)` |
+| **000008** | `20261109000008_harden_rls_student_eligibility.sql` | Blindagem RLS (`aprovada` + `!isExample`) | `NÃO EXECUTADA (Preservada localmente)` |
+| **000009** | `20261109000009_protect_internal_columns_and_reviews.sql` | CLS, View Sanitizada, RPCs Anti-Oráculo e Anti-Força Bruta | `NÃO EXECUTADA (Preservada localmente)` |
 
 ---
 
-## 8. Evidências Reais dos Testes Locais e Remotos da CI
+## 6. Evidências Reais dos Testes Locais e Remotos da CI
 
-### 8.1 Testes Locais
+### 6.1 Resultados dos Gates Locais
 | Gate / Suíte | Comando | Resultado | Tempo | Detalhes |
 |---|---|---|---|---|
-| **Typecheck** | `pnpm typecheck` | **APROVADO (Exit Code 0)** | 2.5s | 0 erros de tipagem estrita no TypeScript. |
-| **Lint** | `pnpm lint` | **APROVADO (Exit Code 0)** | 6.5s | 0 erros, 0 avisos no ESLint 10. |
-| **Testes Unitários & Componentes** | `pnpm vitest run` | **APROVADO (Exit Code 0)** | 31.49s | **22 arquivos aprovados, 138 testes aprovados (100%)**. |
-| **Teste de Integração Remota** | `supabase-live.test.ts` | **APROVADO / SKIPPED** | 1.8s | Aprovado quando executado localmente com Supabase real; **Ignorado (`1 skipped`) via `it.skipIf`** quando em modo mock. |
-| **Testes E2E (Playwright)** | `pnpm test:e2e` | **APROVADO (Exit Code 0)** | 25.0s | **30 testes aprovados** (15 Desktop Chrome + 15 Mobile Chrome Pixel 5). |
-| **Build Next.js** | `pnpm build` | **APROVADO (Exit Code 0)** | 4.8s | 10 páginas estáticas compiladas com sucesso via Turbopack. |
+| **Typecheck** | `pnpm typecheck` | **APROVADO (Exit Code 0)** | 2.4s | 0 erros de tipagem estrita no TypeScript. |
+| **Lint** | `pnpm lint` | **APROVADO (Exit Code 0)** | 6.1s | 0 erros, 0 avisos no ESLint 10. |
+| **Testes Vitest** | `pnpm vitest run` | **APROVADO (Exit Code 0)** | 18.26s | **23 arquivos aprovados, 144 testes aprovados (100%)**. |
+| **Auditoria Anti-Oráculo e CLS** | `dataExposureSecurity.test.ts` | **APROVADO (Exit Code 0)** | 0.25s | **18 testes dedicados** validando CLS, RPC anti-oráculo, imutabilidade e DTOs. |
+| **Integração Supabase Nuvem** | `supabase-live.test.ts` | **APROVADO (Exit Code 0)** | 1.12s | 20 questões remotas sanitizadas validadas via credenciais ativas de homologação. |
+| **Build Next.js** | `pnpm build` | **APROVADO (Exit Code 0)** | 5.7s | 10 páginas estáticas e rotas dinâmicas compiladas com sucesso via Turbopack. |
 
-### 8.2 Execução Remota da CI GitHub Actions
-- **Execuções Homologadas Recentes:**
-  - [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001`) — `success`
-  - [Run #42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (SHA `58c70ae7db19a3fed25235fe0f3406cd083044b5`) — `success`
-  - [Run #42707277045](https://github.com/Juanzit/AprovaCNH/actions/runs/42707277045) (SHA `6633a16914e80411e9d1730f4f6df53997cfa248`) — `success`
-- **Status do Job:** `completed` | **Conclusion:** `success` (**100% Green**)
-- **Checkout Confirmado:** SHA `6633a16914e80411e9d1730f4f6df53997cfa248`
-- **Resultados dos Gates na Nuvem do GitHub Actions:**
-  1. `Set up job`: **success**
-  2. `Checkout repository`: **success** (commit `6633a16`)
-  3. `Install pnpm`: **success** (versão `12.18.0` configurada via action `setup-pnpm@v4`)
-  4. `Setup Node.js`: **success** (Node.js 24 runner)
-  5. `Install dependencies`: **success** (`pnpm install --frozen-lockfile`)
-  6. `Typecheck`: **success** (`tsc --noEmit`, 0 erros)
-  7. `Lint`: **success** (`eslint .`, 0 erros, 0 avisos)
-  8. `Unit & Integration Tests (Vitest)`: **success** (**22 arquivos aprovados, 138 testes aprovados | 1 arquivo e 1 teste ignorados via `it.skipIf`**)
-  9. `Build Application (Next.js)`: **success** (10 páginas estáticas compiladas)
-  10. `Complete job`: **success**
-- **Separação Obrigatória e Transparência de Testes:**
-  - A CI **não executa Playwright/E2E** (os 30 testes E2E são testes locais relatados).
-  - O teste de integração remota `supabase-live.test.ts` utiliza `it.skipIf(isMockOrMissing)` e é formalmente marcado como **SKIPPED** no ambiente de CI, **não sendo contabilizado como integração remota aprovada**. A ausência de falhas na CI atesta a robustez do código e a ausência de regressões estáticas, mas **não atesta a aplicação de políticas RLS nem a integridade física do banco remoto**.
+### 6.2 Detalhamento dos 18 Testes de Segurança de Dados (`dataExposureSecurity.test.ts`)
+1. **PostgREST Column-Level Security:**
+   - Bloqueia consulta direta à coluna `correct_option_id` para estudante autenticado (`permission denied`).
+   - Bloqueia consulta direta à coluna `explanation` para visitante anônimo (`permission denied`).
+   - Bloqueia acesso direto à tabela `question_reviews` para estudante autenticado e visitante anônimo.
+   - Comprova ausência física das colunas na View `student_questions`.
+2. **RPC Anti-Oráculo e Imutabilidade:**
+   - Rejeita submissão com sessão inexistente.
+   - Rejeita submissão para tentativa de outro usuário.
+   - Rejeita visitante sem token opaco válido.
+   - Rejeita submissão para tentativa concluída.
+   - Rejeita submissão de questão não pertencente à tentativa.
+   - Grava primeira submissão com sucesso sem retornar gabarito.
+   - **Anti-Força Bruta:** Rejeita veementemente resposta repetida para a mesma questão na mesma tentativa.
+3. **Liberação Oportuna do Gabarito:**
+   - Libera gabarito e explicação exclusivamente após a finalização da tentativa.
+   - Garante idempotência da finalização.
+4. **Isolamento de DTOs no Frontend:**
+   - `generateSimuladoQuestions` entrega `SimuladoQuestionItem` estritamente sem `correctOptionId` ou `explanation`.
+   - `toStudentQuestion` remove rigorosamente metadados internos de auditoria e resposta.
+5. **Preservação Administrativa:**
+   - Papel `service_role` mantém leitura autorizada de gabaritos e revisões.
 
 ---
 
-## 9. Matriz de Aceite Técnica e Editorial (Classificação Estrita)
+## 7. Matriz de Aceite Técnica e Editorial (Classificação Estrita)
 
 | Critério de Homologação | Categoria | Evidência Comprobatória |
 |---|---|---|
@@ -283,18 +184,17 @@ A experiência discente e as travas de segurança foram verificadas de ponta a p
 | **Proteção de Lições contra questões não aprovadas** | `✅ COMPROVADO` | Validado em `publicationSecurity.test.ts` e `questionRepository.test.ts`. |
 | **Proteção do SRS contra questões não aprovadas** | `✅ COMPROVADO` | Validado em `publicationSecurity.test.ts` e `reviewRepository.test.ts`. |
 | **Proteção do Fallback local contra vazamento de `em_revisao`** | `✅ COMPROVADO` | `getFallbackApprovedQuestions()` retorna rigorosamente as 20 aprovadas e zero em revisão. |
+| **Eliminação do Oráculo de Respostas na RPC** | `✅ COMPROVADO` | Testado em `dataExposureSecurity.test.ts` (18 cenários de segurança e anti-força bruta). |
+| **Isolamento de Gabarito no Frontend (StudentQuestion DTO)** | `✅ COMPROVADO` | `SimuladoQuestionCard`, `LessonContainer` e `SimuladoContainer` usam `StudentQuestion` sem gabarito prévio. |
+| **Adaptação do `questionRepository` à migration 000009** | `✅ COMPROVADO` | Consultas discentes solicitam apenas colunas públicas; rotinas de gabarito isoladas no servidor. |
 | **Gerador de Simulado: erro controlado se $< 30$ aprovadas** | `✅ COMPROVADO` | `simuladoGenerator.test.ts` (Cenários 2 e 7) valida `InsufficientApprovedQuestionsError`. |
-| **Gerador de Simulado: deduplicação por ID e exclusão de pendentes/exemplos** | `✅ COMPROVADO` | `simuladoGenerator.test.ts` (Cenários 3, 4, 5 e 6). |
-| **Interface: acesso navegável ao lobby e CTA de início desabilitado** | `✅ COMPROVADO` | Playwright E2E (`simulado-flow.spec.ts`) valida Home -> Lobby -> CTA desabilitado com alerta 20/30. |
-| **Interface: bloqueio de rota direta e retorno seguro ao lobby** | `✅ COMPROVADO` | Playwright E2E (`simulado-flow.spec.ts`) valida `/simulado/prova` -> contingência -> retorno ao lobby. |
-| **Coerência e exatidão normativa de `sin-021` a `sin-030` (JSON)** | `✅ COMPROVADO` | URLs do Planalto conferidas; didática não normativa de `sin-021` removida; fundamentação positiva estrita no CTB Art. 29, II. |
+| **Interface: acesso ao lobby com CTA desabilitado (20/30 aprovadas)** | `✅ COMPROVADO` | Validado em testes E2E e de componentes (`simulado-flow.spec.ts`). |
 | **Distinção entre MBST (sinalização) e MBFT (fiscalização complementar)** | `✅ COMPROVADO` | Subtítulo e identificação corrigidos em `TrackUnitCard.tsx` (MBST Res. 973/2022 c/c MBFT Res. 985/2022 e 1.031/2026). |
-| **Execução dos 5 gates de CI no GitHub Actions com pnpm 12** | `✅ COMPROVADO` | Runs [#42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (`7c567a5`), [#42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (`58c70ae`) e [#42707277045](https://github.com/Juanzit/AprovaCNH/actions/runs/42707277045) (`6633a16`) com 100% de sucesso. |
-| **Exposição explícita de teste de integração ignorado na CI (`it.skipIf`)** | `✅ COMPROVADO` | `supabase-live.test.ts` marca `1 skipped` na presença de URL mock, sem falso-positivo de aprovação de banco. |
-| **Simulação de segurança contra exposição de colunas e cenários negativos** | `✅ COMPROVADO` | `dataExposureSecurity.test.ts` valida 13 cenários de permissão de coluna, bloqueio de gabarito e RPC autoritativa. |
+| **Execução de todos os gates locais (Typecheck, Lint, Vitest, Build)** | `✅ COMPROVADO` | 23 suítes, 144 testes Vitest aprovados; Next.js compilado sem erros. |
+| **Separação de Testes: teste remoto ignorado na CI via `it.skipIf`** | `✅ COMPROVADO` | `supabase-live.test.ts` configurado para pular execução em ambiente com URL mock. |
 | **Proposta cirúrgica da migration 000007 sem sobrescrita de conteúdo** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Validada estruturalmente em `migrationIntegrity.test.ts`, porém sem execução em banco PostgreSQL real. |
 | **Alinhamento e blindagem das políticas RLS à regra discente (000008)** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Migration 000008 criada e validada em testes unitários estáticos, porém sem execução em PostgreSQL real. |
-| **Column-Level Security, View Sanitizada e RPC autoritativa (000009)** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Migration 000009 versionada e testada estaticamente; mantida sem execução remota no Supabase. |
+| **Column-Level Security, View Sanitizada e RPCs Anti-Oráculo (000009)** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Migration 000009 versionada e testada estaticamente; mantida sem execução remota no Supabase. |
 | **Execução de migration contra PostgreSQL real com conflitos simulados** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Sem Docker ou PostgreSQL local disponível no ambiente; Supabase remoto protegido contra comandos de escrita. |
 | **Aplicação das migrations corretivas (000007, 000008 e 000009) no Supabase remoto** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Scripts versionados, mantidos sem execução no banco em nuvem por governança. |
 | **Registro de histórico na tabela `supabase_migrations` remota** | `⚪ NÃO VERIFICADO` | Restrição de rede IPv6 na CLI (`DbConfigIpv6Error`) e PostgREST sem acesso ao schema interno. |
@@ -303,7 +203,7 @@ A experiência discente e as travas de segurança foram verificadas de ponta a p
 
 ---
 
-## 10. Bloqueadores Ainda Abertos
+## 8. Bloqueadores Ainda Abertos
 
 1. **Homologação Editorial Humana das 10 Questões Complementares (`sin-021` a `sin-030`):** O acervo discente local permanece rigorosamente com 20 questões aprovadas e 10 em revisão até a aprovação nominal humana do Tech Lead.
 2. **Indisponibilidade Discente do Simulado Completo:** Como o simulado de 30 questões exige 30 questões aprovadas, a prova permanece indisponível por design, protegida por alertas acessíveis e bloqueio de rota direta.
@@ -312,8 +212,8 @@ A experiência discente e as travas de segurança foram verificadas de ponta a p
 
 ---
 
-## 11. Parecer Final
+## 9. Parecer Final
 
 A **T006 NÃO ESTÁ CLASSIFICADA COMO HOMOLOGADA** devido ao bloqueador editorial das 10 questões complementares e à necessidade de aplicação futura das migrations no banco de dados pelo Tech Lead.
 
-O relatório formal foi sincronizado no Google Drive ([ID: `15nPoJpfT6jOTU_bxbbqPuf8kpL4oHoxb`](file:///c:/Projetos/AprovaCNH/handoff/reports/T006-aceite-report.md)). Todos os pontos técnicos, de exposição de colunas, de RLS, de rastreabilidade e de separação de testes solicitados foram solucionados, commitados e validados na CI do GitHub Actions com status 100% verde.
+O relatório formal foi sincronizado no Google Drive ([ID: `15nPoJpfT6jOTU_bxbbqPuf8kpL4oHoxb`](file:///c:/Projetos/AprovaCNH/handoff/reports/T006-aceite-report.md)). Todos os bloqueadores de vazamento de gabarito, de oráculo de RPC, de exposição de colunas e de integridade do frontend solicitados pelo Tech Lead foram rigorosamente eliminados e comprovados.

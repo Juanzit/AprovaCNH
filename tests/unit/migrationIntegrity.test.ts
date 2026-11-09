@@ -100,9 +100,14 @@ describe('Integridade das Migrations, Políticas RLS e Preservação de Curadori
     expect(migration9Sql).toContain('WITH (security_invoker = true)');
     expect(migration9Sql).toContain('GRANT SELECT ON public.student_questions TO anon, authenticated;');
 
-    // 5. Criação da RPC segura verify_student_answer com SECURITY DEFINER
-    expect(migration9Sql).toContain('CREATE OR REPLACE FUNCTION public.verify_student_answer(');
-    expect(migration9Sql).toContain('SECURITY DEFINER');
-    expect(migration9Sql).toContain('GRANT EXECUTE ON FUNCTION public.verify_student_answer(text, text) TO anon, authenticated;');
+    // 5. Criação das RPCs transacionais blindadas (Anti-Oráculo)
+    expect(migration9Sql).toContain('CREATE OR REPLACE FUNCTION public.record_simulado_answer(');
+    expect(migration9Sql).toContain('CREATE OR REPLACE FUNCTION public.finish_and_evaluate_simulado(');
+    expect(migration9Sql).toContain('SET search_path = public, pg_temp');
+    expect(migration9Sql).toContain('REVOKE EXECUTE ON FUNCTION public.record_simulado_answer');
+    expect(migration9Sql).toContain('REVOKE EXECUTE ON FUNCTION public.finish_and_evaluate_simulado');
+    expect(migration9Sql).toContain('GRANT EXECUTE ON FUNCTION public.record_simulado_answer');
+    expect(migration9Sql).toContain('GRANT EXECUTE ON FUNCTION public.finish_and_evaluate_simulado');
+    expect(migration9Sql).toContain('Resposta já submetida e imutável para esta questão nesta tentativa.');
   });
 });

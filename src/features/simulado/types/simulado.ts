@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { optionIdSchema } from '@/features/lesson/schemas/questionSchema';
-import type { OptionId, Question } from '@/features/lesson/types/question';
+import type { OptionId, Question, StudentQuestion } from '@/features/lesson/types/question';
 
 export const examConfigSchema = z.object({
   id: z.string().min(1),
@@ -52,7 +52,7 @@ export type SimuladoStatus = z.infer<typeof simuladoStatusSchema>;
 
 export interface SimuladoQuestionItem {
   questionOrder: number; // 1 a 30
-  question: Question;
+  question: StudentQuestion;
 }
 
 export interface SimuladoAnswerState {
@@ -83,10 +83,12 @@ export type SimuladoSubmissionPayload = z.infer<typeof simuladoSubmissionSchema>
 
 export interface SimuladoEvaluatedItem {
   questionOrder: number;
-  question: Question;
+  question: StudentQuestion;
   selectedOptionId: OptionId | null;
   isMarkedForReview: boolean;
   isCorrect: boolean;
+  correctOptionId: OptionId;
+  explanation: string;
 }
 
 export interface SimuladoResult {

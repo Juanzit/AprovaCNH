@@ -25,8 +25,6 @@ describe('ReviewQueueList Component (Fila Explicável de Repetição Espaçada)'
             { id: 'c', text: 'Opção C' },
             { id: 'd', text: 'Opção D' },
           ],
-          correctOptionId: 'b',
-          explanation: 'Art. 89 do CTB e Ficha 583-50 do MBFT.',
           topic: 'Sinalização de Trânsito',
           subtopic: 'Ordens do Agente',
           ufs: [],

@@ -1,18 +1,32 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import {
   isQuestionEligibleForStudents,
-  questionSchema,
+  studentQuestionSchema,
+  editorialQuestionSchema,
+  questionAnswerKeySchema,
+  toStudentQuestion,
   type ValidatedQuestion,
+  type ValidatedStudentQuestion,
+  type ValidatedQuestionAnswerKey,
+  type ValidatedEditorialQuestion,
 } from '../schemas/questionSchema';
+import type { StudentQuestion, QuestionAnswerKey } from '../types/question';
 import fallbackQuestionsRaw from '@/data/questions-sinalizacao.json';
 
-interface DatabaseQuestionRow {
+export type RepositoryDataSource = 'remote' | 'local_fallback';
+
+export interface QuestionLoadResult {
+  questions: StudentQuestion[];
+  source: RepositoryDataSource;
+  remoteError?: string;
+}
+
+interface DatabaseStudentRow {
   id: string;
   version: number;
   statement: string;
   options: unknown;
-  correct_option_id: string;
-  explanation: string;
   topic: string;
   subtopic: string | null;
   ufs: string[] | null;
@@ -45,33 +59,15 @@ interface DatabaseQuestionRow {
         verification_status: string;
       }>
     | null;
-  question_reviews:
-    | {
-        generator_model: string | null;
-        verifier_model: string | null;
-        verification_notes: string | null;
-        approved_by: string | null;
-        approved_at: string | null;
-      }
-    | Array<{
-        generator_model: string | null;
-        verifier_model: string | null;
-        verification_notes: string | null;
-        approved_by: string | null;
-        approved_at: string | null;
-      }>
-    | null;
 }
 
 /**
- * Mapeia uma linha bruta do PostgreSQL/Supabase para a estrutura de domínio do AprovaCNH
- * e aplica a validação estrita do Zod (Anti-Corruption Layer).
+ * Mapeia uma linha completa do banco de dados (com fontes e revisões) para Question editorial.
  */
-export function mapAndValidateDatabaseQuestion(row: DatabaseQuestionRow): ValidatedQuestion {
+export function mapAndValidateEditorialQuestion(row: any): ValidatedQuestion {
   const sourceRaw = Array.isArray(row.question_sources)
     ? row.question_sources[0]
     : row.question_sources;
-
   const reviewRaw = Array.isArray(row.question_reviews)
     ? row.question_reviews[0]
     : row.question_reviews;
@@ -81,8 +77,58 @@ export function mapAndValidateDatabaseQuestion(row: DatabaseQuestionRow): Valida
     version: row.version,
     statement: row.statement,
     options: row.options,
-    correctOptionId: row.correct_option_id,
+    correctOptionId: row.correct_option_id ?? row.correctOptionId,
     explanation: row.explanation,
+    topic: row.topic,
+    subtopic: row.subtopic ?? undefined,
+    ufs: row.ufs ?? [],
+    categories: row.categories ?? [],
+    status: row.status,
+    isExample: row.is_example ?? row.isExample,
+    source: sourceRaw
+      ? {
+          kind: sourceRaw.kind ?? 'official',
+          document: sourceRaw.document ?? null,
+          provision: sourceRaw.provision ?? null,
+          url: sourceRaw.url ?? null,
+          checkedAt: sourceRaw.checked_at ?? sourceRaw.checkedAt ?? null,
+          effectiveFrom: sourceRaw.effective_from ?? sourceRaw.effectiveFrom ?? null,
+          effectiveUntil: sourceRaw.effective_until ?? sourceRaw.effectiveUntil ?? null,
+          sourceVersion: sourceRaw.source_version ?? sourceRaw.sourceVersion ?? null,
+          licenseNote: sourceRaw.license_note ?? sourceRaw.licenseNote ?? null,
+          verificationStatus: sourceRaw.verification_status ?? sourceRaw.verificationStatus ?? 'pending',
+        }
+      : undefined,
+    review: reviewRaw
+      ? {
+          generatorModel: reviewRaw.generator_model ?? reviewRaw.generatorModel,
+          verifierModel: reviewRaw.verifier_model ?? reviewRaw.verifierModel,
+          verificationNotes: reviewRaw.verification_notes ?? reviewRaw.verificationNotes,
+          approvedBy: reviewRaw.approved_by ?? reviewRaw.approvedBy,
+          approvedAt: reviewRaw.approved_at ?? reviewRaw.approvedAt,
+        }
+      : undefined,
+  };
+
+  return editorialQuestionSchema.parse(candidate);
+}
+
+export const mapAndValidateDatabaseQuestion = mapAndValidateEditorialQuestion;
+
+/**
+ * Mapeia uma linha discente pública para o DTO sanitizado StudentQuestion.
+ * O Zod rejeita qualquer presença de correctOptionId ou explanation.
+ */
+export function mapAndValidateStudentQuestion(row: DatabaseStudentRow): ValidatedStudentQuestion {
+  const sourceRaw = Array.isArray(row.question_sources)
+    ? row.question_sources[0]
+    : row.question_sources;
+
+  const candidate = {
+    id: row.id,
+    version: row.version,
+    statement: row.statement,
+    options: row.options,
     topic: row.topic,
     subtopic: row.subtopic ?? undefined,
     ufs: row.ufs ?? [],
@@ -101,32 +147,23 @@ export function mapAndValidateDatabaseQuestion(row: DatabaseQuestionRow): Valida
       licenseNote: sourceRaw?.license_note ?? null,
       verificationStatus: sourceRaw?.verification_status ?? 'pending',
     },
-    review: reviewRaw
-      ? {
-          generatorModel: reviewRaw.generator_model ?? null,
-          verifierModel: reviewRaw.verifier_model ?? null,
-          verificationNotes: reviewRaw.verification_notes ?? null,
-          approvedBy: reviewRaw.approved_by ?? null,
-          approvedAt: reviewRaw.approved_at ?? null,
-        }
-      : null,
   };
 
-  return questionSchema.parse(candidate);
+  return studentQuestionSchema.parse(candidate);
 }
 
 /**
- * Busca questões aprovadas de um determinado tema no Supabase.
- * Se o banco ainda não contiver as tabelas, estiver em versão anterior ao acervo local
- * ou se a consulta falhar, recorre ao acervo local aprovado (DETRAN-MG / SENATRAN v2).
+ * Busca questões aprovadas sanitizadas para estudantes (Lição, Simulado, Revisão).
+ * Consome exclusivamente a interface pública e segura (sem correct_option_id, explanation ou reviews).
  */
-export async function getApprovedQuestionsByTopic(
+export async function getApprovedQuestionsWithReport(
   topic = 'Sinalização de Trânsito',
   options: { fallbackToLocal?: boolean } = { fallbackToLocal: true }
-): Promise<ValidatedQuestion[]> {
+): Promise<QuestionLoadResult> {
   try {
     const supabase = await createClient();
 
+    // Consulta estritamente as colunas públicas permitidas na migration 000009
     const { data, error } = await supabase
       .from('questions')
       .select(`
@@ -134,8 +171,6 @@ export async function getApprovedQuestionsByTopic(
         version,
         statement,
         options,
-        correct_option_id,
-        explanation,
         topic,
         subtopic,
         ufs,
@@ -153,13 +188,6 @@ export async function getApprovedQuestionsByTopic(
           source_version,
           license_note,
           verification_status
-        ),
-        question_reviews (
-          generator_model,
-          verifier_model,
-          verification_notes,
-          approved_by,
-          approved_at
         )
       `)
       .eq('status', 'aprovada')
@@ -168,56 +196,249 @@ export async function getApprovedQuestionsByTopic(
       .order('id', { ascending: true });
 
     if (error) {
-      console.warn(`[Supabase Repository] Aviso ao consultar 'questions': ${error.message}`);
+      console.warn(
+        `[QuestionRepository][ERROR] Falha na consulta remota ao Supabase: ${error.message} (Code: ${error.code}).`
+      );
       if (options.fallbackToLocal) {
-        return getFallbackApprovedQuestions();
+        return {
+          questions: getFallbackApprovedQuestions(),
+          source: 'local_fallback',
+          remoteError: error.message,
+        };
       }
       throw error;
     }
 
     if (!data || data.length === 0) {
+      console.info('[QuestionRepository] Nenhuma questão remota retornada para o tópico solicitado.');
       if (options.fallbackToLocal) {
-        return getFallbackApprovedQuestions();
+        return {
+          questions: getFallbackApprovedQuestions(),
+          source: 'local_fallback',
+        };
       }
-      return [];
+      return {
+        questions: [],
+        source: 'remote',
+      };
     }
 
-    // Passa todos os registros pela Anti-Corruption Layer do Zod
-    const validatedQuestions = (data as unknown as DatabaseQuestionRow[])
-      .map(mapAndValidateDatabaseQuestion)
-      .filter(isQuestionEligibleForStudents);
+    // Validação estrita discente via studentQuestionSchema
+    const validatedQuestions = (data as unknown as DatabaseStudentRow[])
+      .map(mapAndValidateStudentQuestion)
+      .filter((q) => isQuestionEligibleForStudents(q));
 
-    // Se o banco ainda estiver na versão 1 (pré-atualização DETRAN-MG v2) e o fallback estiver ativo,
-    // entrega imediatamente a versão 2 atualizada sem quebrar o estudo do aluno.
-    if (options.fallbackToLocal && validatedQuestions.some((q) => q.version < 2)) {
-      return getFallbackApprovedQuestions();
-    }
+    console.info(
+      `[QuestionRepository] Carregadas com sucesso ${validatedQuestions.length} questões remotas sanitizadas.`
+    );
 
+    return {
+      questions: validatedQuestions,
+      source: 'remote',
+    };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`[QuestionRepository][EXCEPTION] Erro ao carregar questões remotas: ${message}`);
     if (options.fallbackToLocal) {
-      const fallback = getFallbackApprovedQuestions();
-      if (validatedQuestions.length < fallback.length) {
-        const byId = new Map(validatedQuestions.map((q) => [q.id, q]));
-        for (const q of fallback) {
-          if (!byId.has(q.id)) {
-            byId.set(q.id, q);
-          }
-        }
-        return Array.from(byId.values()).filter(isQuestionEligibleForStudents);
-      }
-    }
-
-    return validatedQuestions;
-  } catch (err) {
-    if (options.fallbackToLocal) {
-      return getFallbackApprovedQuestions();
+      return {
+        questions: getFallbackApprovedQuestions(),
+        source: 'local_fallback',
+        remoteError: message,
+      };
     }
     throw err;
   }
 }
 
 /**
- * Carrega e valida o acervo local homologado como fallback seguro.
+ * Interface compatível padrão para consulta de questões discentes aprovadas.
  */
-export function getFallbackApprovedQuestions(): ValidatedQuestion[] {
-  return (fallbackQuestionsRaw as unknown[]).map((q) => questionSchema.parse(q)).filter(isQuestionEligibleForStudents);
+export async function getApprovedQuestionsByTopic(
+  topic = 'Sinalização de Trânsito',
+  options: { fallbackToLocal?: boolean } = { fallbackToLocal: true }
+): Promise<StudentQuestion[]> {
+  const result = await getApprovedQuestionsWithReport(topic, options);
+  return result.questions;
+}
+
+/**
+ * Carrega a chave de resposta privada de uma questão específica EXCLUSIVAMENTE no servidor.
+ * Nunca expor para componentes cliente.
+ */
+export async function getQuestionAnswerKey(questionId: string): Promise<QuestionAnswerKey | null> {
+  // 1. Tentar via cliente administrativo (service_role) caso configurado
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const admin = createAdminClient();
+      const { data, error } = await admin
+        .from('questions')
+        .select('id, correct_option_id, explanation, status, is_example')
+        .eq('id', questionId)
+        .maybeSingle();
+
+      if (!error && data && data.status === 'aprovada' && !data.is_example) {
+        return questionAnswerKeySchema.parse({
+          questionId: data.id,
+          correctOptionId: data.correct_option_id,
+          explanation: data.explanation,
+        });
+      }
+    } catch (err) {
+      console.warn('[QuestionRepository] Falha ao consultar chave via service_role, recorrendo ao acervo local:', err);
+    }
+  }
+
+  // 2. Recorrer ao acervo local do servidor
+  const rawItem = (fallbackQuestionsRaw as unknown as Array<{
+    id: string;
+    correctOptionId: 'a' | 'b' | 'c' | 'd';
+    explanation: string;
+    status: string;
+    isExample?: boolean;
+  }>).find((q) => q.id === questionId && q.status === 'aprovada' && !q.isExample);
+
+  if (!rawItem) {
+    return null;
+  }
+
+  return questionAnswerKeySchema.parse({
+    questionId: rawItem.id,
+    correctOptionId: rawItem.correctOptionId,
+    explanation: rawItem.explanation,
+  });
+}
+
+/**
+ * Carrega em lote as chaves de resposta privadas no servidor.
+ */
+export async function getQuestionAnswerKeys(
+  questionIds: string[]
+): Promise<Map<string, QuestionAnswerKey>> {
+  const keysMap = new Map<string, QuestionAnswerKey>();
+  const idSet = new Set(questionIds);
+
+  // 1. Consulta em lote via service_role se disponível
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const admin = createAdminClient();
+      const { data, error } = await admin
+        .from('questions')
+        .select('id, correct_option_id, explanation, status, is_example')
+        .in('id', questionIds);
+
+      if (!error && data) {
+        for (const row of data) {
+          if (row.status === 'aprovada' && !row.is_example) {
+            keysMap.set(
+              row.id,
+              questionAnswerKeySchema.parse({
+                questionId: row.id,
+                correctOptionId: row.correct_option_id,
+                explanation: row.explanation,
+              })
+            );
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('[QuestionRepository] Falha na consulta em lote via service_role:', err);
+    }
+  }
+
+  // 2. Preencher do acervo local caso faltem chaves
+  for (const raw of fallbackQuestionsRaw as unknown as Array<{
+    id: string;
+    correctOptionId: 'a' | 'b' | 'c' | 'd';
+    explanation: string;
+    status: string;
+    isExample?: boolean;
+  }>) {
+    if (idSet.has(raw.id) && !keysMap.has(raw.id) && raw.status === 'aprovada' && !raw.isExample) {
+      keysMap.set(
+        raw.id,
+        questionAnswerKeySchema.parse({
+          questionId: raw.id,
+          correctOptionId: raw.correctOptionId,
+          explanation: raw.explanation,
+        })
+      );
+    }
+  }
+
+  return keysMap;
+}
+
+/**
+ * Consulta autorizada exclusiva para o Painel Editorial no Servidor.
+ * Exige cliente administrativo (service_role) e valida contra editorialQuestionSchema.
+ */
+export async function getEditorialQuestionsByTopic(
+  topic = 'Sinalização de Trânsito'
+): Promise<ValidatedEditorialQuestion[]> {
+  const admin = createAdminClient();
+
+  const { data, error } = await admin
+    .from('questions')
+    .select(`
+      id,
+      version,
+      statement,
+      options,
+      correct_option_id,
+      explanation,
+      topic,
+      subtopic,
+      ufs,
+      categories,
+      status,
+      is_example,
+      question_sources (*),
+      question_reviews (*)
+    `)
+    .ilike('topic', `%${topic}%`)
+    .order('id', { ascending: true });
+
+  if (error) {
+    throw new Error(`[EditorialRepository] Erro ao carregar dados editoriais: ${error.message}`);
+  }
+
+  return (data || []).map((row: any) => {
+    const sourceRaw = Array.isArray(row.question_sources) ? row.question_sources[0] : row.question_sources;
+    const reviewRaw = Array.isArray(row.question_reviews) ? row.question_reviews[0] : row.question_reviews;
+
+    return editorialQuestionSchema.parse({
+      id: row.id,
+      version: row.version,
+      statement: row.statement,
+      options: row.options,
+      correctOptionId: row.correct_option_id,
+      explanation: row.explanation,
+      topic: row.topic,
+      subtopic: row.subtopic ?? undefined,
+      ufs: row.ufs ?? [],
+      categories: row.categories ?? [],
+      status: row.status,
+      isExample: row.is_example,
+      source: sourceRaw,
+      review: reviewRaw,
+    });
+  });
+}
+
+/**
+ * Retorna as 20 questões homologadas do acervo local sanitizadas para estudantes.
+ */
+export function getFallbackApprovedQuestions(): StudentQuestion[] {
+  return (fallbackQuestionsRaw as unknown[])
+    .filter((q: any) => isQuestionEligibleForStudents(q))
+    .map((q) => toStudentQuestion(q as any));
+}
+
+/**
+ * Retorna as questões do acervo local completas com gabarito para uso exclusivo no servidor.
+ */
+export function getAuthoritativeQuestionsForServer(): ValidatedQuestion[] {
+  return (fallbackQuestionsRaw as unknown[])
+    .map((q) => editorialQuestionSchema.parse(q))
+    .filter(isQuestionEligibleForStudents);
 }

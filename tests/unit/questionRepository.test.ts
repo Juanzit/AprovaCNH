@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import {
   mapAndValidateDatabaseQuestion,
   getFallbackApprovedQuestions,
+  getAuthoritativeQuestionsForServer,
   getApprovedQuestionsByTopic,
 } from '@/features/lesson/server/questionRepository';
 import { isQuestionEligibleForStudents } from '@/features/lesson/schemas/questionSchema';
@@ -113,29 +114,32 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
       expect(q.isExample).toBe(false);
       expect(q.options).toHaveLength(4);
       expect(q.source.verificationStatus).toBe('verified');
+    });
+
+    const authoritativeFallback = getAuthoritativeQuestionsForServer();
+    expect(authoritativeFallback).toHaveLength(20);
+    authoritativeFallback.forEach((q) => {
       expect(q.review?.approvedBy).toBeTruthy();
     });
 
-    const anyInReview = fallback.some((q) => q.status === 'em_revisao');
+    const anyInReview = fallback.some((q) => (q.status as string) === 'em_revisao');
     expect(anyInReview).toBe(false);
   });
 
   // Requisito Obrigatório 5: Nenhuma questão em revisão chega à lição, SRS, fallback ou simulado
   it('garante que nenhuma questão com status em_revisao é retornada por getApprovedQuestionsByTopic via fallback', async () => {
     const { createClient } = await import('@/lib/supabase/server');
+    const mockBuilder: Record<string, any> = {};
+    mockBuilder.select = vi.fn().mockReturnValue(mockBuilder);
+    mockBuilder.eq = vi.fn().mockReturnValue(mockBuilder);
+    mockBuilder.ilike = vi.fn().mockReturnValue(mockBuilder);
+    mockBuilder.order = vi.fn().mockResolvedValue({
+      data: null,
+      error: new Error('Tabela não migrada'),
+    });
+
     vi.mocked(createClient).mockResolvedValueOnce({
-      from: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            ilike: vi.fn().mockReturnValue({
-              order: vi.fn().mockResolvedValue({
-                data: null,
-                error: new Error('Tabela não migrada'),
-              }),
-            }),
-          }),
-        }),
-      }),
+      from: vi.fn().mockReturnValue(mockBuilder),
     } as unknown as Awaited<ReturnType<typeof createClient>>);
 
     const questions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
@@ -144,7 +148,7 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
       expect(q.status).toBe('aprovada');
       expect(q.isExample).toBe(false);
     });
-    expect(questions.some((q) => q.status === 'em_revisao')).toBe(false);
+    expect(questions.some((q) => (q.status as string) === 'em_revisao')).toBe(false);
   });
 
   // Requisito Obrigatório 6: A ausência de questões aprovadas não causa retorno indiscriminado do JSON

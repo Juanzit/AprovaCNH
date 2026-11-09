@@ -1,5 +1,5 @@
-import type { Question } from '@/features/lesson/types/question';
-import { isQuestionEligibleForStudents } from '@/features/lesson/schemas/questionSchema';
+import type { Question, StudentQuestion } from '@/features/lesson/types/question';
+import { isQuestionEligibleForStudents, toStudentQuestion } from '@/features/lesson/schemas/questionSchema';
 import type {
   ExamConfig,
   SimuladoEvaluatedItem,
@@ -67,7 +67,7 @@ export class InsufficientApprovedQuestionsError extends Error {
 }
 
 export function generateSimuladoQuestions(
-  questionBank: readonly Question[],
+  questionBank: readonly (Question | StudentQuestion)[],
   options: {
     totalQuestions?: number;
     uf?: string | null;
@@ -86,7 +86,7 @@ export function generateSimuladoQuestions(
   });
 
   // 2. Deduplicação por ID para garantir 100% de questões distintas
-  const uniqueById = new Map<string, Question>();
+  const uniqueById = new Map<string, Question | StudentQuestion>();
   for (const q of eligiblePool) {
     if (!uniqueById.has(q.id)) {
       uniqueById.set(q.id, q);
@@ -105,9 +105,10 @@ export function generateSimuladoQuestions(
   const shuffledPass = shuffleArray(distinctQuestions, rng);
   const selectedQuestions = shuffledPass.slice(0, totalQuestions);
 
+  // Sanitização estrita: Converte para StudentQuestion (garantindo que correctOptionId e explanation nunca alcancem o cliente)
   return selectedQuestions.map((question, idx) => ({
     questionOrder: idx + 1,
-    question,
+    question: toStudentQuestion(question),
   }));
 }
 
@@ -150,7 +151,9 @@ export function evaluateSimuladoSubmission(
 
     evaluatedItems.push({
       questionOrder: item.questionOrder,
-      question,
+      question: toStudentQuestion(question),
+      correctOptionId: question.correctOptionId,
+      explanation: question.explanation,
       selectedOptionId: item.selectedOptionId,
       isMarkedForReview: item.isMarkedForReview,
       isCorrect,

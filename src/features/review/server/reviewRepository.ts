@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
-import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
-import type { Question } from '@/features/lesson/types/question';
+import { getApprovedQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
+import type { Question, StudentQuestion } from '@/features/lesson/types/question';
 import type {
   UserAnswerRecord,
   ReviewDashboardData,
@@ -68,7 +68,7 @@ export async function getUserAnswerRecords(customUserId?: string): Promise<UserA
  */
 export async function getReviewDashboardData(customUserId?: string): Promise<ReviewDashboardData> {
   const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-  const questionMap = new Map<string, Question>(allQuestions.map((q) => [q.id, q]));
+  const questionMap = new Map<string, StudentQuestion>(allQuestions.map((q) => [q.id, q]));
 
   const records = await getUserAnswerRecords(customUserId);
 
@@ -124,11 +124,11 @@ export async function getReviewDashboardData(customUserId?: string): Promise<Rev
 export async function getPriorityReviewQuestions(
   limit = 5,
   customUserId?: string
-): Promise<Question[]> {
+): Promise<(StudentQuestion | Question)[]> {
   const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
   const dashboard = await getReviewDashboardData(customUserId);
 
-  const selectedQuestions: Question[] = [];
+  const selectedQuestions: (StudentQuestion | Question)[] = [];
   const selectedIds = new Set<string>();
 
   // 1. Primeiro seleciona da fila ordenada de prioridade (questões que precisam de revisão)
@@ -161,6 +161,7 @@ export async function submitReviewSession(
   customUserId?: string
 ) {
   const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
+  const answerKeys = await getQuestionAnswerKeys(answers.map((a) => a.questionId));
   const questionMap = new Map(allQuestions.map((q) => [q.id, q]));
 
   const supabase = await createClient();
@@ -186,9 +187,10 @@ export async function submitReviewSession(
 
   for (const sub of answers) {
     const q = questionMap.get(sub.questionId);
-    if (!q) continue;
+    const key = answerKeys.get(sub.questionId);
+    if (!q || !key) continue;
 
-    const isCorrect = sub.selectedOptionId === q.correctOptionId;
+    const isCorrect = sub.selectedOptionId === key.correctOptionId;
     const sessionId = findSessionId(sub.questionId);
 
     const record: UserAnswerRecord = {

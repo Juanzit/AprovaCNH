@@ -6,7 +6,7 @@ interface OptionListProps {
   statement: string;
   options: [QuestionOption, QuestionOption, QuestionOption, QuestionOption];
   selectedOptionId: OptionId | null;
-  correctOptionId: OptionId;
+  correctOptionId?: OptionId | null;
   isAnswerSubmitted: boolean;
   onSelectOption: (id: OptionId) => void;
   isExample?: boolean;
@@ -16,7 +16,7 @@ export function OptionList({
   statement,
   options,
   selectedOptionId,
-  correctOptionId,
+  correctOptionId = null,
   isAnswerSubmitted,
   onSelectOption,
   isExample = false,
