@@ -54,6 +54,7 @@ export default async function SimuladoProvaPage({ searchParams }: SimuladoProvaP
           <div className="pt-2 flex flex-wrap gap-3">
             <Link
               href="/simulado"
+              data-testid="return-simulado-lobby-btn"
               className="inline-flex items-center px-4 py-2 rounded-xl bg-amber-800 text-white font-bold text-sm hover:bg-amber-900 transition-colors"
             >
               Voltar ao Lobby do Simulado

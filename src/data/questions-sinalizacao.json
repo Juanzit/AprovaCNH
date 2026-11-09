@@ -1134,14 +1134,14 @@
     ],
     "source": {
       "kind": "official",
-      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Manual Básico de Direção Defensiva (SENATRAN)",
-      "provision": "CTB Art. 29, II • Manual Básico de Direção Defensiva SENATRAN",
-      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Cartilha de Direção Defensiva da SENATRAN",
+      "provision": "CTB Art. 29, II • Cartilha de Direção Defensiva SENATRAN (Regra dos 2 Segundos)",
+      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/senatran/manuais-e-cartilhas",
       "checkedAt": "2026-11-09T08:00:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "CTB Atualizado (Lei Federal nº 9.503/1997) e Diretrizes Didáticas da SENATRAN",
-      "licenseNote": "Dispositivos legais e normas oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
+      "sourceVersion": "CTB Atualizado e Cartilha Didática de Direção Defensiva SENATRAN",
+      "licenseNote": "Dispositivos legais e materiais institucionais oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
     "status": "em_revisao",
@@ -1179,7 +1179,7 @@
     "correctOptionId": "c",
     "explanation": "Conforme o Art. 40, I e § 2º do CTB (redação da Lei nº 14.071/2020), o condutor deve manter faróis baixos acesos: à noite; mesmo de dia em túneis e sob chuva, neblina ou cerração; e em rodovias de pista simples situadas fora de perímetros urbanos (se não tiver DRL). Em motocicletas, farol baixo é obrigatório dia e noite em qualquer via.",
     "topic": "Normas de Circulação",
-    "subtopic": "Uso de Luzes e Faróis (CTB Art. 40 • Lei nº 14.071/2020)",
+    "subtopic": "Uso de Luzes e Faróis Baixos (CTB Art. 40 • Lei nº 14.071/2020)",
     "ufs": [
       "MG"
     ],
@@ -1212,7 +1212,7 @@
   {
     "id": "sin-023",
     "version": 2,
-    "statement": "Em vias urbanas, em que condições o condutor pode fazer uso da buzina e quais restrições legais devem ser obrigatoriamente observadas (Arts. 41 e 227 do CTB e placa R-20 do MBST)?",
+    "statement": "Em vias urbanas, em que condições o condutor pode fazer uso da buzina e quais restrições legais devem ser obrigatoriamente observadas (Arts. 41 e 227, IV do CTB e placa R-20 do MBST)?",
     "options": [
       {
         "id": "a",
@@ -1232,9 +1232,9 @@
       }
     ],
     "correctOptionId": "a",
-    "explanation": "O Art. 41 do CTB determina que a buzina só pode ser usada em toque breve para evitar acidentes ou fora de áreas urbanas para indicar ultrapassagem. O Art. 227, inciso V do CTB tipifica como infração leve o uso em locais e horários proibidos pela sinalização regulamentar. A sinalização gráfica que regulamenta essa restrição é a placa R-20 (\"Proibido acionar buzina ou sinal sonoro\"), instituída pelo Manual Brasileiro de Sinalização de Trânsito — Volume I (aprovado pela Resolução CONTRAN nº 973/2022).",
+    "explanation": "O Art. 41 do CTB determina que a buzina só pode ser usada em toque breve para advertências necessárias a fim de evitar acidentes ou fora de áreas urbanas para indicar o propósito de ultrapassagem. O Art. 227, inciso IV do CTB tipifica como infração leve o uso da buzina em locais e horários proibidos pela sinalização regulamentar (o inciso V refere-se a padrões e frequências do CONTRAN). A sinalização gráfica que regulamenta essa restrição é a placa R-20 (\"Proibido acionar buzina ou sinal sonoro\"), padronizada no Manual Brasileiro de Sinalização de Trânsito — Volume I (aprovado pela Resolução CONTRAN nº 973/2022).",
     "topic": "Normas de Circulação",
-    "subtopic": "Uso da Buzina e Sinalização R-20 (CTB Arts. 41 e 227, V • Res. CONTRAN nº 973/2022)",
+    "subtopic": "Uso da Buzina e Sinalização R-20 (CTB Arts. 41 e 227, IV • Res. CONTRAN nº 973/2022)",
     "ufs": [
       "MG"
     ],
@@ -1244,9 +1244,9 @@
     ],
     "source": {
       "kind": "official",
-      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resolução CONTRAN nº 973/2022 (MBST Volume I)",
-      "provision": "CTB Arts. 41 e 227, V • MBST Vol. I (Placa R-20 / Anexo I da Res. CONTRAN nº 973/2022)",
-      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Manual Brasileiro de Sinalização de Trânsito — Volume I (Resolução CONTRAN nº 973/2022)",
+      "provision": "CTB Arts. 41 e 227, IV • MBST Vol. I (Placa R-20 / Resolução CONTRAN nº 973/2022)",
+      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/senatran/manuais-brasileiros-de-sinalizacao-de-transito",
       "checkedAt": "2026-11-09T08:00:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
@@ -1300,12 +1300,12 @@
     "source": {
       "kind": "official",
       "document": "Manual Brasileiro de Sinalização de Trânsito — Volume I (Resolução CONTRAN nº 973/2022, Anexo I)",
-      "provision": "MBST Vol. I (Placas R-4a e R-5a) • Resolução CONTRAN nº 973/2022",
-      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "provision": "MBST Vol. I (Placas R-4a e R-5a / Anexo I da Resolução CONTRAN nº 973/2022)",
+      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/senatran/manuais-brasileiros-de-sinalizacao-de-transito",
       "checkedAt": "2026-11-09T08:00:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "Resolução CONTRAN nº 973/2022 (MBST Vol. I)",
+      "sourceVersion": "Resolução CONTRAN nº 973/2022 (MBST Vol. I — Sinalização Vertical de Regulamentação)",
       "licenseNote": "Norma técnica oficial federal em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
@@ -1377,7 +1377,7 @@
   {
     "id": "sin-026",
     "version": 2,
-    "statement": "Segundo o Art. 64 do CTB (alterado pela Lei Federal nº 14.071/2020) e a Resolução CONTRAN nº 938/2022, qual é a regra obrigatória para o transporte de crianças no banco traseiro em veículos automotores?",
+    "statement": "Segundo o Art. 64 do CTB (com a redação da Lei Federal nº 14.071/2020) e a Resolução CONTRAN nº 819/2021, qual é a regra obrigatória para o transporte de crianças no banco traseiro em veículos automotores?",
     "options": [
       {
         "id": "a",
@@ -1397,9 +1397,9 @@
       }
     ],
     "correctOptionId": "a",
-    "explanation": "O Art. 64 do CTB (redação da Lei nº 14.071/2020) e a Resolução CONTRAN nº 938/2022 determinam que crianças menores de 10 anos de idade que não tenham atingido 1,45m de altura devem ser transportadas nos bancos traseiros utilizando dispositivo de retenção adequado ao seu peso e altura (bebê-conforto, cadeirinha ou assento de elevação). Atingindo 1,45m de altura (mesmo com menos de 10 anos) ou completando 10 anos, podem viajar no banco dianteiro com o cinto de segurança.",
+    "explanation": "O Art. 64 do CTB (redação da Lei nº 14.071/2020) e a Resolução CONTRAN nº 819/2021 determinam que crianças menores de 10 anos de idade que não tenham atingido 1,45m de altura devem ser transportadas nos bancos traseiros utilizando dispositivo de retenção adequado à sua idade, peso e altura (bebê-conforto, cadeirinha ou assento de elevação). Atingindo 1,45m de altura (mesmo com menos de 10 anos) ou completando 10 anos de idade, podem viajar no banco dianteiro com o cinto de segurança.",
     "topic": "Segurança e Transporte de Passageiros",
-    "subtopic": "Dispositivos de Retenção para Crianças (CTB Art. 64 • Res. CONTRAN nº 938/2022)",
+    "subtopic": "Dispositivos de Retenção para Crianças (CTB Art. 64 • Res. CONTRAN nº 819/2021)",
     "ufs": [
       "MG"
     ],
@@ -1409,13 +1409,13 @@
     ],
     "source": {
       "kind": "official",
-      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resolução CONTRAN nº 938/2022",
-      "provision": "CTB Art. 64 (com redação da Lei nº 14.071/2020) • Resolução CONTRAN nº 938/2022",
-      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997) e Resolução CONTRAN nº 819/2021",
+      "provision": "CTB Art. 64 (com redação da Lei nº 14.071/2020) • Resolução CONTRAN nº 819/2021",
+      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/senatran/resolucoes-contran",
       "checkedAt": "2026-11-09T08:00:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "CTB Atualizado (Lei nº 14.071/2020) e Resolução CONTRAN nº 938/2022",
+      "sourceVersion": "CTB Atualizado (Lei nº 14.071/2020) e Resolução CONTRAN nº 819/2021",
       "licenseNote": "Dispositivos legais e normas oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
@@ -1519,13 +1519,13 @@
     ],
     "source": {
       "kind": "official",
-      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997, Anexo II) e Resolução CONTRAN nº 973/2022",
-      "provision": "CTB Anexo II (Sinalização de Advertência) • MBST Vol. II / Resolução CONTRAN nº 973/2022",
-      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm",
+      "document": "Código de Trânsito Brasileiro (Lei nº 9.503/1997, Anexo II) e Manual Brasileiro de Sinalização de Trânsito — Volume II (Resolução CONTRAN nº 973/2022)",
+      "provision": "CTB Anexo II (item 1.2) • MBST Vol. II (Resolução CONTRAN nº 973/2022)",
+      "url": "https://www.gov.br/transportes/pt-br/assuntos/transito/senatran/manuais-brasileiros-de-sinalizacao-de-transito",
       "checkedAt": "2026-11-09T08:00:00Z",
       "effectiveFrom": "2023-01-02",
       "effectiveUntil": null,
-      "sourceVersion": "CTB Anexo II e Resolução CONTRAN nº 973/2022",
+      "sourceVersion": "CTB Anexo II e Resolução CONTRAN nº 973/2022 (MBST Vol. II)",
       "licenseNote": "Normas oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },

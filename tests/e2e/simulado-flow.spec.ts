@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Simulado Temático de Sinalização — Fase 6 (T006 / Regra D007)', () => {
-  test('deve exibir as regras do simulado temático (30 questões, 60 min, corte 20) no lobby /simulado', async ({
+test.describe('Simulado Temático de Sinalização — Fase 6 (T006 / Regra D007 & Segurança Editorial P0)', () => {
+  test('deve exibir as regras do simulado temático e alertar sobre indisponibilidade por acervo insuficiente (20 de 30 questões aprovadas)', async ({
     page,
   }) => {
     await page.goto('/simulado');
@@ -15,57 +15,41 @@ test.describe('Simulado Temático de Sinalização — Fase 6 (T006 / Regra D007
     await expect(page.getByTestId('rule-total-questions')).toContainText('30 questões');
     await expect(page.getByTestId('rule-duration')).toContainText('60 minutos');
     await expect(page.getByTestId('rule-passing-score')).toContainText('20 acertos');
-    await expect(page.getByTestId('start-simulado-cta')).toBeVisible();
+
+    // Valida o alerta acessível de indisponibilidade por segurança editorial P0
+    const alert = page.getByTestId('simulado-insufficient-alert');
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText(/o acervo possui 20 questões aprovadas, sendo necessárias 30/i);
+
+    // Valida que o CTA está desabilitado e explicativo, impedindo início indevido
+    const cta = page.getByTestId('start-simulado-cta');
+    await expect(cta).toBeVisible();
+    await expect(cta).toBeDisabled();
+    await expect(cta).toHaveAttribute('aria-disabled', 'true');
+    await expect(cta).toContainText('Simulado Indisponível (20/30 questões aprovadas)');
   });
 
-  test('deve iniciar o simulado, usar o cronômetro e mapa de navegação, entregar a prova e ver o gabarito comentado', async ({
+  test('deve bloquear acesso direto a /simulado/prova exibindo tela informativa de contingência com acervo em homologação', async ({
     page,
   }) => {
     await page.goto('/simulado/prova');
 
-    // Verifica cronômetro regressivo e questão 1 de 30
-    await expect(page.getByTestId('simulado-timer')).toBeVisible();
-    await expect(page.getByText('Questão 1 de 30')).toBeVisible();
-
-    // Seleciona alternativa na questão 1 e marca para revisar
-    const firstRadio = page.locator('input[type="radio"]').first();
-    await firstRadio.check();
-
-    const markBtn = page.getByTestId('mark-review-btn');
-    await markBtn.click();
-    await expect(markBtn).toHaveAttribute('aria-pressed', 'true');
-
-    // Abre o Mapa da Prova (1 a 30) e verifica flag na questão 1
-    await page.getByTestId('toggle-nav-drawer-btn').click();
-    await expect(page.getByTestId('simulado-nav-drawer')).toBeVisible();
-    await expect(page.getByTestId('nav-flag-1')).toBeVisible();
-
-    // Pula direto para a questão 5 pelo mapa da prova
-    await page.getByTestId('nav-question-5').click();
-    await expect(page.getByText('Questão 5 de 30')).toBeVisible();
-
-    // Abre modal de finalização e verifica aviso de questões em branco
-    await page.getByTestId('open-finish-modal-btn').click();
-    await expect(page.getByTestId('unanswered-warning')).toContainText('29 questão(ões) em branco');
-
-    // Confirma entrega e aguarda redirecionamento para o gabarito comentado
-    await page.getByTestId('confirm-finish-btn').click();
-
-    await expect(page).toHaveURL(/\/simulado\/resultado\//, { timeout: 15000 });
-    await expect(page.getByTestId('simulado-result-summary')).toBeVisible();
+    // Valida que a página não quebra nem renderiza tela branca
+    const alert = page.getByTestId('simulado-insufficient-alert');
+    await expect(alert).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: /Gabarito Comentado da Plataforma/i })
+      page.getByRole('heading', { name: /Simulado Completo Temporariamente Indisponível/i })
     ).toBeVisible();
+    await expect(alert).toContainText(/o acervo conta com 20 questões aprovadas/i);
 
-    // Valida resultado pedagógico (Meta de estudo / Continue praticando)
-    await expect(page.getByTestId('simulado-approval-badge')).toBeVisible();
-
-    // Filtra apenas erros no gabarito
-    await page.getByTestId('filter-errors-btn').click();
-    await expect(page.getByTestId('filter-errors-btn')).toHaveAttribute('aria-pressed', 'true');
+    // Valida que o link de retorno ao lobby está acessível
+    const returnLink = page.getByTestId('return-simulado-lobby-btn');
+    await expect(returnLink).toBeVisible();
+    await returnLink.click();
+    await expect(page).toHaveURL(/\/simulado$/);
   });
 
-  test('deve permitir selecionar tempo estendido de 120 minutos para adaptação PCD, TDAH ou TEA (Art. 33, § 2º)', async ({
+  test('deve permitir alternar para tempo estendido de 120 minutos para adaptação PCD, TDAH ou TEA (Art. 33, § 2º)', async ({
     page,
   }) => {
     await page.goto('/simulado');
@@ -78,36 +62,10 @@ test.describe('Simulado Temático de Sinalização — Fase 6 (T006 / Regra D007
     // Seleciona a opção de 120 minutos PCD/TEA
     const pcdRadio = page.locator('input#duration-opt-120');
     await pcdRadio.check();
+    await expect(pcdRadio).toBeChecked();
 
-    // O botão de CTA agora reflete os 120 minutos
+    // O botão de CTA continua desabilitado e protegido contra início indevido
     const cta = page.getByTestId('start-simulado-cta');
-    await expect(cta).toContainText('120 min');
-    await cta.click();
-
-    await expect(page).toHaveURL(/\/simulado\/prova\?tempo=120/);
-    await expect(page.getByTestId('simulado-timer')).toContainText(/120:00|119:\d{2}/);
-  });
-
-  test('deve preservar respostas e tempo ao recarregar a página (F5) durante o simulado', async ({
-    page,
-  }) => {
-    await page.goto('/simulado/prova');
-
-    // Seleciona uma alternativa na questão 1
-    const firstRadio = page.locator('input[type="radio"]').first();
-    await firstRadio.check();
-    await expect(firstRadio).toBeChecked();
-
-    // Marca questão 1 para revisão
-    await page.getByTestId('mark-review-btn').click();
-    await expect(page.getByTestId('mark-review-btn')).toHaveAttribute('aria-pressed', 'true');
-
-    // Recarrega a página (F5)
-    await page.reload();
-
-    // Resposta e flag de revisão continuam preservadas após o reload
-    const reloadedRadio = page.locator('input[type="radio"]').first();
-    await expect(reloadedRadio).toBeChecked();
-    await expect(page.getByTestId('mark-review-btn')).toHaveAttribute('aria-pressed', 'true');
+    await expect(cta).toBeDisabled();
   });
 });

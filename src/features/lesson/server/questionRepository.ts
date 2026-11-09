@@ -163,6 +163,7 @@ export async function getApprovedQuestionsByTopic(
         )
       `)
       .eq('status', 'aprovada')
+      .eq('is_example', false)
       .ilike('topic', `%${topic}%`)
       .order('id', { ascending: true });
 

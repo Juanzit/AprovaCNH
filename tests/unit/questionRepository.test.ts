@@ -150,19 +150,17 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
   // Requisito Obrigatório 6: A ausência de questões aprovadas não causa retorno indiscriminado do JSON
   it('a ausência de questões aprovadas no banco e no fallback não causa retorno indiscriminado do JSON (retorna array vazio)', async () => {
     const { createClient } = await import('@/lib/supabase/server');
+    const mockQueryBuilder: Record<string, unknown> = {};
+    mockQueryBuilder.eq = vi.fn().mockReturnValue(mockQueryBuilder);
+    mockQueryBuilder.ilike = vi.fn().mockReturnValue(mockQueryBuilder);
+    mockQueryBuilder.order = vi.fn().mockResolvedValue({
+      data: [],
+      error: null,
+    });
+    mockQueryBuilder.select = vi.fn().mockReturnValue(mockQueryBuilder);
+
     vi.mocked(createClient).mockResolvedValueOnce({
-      from: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            ilike: vi.fn().mockReturnValue({
-              order: vi.fn().mockResolvedValue({
-                data: [],
-                error: null,
-              }),
-            }),
-          }),
-        }),
-      }),
+      from: vi.fn().mockReturnValue(mockQueryBuilder),
     } as unknown as Awaited<ReturnType<typeof createClient>>);
 
     const questions = await getApprovedQuestionsByTopic('Topico Inexistente Sem Fallback', { fallbackToLocal: false });

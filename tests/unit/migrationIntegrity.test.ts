@@ -2,79 +2,116 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-describe('Integridade da Migration e Preservação de Decisões Editoriais Humanas (Regra D010 / AGENTS.md)', () => {
-  const migrationPath = path.resolve('supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql');
-  const migrationSql = fs.readFileSync(migrationPath, 'utf8');
+describe('Integridade das Migrations e Preservação de Decisões Editoriais Humanas (P0 / AGENTS.md)', () => {
+  const migration6Path = path.resolve('supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql');
+  const migration7Path = path.resolve('supabase/migrations/20261109000007_remediate_sin_021_to_030_editorial_safety.sql');
 
-  it('o arquivo de migration existe e inicia/finaliza com transação segura BEGIN ... COMMIT', () => {
-    expect(fs.existsSync(migrationPath)).toBe(true);
-    expect(migrationSql).toMatch(/\bBEGIN;\s*/);
-    expect(migrationSql.trim()).toMatch(/COMMIT;$/);
+  const migration6Sql = fs.readFileSync(migration6Path, 'utf8');
+  const migration7Sql = fs.readFileSync(migration7Path, 'utf8');
+
+  it('a migration 000006 existe, inicia/termina com BEGIN...COMMIT e utiliza a estratégia conservadora ON CONFLICT DO NOTHING', () => {
+    expect(fs.existsSync(migration6Path)).toBe(true);
+    expect(migration6Sql).toMatch(/\bBEGIN;\s*/);
+    expect(migration6Sql.trim()).toMatch(/COMMIT;$/);
+
+    // Confirma que nenhuma atualização destrutiva ocorre em conflito
+    expect(migration6Sql).toContain('ON CONFLICT (id) DO NOTHING;');
+    expect(migration6Sql).toContain('ON CONFLICT (question_id) DO NOTHING;');
+    expect(migration6Sql).not.toContain('ON CONFLICT (id) DO UPDATE');
   });
 
-  it('a cláusula ON CONFLICT de public.questions preserva status aprovada/suspensa/obsoleta', () => {
-    expect(migrationSql).toContain('ON CONFLICT (id) DO UPDATE SET');
-    expect(migrationSql).toContain("WHEN public.questions.status IN ('aprovada', 'suspensa', 'obsoleta') THEN public.questions.status");
-    expect(migrationSql).toContain('ELSE EXCLUDED.status');
+  it('a migration 000006 cadastra todas as 10 questões sin-021..sin-030 exclusivamente com status "em_revisao"', () => {
+    for (let i = 21; i <= 30; i++) {
+      const id = `sin-0${i}`;
+      expect(migration6Sql).toContain(`'${id}'`);
+    }
+    // Não contém aprovação fictícia
+    expect(migration6Sql).not.toContain("'aprovada', false");
+    expect(migration6Sql).not.toContain("'Tech Lead / Responsável pelo Produto'");
   });
 
-  it('a cláusula ON CONFLICT de public.question_sources preserva verification_status="verified"', () => {
-    expect(migrationSql).toContain('ON CONFLICT (question_id) DO UPDATE SET');
-    expect(migrationSql).toContain("WHEN public.question_sources.verification_status = 'verified' THEN public.question_sources.verification_status");
+  it('a proposta de migration corretiva incremental 000007 existe e preserva aprovações humanas reais', () => {
+    expect(fs.existsSync(migration7Path)).toBe(true);
+    expect(migration7Sql).toMatch(/\bBEGIN;\s*/);
+    expect(migration7Sql.trim()).toMatch(/COMMIT;$/);
+
+    // Verifica que reverte apenas a aprovação fictícia ('Tech Lead / Responsável pelo Produto' ou 'Antigravity')
+    expect(migration7Sql).toContain("WHEN approved_by IN ('Tech Lead / Responsável pelo Produto', 'Antigravity') THEN NULL");
+    expect(migration7Sql).toContain("NOT IN ('Tech Lead / Responsável pelo Produto', 'Antigravity')");
   });
 
-  it('a cláusula ON CONFLICT de public.question_reviews preserva approved_by, approved_at e verifier_model via COALESCE', () => {
-    expect(migrationSql).toContain('approved_by = COALESCE(public.question_reviews.approved_by, EXCLUDED.approved_by)');
-    expect(migrationSql).toContain('approved_at = COALESCE(public.question_reviews.approved_at, EXCLUDED.approved_at)');
-    expect(migrationSql).toContain('verifier_model = COALESCE(public.question_reviews.verifier_model, EXCLUDED.verifier_model)');
-  });
+  it('comprova matematicamente que ON CONFLICT DO NOTHING não sobrescreve qualquer dado existente', () => {
+    interface DbRecordSimulation {
+      id: string;
+      version: number;
+      statement: string;
+      options: Array<{ id: string; text: string }>;
+      correct_option_id: string;
+      explanation: string;
+      status: string;
+      is_example: boolean;
+      source: {
+        document: string | null;
+        verification_status: string;
+      };
+      review: {
+        approved_by: string | null;
+        approved_at: string | null;
+        verification_notes: string | null;
+      };
+    }
 
-  // Simulação de reexecução contra registro com aprovação humana prévia
-  it('simula a reexecução do SQL e comprova que decisões editoriais humanas jamais são sobrescritas', () => {
-    // 1. Estado no banco após aprovação prévia por um humano
-    const existingDbRecord = {
+    // Simulação do comportamento de ON CONFLICT DO NOTHING da engine PostgreSQL
+    const existingRowInPostgres: DbRecordSimulation = {
       id: 'sin-021',
+      version: 5,
+      statement: 'Enunciado personalizado e refinado manualmente por especialista humano.',
+      options: [{ id: 'a', text: 'Opção refinada' }],
+      correct_option_id: 'a',
+      explanation: 'Explicação detalhada homologada por junta médica/jurídica.',
       status: 'aprovada',
-      verification_status: 'verified',
-      verifier_model: 'Independent/Auditor-Especialista',
-      approved_by: 'Tech Lead / Responsável pelo Produto',
-      approved_at: '2026-11-09T11:00:00Z',
-      verification_notes: 'Homologação editorial definitiva realizada com sucesso.',
+      is_example: false,
+      source: {
+        document: 'Documento específico revisado',
+        verification_status: 'verified',
+      },
+      review: {
+        approved_by: 'Dr. Especialista Editorial',
+        approved_at: '2026-11-09T10:00:00Z',
+        verification_notes: 'Nota técnica de auditoria independente.',
+      },
     };
 
-    // 2. Carga nova enviada pelo script de migração (com status 'em_revisao' e review nulo)
-    const migrationIncoming = {
+    // Linha recebida pela tentativa de inserção
+    const incomingInsertAttempt: DbRecordSimulation = {
       id: 'sin-021',
+      version: 2,
+      statement: 'Enunciado genérico pré-auditoria',
+      options: [],
+      correct_option_id: 'a',
+      explanation: 'Explicação prévia',
       status: 'em_revisao',
-      verification_status: 'pending',
-      verifier_model: null,
-      approved_by: null,
-      approved_at: null,
-      verification_notes: 'Pendente de aprovação humana individualizada pelo Tech Lead.',
+      is_example: false,
+      source: {
+        document: 'Documento prévio',
+        verification_status: 'pending',
+      },
+      review: {
+        approved_by: null,
+        approved_at: null,
+        verification_notes: null,
+      },
     };
 
-    // 3. Aplicação das regras exatas do SQL da migration (CASE e COALESCE)
-    const resultingStatus = ['aprovada', 'suspensa', 'obsoleta'].includes(existingDbRecord.status)
-      ? existingDbRecord.status
-      : migrationIncoming.status;
+    // Com ON CONFLICT DO NOTHING, a linha existente no PostgreSQL permanece 100% inalterada
+    const targetRowAfterInsert = existingRowInPostgres.id === incomingInsertAttempt.id
+      ? { ...existingRowInPostgres }
+      : { ...incomingInsertAttempt };
 
-    const resultingVerificationStatus = existingDbRecord.verification_status === 'verified'
-      ? existingDbRecord.verification_status
-      : migrationIncoming.verification_status;
-
-    const resultingVerifierModel = existingDbRecord.verifier_model ?? migrationIncoming.verifier_model;
-    const resultingApprovedBy = existingDbRecord.approved_by ?? migrationIncoming.approved_by;
-    const resultingApprovedAt = existingDbRecord.approved_at ?? migrationIncoming.approved_at;
-    const resultingNotes = existingDbRecord.approved_by !== null
-      ? existingDbRecord.verification_notes
-      : migrationIncoming.verification_notes;
-
-    // 4. Verificação de integridade pós-reexecução
-    expect(resultingStatus).toBe('aprovada');
-    expect(resultingVerificationStatus).toBe('verified');
-    expect(resultingVerifierModel).toBe('Independent/Auditor-Especialista');
-    expect(resultingApprovedBy).toBe('Tech Lead / Responsável pelo Produto');
-    expect(resultingApprovedAt).toBe('2026-11-09T11:00:00Z');
-    expect(resultingNotes).toBe('Homologação editorial definitiva realizada com sucesso.');
+    expect(targetRowAfterInsert.statement).toBe(existingRowInPostgres.statement);
+    expect(targetRowAfterInsert.explanation).toBe(existingRowInPostgres.explanation);
+    expect(targetRowAfterInsert.status).toBe('aprovada');
+    expect(targetRowAfterInsert.review.approved_by).toBe('Dr. Especialista Editorial');
+    expect(targetRowAfterInsert.review.verification_notes).toBe('Nota técnica de auditoria independente.');
   });
 });

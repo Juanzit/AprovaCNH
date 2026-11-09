@@ -14,7 +14,7 @@ import {
   InsufficientApprovedQuestionsError,
 } from '@/features/simulado/utils/simuladoGenerator';
 
-describe('Simulado Configurável — Regras D007, Segurança Editorial e Validações', () => {
+describe('Simulado Configurável — Regras D007, Segurança Editorial e Validações P0', () => {
   const questionBank = questionBankSchema.parse(rawQuestions);
 
   // Helper para criar um banco sintético controlado de questões aprovadas e distintas
@@ -50,48 +50,13 @@ describe('Simulado Configurável — Regras D007, Segurança Editorial e Valida�
     expect(invalid.success).toBe(false);
   });
 
-  // Requisito Obrigatório 2: O gerador não inicia uma prova de 30 questões quando existem somente 20 aprovadas
-  it('lança InsufficientApprovedQuestionsError quando existem somente 20 questões aprovadas no acervo', () => {
-    // questionBank possui 20 aprovadas e 10 em_revisao
-    expect(() =>
-      generateSimuladoQuestions(questionBank, {
-        totalQuestions: 30,
-        uf: 'MG',
-      })
-    ).toThrow(InsufficientApprovedQuestionsError);
+  // =========================================================================
+  // BATERIA OBRIGATÓRIA P0 — OS 7 CENÁRIOS DO GERADOR DE SIMULADO
+  // =========================================================================
 
-    try {
-      generateSimuladoQuestions(questionBank, { totalQuestions: 30 });
-    } catch (err) {
-      expect(err).toBeInstanceOf(InsufficientApprovedQuestionsError);
-      const domainErr = err as InsufficientApprovedQuestionsError;
-      expect(domainErr.requiredCount).toBe(30);
-      expect(domainErr.availableCount).toBe(20);
-    }
-  });
-
-  // Requisito Obrigatório 3: Um conjunto com 29 aprovadas e outras questões pendentes também não inicia
-  it('lança InsufficientApprovedQuestionsError em um conjunto com 29 aprovadas e outras questões pendentes', () => {
-    const twentyNineApproved = createMockApprovedBank(29);
-    // Adiciona questões em revisão, rascunho e suspensa para testar que não são usadas para completar
-    const mixedBank = [
-      ...twentyNineApproved,
-      { ...twentyNineApproved[0], id: 'pending-1', status: 'em_revisao' as const },
-      { ...twentyNineApproved[0], id: 'pending-2', status: 'rascunho' as const },
-      { ...twentyNineApproved[0], id: 'pending-3', status: 'suspensa' as const },
-    ];
-
-    expect(() =>
-      generateSimuladoQuestions(mixedBank, {
-        totalQuestions: 30,
-        uf: 'MG',
-      })
-    ).toThrow(InsufficientApprovedQuestionsError);
-  });
-
-  // Requisito Obrigatório 4: Um conjunto com 30 aprovadas gera exatamente 30 questões distintas
-  it('gera exatamente 30 questões ordenadas de 1 a 30 com 100% de itens únicos quando existem 30 aprovadas', () => {
-    const thirtyApproved = createMockApprovedBank(30);
+  // Cenário 1: Pool com 30 ou mais questões aprovadas distintas
+  it('Cenário 1: Pool com 30 ou mais questões aprovadas distintas gera exatamente 30 itens únicos ordenados de 1 a 30', () => {
+    const thirtyApproved = createMockApprovedBank(35);
     const items = generateSimuladoQuestions(thirtyApproved, {
       totalQuestions: 30,
       uf: 'MG',
@@ -104,24 +69,129 @@ describe('Simulado Configurável — Regras D007, Segurança Editorial e Valida�
 
     const uniqueIds = new Set(items.map((i) => i.question.id));
     expect(uniqueIds.size).toBe(30);
-  });
-
-  // Requisito Obrigatório 5: Nenhuma questão em revisão chega ao simulado gerado
-  it('garante que 100% das questões selecionadas possuem status "aprovada" e isExample === false', () => {
-    const thirtyApproved = createMockApprovedBank(30);
-    const bankWithPending = [
-      ...thirtyApproved,
-      { ...thirtyApproved[0], id: 'rev-01', status: 'em_revisao' as const },
-      { ...thirtyApproved[0], id: 'rev-02', status: 'rascunho' as const },
-    ];
-
-    const items = generateSimuladoQuestions(bankWithPending, { totalQuestions: 30, seed: 10 });
-    expect(items).toHaveLength(30);
     for (const item of items) {
       expect(item.question.status).toBe('aprovada');
       expect(item.question.isExample).toBe(false);
     }
   });
+
+  // Cenário 2: Pool com menos de 30 aprovadas
+  it('Cenário 2: Pool com menos de 30 aprovadas lança InsufficientApprovedQuestionsError com as quantidades exatas', () => {
+    const twentyApproved = createMockApprovedBank(20);
+    expect(() =>
+      generateSimuladoQuestions(twentyApproved, { totalQuestions: 30 })
+    ).toThrow(InsufficientApprovedQuestionsError);
+
+    try {
+      generateSimuladoQuestions(twentyApproved, { totalQuestions: 30 });
+    } catch (err) {
+      expect(err).toBeInstanceOf(InsufficientApprovedQuestionsError);
+      const domainErr = err as InsufficientApprovedQuestionsError;
+      expect(domainErr.requiredCount).toBe(30);
+      expect(domainErr.availableCount).toBe(20);
+    }
+  });
+
+  // Cenário 3: Presença de questões pendentes
+  it('Cenário 3: Presença de questões pendentes (em_revisao/rascunho) não é utilizada para completar o simulado', () => {
+    const twentyNineApproved = createMockApprovedBank(29);
+    const poolWithPending = [
+      ...twentyNineApproved,
+      { ...twentyNineApproved[0], id: 'pending-sin-1', status: 'em_revisao' as const },
+      { ...twentyNineApproved[0], id: 'pending-sin-2', status: 'rascunho' as const },
+    ];
+
+    expect(poolWithPending).toHaveLength(31);
+    // Mesmo tendo 31 itens brutos, apenas 29 são aprovadas -> deve recusar e lançar erro
+    expect(() =>
+      generateSimuladoQuestions(poolWithPending, { totalQuestions: 30 })
+    ).toThrow(InsufficientApprovedQuestionsError);
+  });
+
+  // Cenário 4: Presença de questões suspensas ou rejeitadas
+  it('Cenário 4: Presença de questões suspensas ou obsoletas é descartada pela filtragem de elegibilidade', () => {
+    const twentyEightApproved = createMockApprovedBank(28);
+    const poolWithSuspended = [
+      ...twentyEightApproved,
+      { ...twentyEightApproved[0], id: 'susp-1', status: 'suspensa' as const },
+      { ...twentyEightApproved[0], id: 'obs-1', status: 'obsoleta' as const },
+    ];
+
+    expect(poolWithSuspended).toHaveLength(30);
+    expect(() =>
+      generateSimuladoQuestions(poolWithSuspended, { totalQuestions: 30 })
+    ).toThrow(InsufficientApprovedQuestionsError);
+  });
+
+  // Cenário 5: Presença de exemplos
+  it('Cenário 5: Questões marcadas como exemplo (isExample: true) são estritamente excluídas do pool', () => {
+    const twentyNineApproved = createMockApprovedBank(29);
+    const poolWithExample = [
+      ...twentyNineApproved,
+      { ...twentyNineApproved[0], id: 'example-1', status: 'aprovada' as const, isExample: true },
+    ];
+
+    expect(poolWithExample).toHaveLength(30);
+    // A questão example-1 tem status 'aprovada', mas isExample: true -> deve ser rejeitada
+    expect(() =>
+      generateSimuladoQuestions(poolWithExample, { totalQuestions: 30 })
+    ).toThrow(InsufficientApprovedQuestionsError);
+  });
+
+  // Cenário 6: IDs duplicados
+  it('Cenário 6: IDs duplicados no pool de entrada são deduplicados sem duplicar questões na prova', () => {
+    const thirtyApproved = createMockApprovedBank(30);
+    // Duplica os 5 primeiros itens
+    const poolWithDuplicates = [
+      ...thirtyApproved,
+      { ...thirtyApproved[0] },
+      { ...thirtyApproved[1] },
+      { ...thirtyApproved[2] },
+      { ...thirtyApproved[3] },
+      { ...thirtyApproved[4] },
+    ];
+
+    expect(poolWithDuplicates).toHaveLength(35);
+    const items = generateSimuladoQuestions(poolWithDuplicates, { totalQuestions: 30, seed: 77 });
+    expect(items).toHaveLength(30);
+
+    const uniqueIds = new Set(items.map((i) => i.question.id));
+    expect(uniqueIds.size).toBe(30);
+  });
+
+  // Cenário 7: Pool insuficiente depois da deduplicação
+  it('Cenário 7: Pool com 35 itens brutos mas apenas 28 IDs distintos falha após a deduplicação', () => {
+    const twentyEightApproved = createMockApprovedBank(28);
+    // Adiciona 7 duplicatas de itens já existentes
+    const poolWithRepeats = [
+      ...twentyEightApproved,
+      { ...twentyEightApproved[0] },
+      { ...twentyEightApproved[1] },
+      { ...twentyEightApproved[2] },
+      { ...twentyEightApproved[3] },
+      { ...twentyEightApproved[4] },
+      { ...twentyEightApproved[5] },
+      { ...twentyEightApproved[6] },
+    ];
+
+    expect(poolWithRepeats).toHaveLength(35);
+    // Após deduplicação restam 28 questões distintas -> deve falhar
+    expect(() =>
+      generateSimuladoQuestions(poolWithRepeats, { totalQuestions: 30 })
+    ).toThrow(InsufficientApprovedQuestionsError);
+
+    try {
+      generateSimuladoQuestions(poolWithRepeats, { totalQuestions: 30 });
+    } catch (err) {
+      const domainErr = err as InsufficientApprovedQuestionsError;
+      expect(domainErr.availableCount).toBe(28);
+      expect(domainErr.requiredCount).toBe(30);
+    }
+  });
+
+  // =========================================================================
+  // SUBMISSÃO, AVALIAÇÃO E FORMATADORES
+  // =========================================================================
 
   it('produz a mesma sequência de questões quando a mesma semente (seed) é informada', () => {
     const thirtyApproved = createMockApprovedBank(30);

@@ -5,13 +5,20 @@ import {
   questionBankSchema,
   type ValidatedQuestion,
 } from '@/features/lesson/schemas/questionSchema';
-import { getFallbackApprovedQuestions } from '@/features/lesson/server/questionRepository';
+import {
+  getApprovedQuestionsByTopic,
+  getFallbackApprovedQuestions,
+} from '@/features/lesson/server/questionRepository';
+import {
+  getPriorityReviewQuestions,
+  getReviewDashboardData,
+} from '@/features/review/server/reviewRepository';
 import {
   generateSimuladoQuestions,
   InsufficientApprovedQuestionsError,
 } from '@/features/simulado/utils/simuladoGenerator';
 
-describe('Segurança de Publicação e Elegibilidade Editorial — P0 (Regra D010 / AGENTS.md)', () => {
+describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Discentes — P0 (AGENTS.md / D010)', () => {
   const parsedBank = questionBankSchema.parse(rawQuestions);
 
   function createMockApprovedBank(count: number): ValidatedQuestion[] {
@@ -54,15 +61,15 @@ describe('Segurança de Publicação e Elegibilidade Editorial — P0 (Regra D01
   });
 
   // 3. Não inferir aprovação pela existência de fonte oficial
-  it('não permite publicação de questão oficial se o status for "em_revisao"', () => {
+  it('não permite publicação de questão com fonte oficial se o status for "em_revisao"', () => {
     const officialInReview = parsedBank.find((q) => q.id === 'sin-021')!;
     expect(officialInReview.source.kind).toBe('official');
     expect(officialInReview.status).toBe('em_revisao');
     expect(isQuestionEligibleForStudents(officialInReview)).toBe(false);
   });
 
-  // 4. Fallback local: retorna somente 20 questões aprovadas
-  it('o fallback local retorna exatamente 20 questões aprovadas do acervo de 30, sem vazar as 10 em revisão', () => {
+  // 4. Caminho 1: Fallback local — retorna somente as 20 questões homologadas
+  it('Caminho 1 (Fallback Local): retorna somente as 20 questões homologadas, sem vazar as 10 em revisão', () => {
     const fallback = getFallbackApprovedQuestions();
     expect(fallback).toHaveLength(20);
 
@@ -73,45 +80,59 @@ describe('Segurança de Publicação e Elegibilidade Editorial — P0 (Regra D01
     expect(ids).not.toContain('sin-030');
 
     for (const q of fallback) {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
       expect(q.status).toBe('aprovada');
       expect(q.isExample).toBe(false);
-      expect(q.review?.approvedBy).toBeTruthy();
     }
   });
 
-  // 5. Simulado: não inicia com 20 aprovadas
-  it('o gerador de simulado falha com InsufficientApprovedQuestionsError com as 20 questões do fallback', () => {
+  // 5. Caminho 2: Lições Interativas — getApprovedQuestionsByTopic entrega apenas elegíveis
+  it('Caminho 2 (Lições): getApprovedQuestionsByTopic entrega exclusivamente questões elegíveis para estudantes', async () => {
+    const lessonQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
+    expect(lessonQuestions.length).toBeGreaterThanOrEqual(20);
+
+    for (const q of lessonQuestions) {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
+      expect(q.options).toHaveLength(4);
+    }
+  });
+
+  // 6. Caminho 3: Revisão Espaçada (SRS) — Painel e Fila Prática contêm apenas questões elegíveis
+  it('Caminho 3 (Revisão Espaçada): getReviewDashboardData e getPriorityReviewQuestions usam somente questões elegíveis', async () => {
+    const dashboard = await getReviewDashboardData();
+    for (const item of dashboard.queue) {
+      expect(isQuestionEligibleForStudents(item.question)).toBe(true);
+      expect(item.question.status).toBe('aprovada');
+      expect(item.question.isExample).toBe(false);
+    }
+
+    const priorityQuestions = await getPriorityReviewQuestions(5);
+    expect(priorityQuestions).toHaveLength(5);
+    for (const q of priorityQuestions) {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
+    }
+  });
+
+  // 7. Caminho 4: Gerador de Simulado — Rejeita conjunto insuficiente e descarta itens não elegíveis
+  it('Caminho 4 (Simulado): falha com InsufficientApprovedQuestionsError no fallback de 20 e não usa itens em revisão', () => {
     const fallback = getFallbackApprovedQuestions();
     expect(() =>
       generateSimuladoQuestions(fallback, { totalQuestions: 30 })
     ).toThrow(InsufficientApprovedQuestionsError);
-  });
 
-  // 6. Simulado: não inicia com 29 aprovadas
-  it('o gerador de simulado falha com InsufficientApprovedQuestionsError com 29 aprovadas e não completa com pendentes', () => {
+    // Tentativa com 29 aprovadas + 10 em revisão
     const twentyNineApproved = createMockApprovedBank(29);
-    const mixedBank = [
+    const mixed = [
       ...twentyNineApproved,
-      { ...twentyNineApproved[0], id: 'sin-pending', status: 'em_revisao' as const },
+      ...rawQuestions.filter((q) => q.status === 'em_revisao'),
     ];
 
     expect(() =>
-      generateSimuladoQuestions(mixedBank, { totalQuestions: 30 })
+      generateSimuladoQuestions(mixed as ValidatedQuestion[], { totalQuestions: 30 })
     ).toThrow(InsufficientApprovedQuestionsError);
-  });
-
-  // 7. Simulado: 30 aprovadas geram exatamente 30 questões distintas
-  it('o gerador de simulado com 30 aprovadas gera exatamente 30 questões distintas e ordenadas de 1 a 30', () => {
-    const thirtyApproved = createMockApprovedBank(30);
-    const items = generateSimuladoQuestions(thirtyApproved, { totalQuestions: 30, seed: 123 });
-
-    expect(items).toHaveLength(30);
-    const uniqueIds = new Set(items.map((i) => i.question.id));
-    expect(uniqueIds.size).toBe(30);
-
-    for (let i = 0; i < 30; i++) {
-      expect(items[i].questionOrder).toBe(i + 1);
-      expect(items[i].question.status).toBe('aprovada');
-    }
   });
 });

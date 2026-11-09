@@ -36,3 +36,6 @@ Thumbs.db
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Supabase CLI temp
+supabase/.temp/
