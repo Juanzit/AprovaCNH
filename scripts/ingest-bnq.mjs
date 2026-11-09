@@ -156,7 +156,7 @@ async function main() {
 
   console.log(JSON.stringify({
     sourceRows: questions.length,
-    insertedOrAcknowledged: {
+    inserted: {
       questions: questionCount,
       question_sources: sourceCount,
       question_reviews: reviewCount,
