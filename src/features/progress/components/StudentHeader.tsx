@@ -64,7 +64,7 @@ export function StudentHeader({ initialProfile }: StudentHeaderProps) {
     <>
       <section
         aria-label="Resumo do Estudante"
-        className="w-full bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-3"
+        className="card-premium p-5 space-y-4"
       >
         {/* Linha 1: Identificação Compacta do Aluno + Badges de UF/Categoria + Botão Editar */}
         <div className="flex items-center justify-between gap-2.5">

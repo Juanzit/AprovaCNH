@@ -11,7 +11,7 @@ interface ReviewQueueListProps {
 export function ReviewQueueList({ queue }: ReviewQueueListProps) {
   if (queue.length === 0) {
     return (
-      <section aria-labelledby="queue-heading" className="w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-xs text-center space-y-3">
+      <section aria-labelledby="queue-heading" className="card-premium p-6 sm:p-8 text-center space-y-3">
         <h2 id="queue-heading" className="text-base font-bold text-slate-900">
           📋 Fila de Repetição Espaçada
         </h2>
@@ -35,7 +35,7 @@ export function ReviewQueueList({ queue }: ReviewQueueListProps) {
   }
 
   return (
-    <section aria-labelledby="queue-heading" className="w-full bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-xs space-y-4">
+    <section aria-labelledby="queue-heading" className="card-premium p-5 sm:p-6 space-y-4">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3">
         <div>
           <h2 id="queue-heading" className="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
