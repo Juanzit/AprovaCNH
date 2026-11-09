@@ -12,34 +12,42 @@ export default async function SimuladoProvaPage({ searchParams }: SimuladoProvaP
   const params = await searchParams;
   const durationMinutes = params?.tempo === '120' ? 120 : 60;
 
-  try {
-    const session = await initializeSimuladoSession({ uf: 'MG', durationMinutes });
+  let session: Awaited<ReturnType<typeof initializeSimuladoSession>> | null = null;
+  let isInsufficientPool = false;
 
-    return (
-      <SimuladoContainer
-        simuladoId={session.simuladoId}
-        config={session.config}
-        startedAt={session.startedAt}
-        items={session.items}
-      />
-    );
+  try {
+    session = await initializeSimuladoSession({ uf: 'MG', durationMinutes });
   } catch (error) {
     if (error instanceof InsufficientApprovedQuestionsError) {
-      return (
-        <main className="mx-auto max-w-2xl px-4 py-16">
-          <section
-            role="alert"
-            className="rounded-2xl border border-amber-300 bg-amber-50 p-6 text-amber-950"
-          >
-            <h1 className="text-lg font-extrabold">Simulado indisponível no momento</h1>
-            <p className="mt-2 text-sm leading-relaxed">
-              O AprovaCNH não encontrou 30 questões BNQ aprovadas e elegíveis para montar este treino.
-              Questões em revisão ou demonstrativas não são utilizadas para completar a prova.
-            </p>
-          </section>
-        </main>
-      );
+      isInsufficientPool = true;
+    } else {
+      throw error;
     }
-    throw error;
   }
+
+  if (isInsufficientPool || !session) {
+    return (
+      <main className="mx-auto max-w-2xl px-4 py-16">
+        <section
+          role="alert"
+          className="rounded-2xl border border-amber-300 bg-amber-50 p-6 text-amber-950"
+        >
+          <h1 className="text-lg font-extrabold">Simulado indisponível no momento</h1>
+          <p className="mt-2 text-sm leading-relaxed">
+            O AprovaCNH não encontrou 30 questões BNQ aprovadas e elegíveis para montar este treino.
+            Questões em revisão ou demonstrativas não são utilizadas para completar a prova.
+          </p>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <SimuladoContainer
+      simuladoId={session.simuladoId}
+      config={session.config}
+      startedAt={session.startedAt}
+      items={session.items}
+    />
+  );
 }
