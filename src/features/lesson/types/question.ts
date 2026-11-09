@@ -30,12 +30,18 @@ export interface QuestionSource {
   verificationStatus: SourceVerificationStatus;
 }
 
+export type QuestionApprovalMethod = 'individual_human_review' | 'authorized_official_batch';
+
+export type QuestionDifficulty = 'facil' | 'intermediario' | 'dificil';
+
 export interface QuestionReview {
   generatorModel: string | null;
   verifierModel: string | null;
   verificationNotes: string | null;
   approvedBy: string | null;
   approvedAt: string | null;
+  approvalMethod?: QuestionApprovalMethod | null;
+  approvalBatchId?: string | null;
 }
 
 export interface QuestionOption {
@@ -45,6 +51,10 @@ export interface QuestionOption {
 
 export interface Question {
   id: string;
+  sourceQuestionId?: string;
+  difficulty?: QuestionDifficulty;
+  signCode?: string | null;
+  signAssetCodes?: string[];
   version: number;
   statement: string;
   options: [QuestionOption, QuestionOption, QuestionOption, QuestionOption];

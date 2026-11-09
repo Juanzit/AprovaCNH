@@ -6,6 +6,7 @@ import {
 } from '@/features/lesson/schemas/questionSchema';
 import rawSeed from '@/data/seed-sinalizacao.json';
 import rawBank from '@/data/questions-sinalizacao.json';
+import rawBnq from '@/data/bnq-v1.0-clean.json';
 
 describe('questionSchema & lessonSeedSchema (T001)', () => {
   it('deve validar com sucesso o seed demonstrativo real de sinalização com 5 questões', () => {
@@ -301,5 +302,62 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
     };
     const result = questionSchema.safeParse(fullyApproved);
     expect(result.success).toBe(true);
+  });
+});
+
+
+describe('BNQ v1.0 — ingestão autorizada em lote (Fase 6.1)', () => {
+  it('valida exatamente os 1.489 registros limpos, aprovados por autorização rastreável de lote', () => {
+    const result = questionBankSchema.safeParse(rawBnq);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+
+    expect(result.data).toHaveLength(1489);
+    expect(new Set(result.data.map((q) => q.id)).size).toBe(1489);
+    expect(new Set(result.data.map((q) => q.sourceQuestionId)).size).toBe(1489);
+
+    for (const question of result.data) {
+      expect(question.id).toMatch(/^bnq-p[12]-m[1-4]-q\d+$/);
+      expect(question.status).toBe('aprovada');
+      expect(question.isExample).toBe(false);
+      expect(question.source.kind).toBe('official');
+      expect(question.source.verificationStatus).toBe('verified');
+      expect(question.review?.approvalMethod).toBe('authorized_official_batch');
+      expect(question.review?.approvalBatchId).toBe('SENATRAN-BNQ-v1.0-2026-11-09');
+      expect(question.review?.approvedBy).toContain('autorização expressa de lote');
+      expect(question.review?.generatorModel).toBeNull();
+      expect(question.review?.verifierModel).toBeNull();
+      expect(question.options).toHaveLength(4);
+    }
+  });
+
+  it('mantém as seis disciplinas clássicas e o nome do módulo oficial em subtopic', () => {
+    const result = questionBankSchema.parse(rawBnq);
+    const topics = [...new Set(result.map((q) => q.topic))].sort();
+    expect(topics).toEqual([
+      'Direção Defensiva e Circulação Segura',
+      'Legislação de Trânsito',
+      'Mecânica Básica e Manutenção Preventiva',
+      'Meio Ambiente e Condução Sustentável',
+      'Primeiros Socorros e Sinistros',
+      'Sinalização de Trânsito',
+    ]);
+    result.forEach((q) => {
+      expect(q.subtopic).toMatch(/^Módulo [1-4]: /);
+    });
+  });
+
+  it('não cria imagens para códigos sem SVG correspondente; apenas questões com SVG local recebem signAssetCodes', () => {
+    const result = questionBankSchema.parse(rawBnq);
+    const withSignCode = result.filter((q) => q.signCode);
+    const withAsset = result.filter((q) => q.signAssetCodes && q.signAssetCodes.length > 0);
+    const assetCodes = [...new Set(withAsset.flatMap((q) => q.signAssetCodes ?? []))];
+
+    expect(withSignCode).toHaveLength(227);
+    expect(withAsset).toHaveLength(181);
+    expect(assetCodes).toHaveLength(65);
+    withAsset.forEach((q) => {
+      expect(q.signAssetCodes?.length).toBeGreaterThan(0);
+    });
   });
 });

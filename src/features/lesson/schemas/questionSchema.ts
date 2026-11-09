@@ -26,11 +26,17 @@ export const questionReviewSchema = z.object({
   verificationNotes: z.string().nullable(),
   approvedBy: z.string().nullable(),
   approvedAt: z.string().nullable(),
+  approvalMethod: z.enum(['individual_human_review', 'authorized_official_batch']).nullable().optional(),
+  approvalBatchId: z.string().nullable().optional(),
 });
 
 export const questionSchema = z
   .object({
     id: z.string().min(1),
+    sourceQuestionId: z.string().min(1).optional(),
+    difficulty: z.enum(['facil', 'intermediario', 'dificil']).optional(),
+    signCode: z.string().nullable().optional(),
+    signAssetCodes: z.array(z.string().min(1)).optional(),
     version: z.number().int().positive(),
     statement: z.string().min(5, 'O enunciado deve ser descritivo.'),
     options: z.tuple([
@@ -197,30 +203,47 @@ export const questionSchema = z
           path: ['review'],
         });
       } else {
-        if (!data.review.generatorModel || data.review.generatorModel.trim() === '') {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Questões aprovadas exigem review.generatorModel preenchido.',
-            path: ['review', 'generatorModel'],
-          });
-        }
-        if (!data.review.verifierModel || data.review.verifierModel.trim() === '') {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Questões aprovadas exigem review.verifierModel preenchido.',
-            path: ['review', 'verifierModel'],
-          });
-        }
-        if (
-          data.review.generatorModel &&
-          data.review.verifierModel &&
-          data.review.generatorModel === data.review.verifierModel
-        ) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'O modelo verificador (verifierModel) deve ser diferente do modelo gerador (generatorModel).',
-            path: ['review', 'verifierModel'],
-          });
+        if (data.review.approvalMethod === 'authorized_official_batch') {
+          if (!data.review.approvalBatchId || data.review.approvalBatchId.trim() === '') {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Aprovação oficial em lote exige review.approvalBatchId rastreável.',
+              path: ['review', 'approvalBatchId'],
+            });
+          }
+          if (data.review.generatorModel || data.review.verifierModel) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Aprovação autorizada em lote não pode declarar modelos como revisores individuais.',
+              path: ['review'],
+            });
+          }
+        } else {
+          if (!data.review.generatorModel || data.review.generatorModel.trim() === '') {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Questões aprovadas por revisão individual exigem review.generatorModel preenchido.',
+              path: ['review', 'generatorModel'],
+            });
+          }
+          if (!data.review.verifierModel || data.review.verifierModel.trim() === '') {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Questões aprovadas por revisão individual exigem review.verifierModel preenchido.',
+              path: ['review', 'verifierModel'],
+            });
+          }
+          if (
+            data.review.generatorModel &&
+            data.review.verifierModel &&
+            data.review.generatorModel === data.review.verifierModel
+          ) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'O modelo verificador (verifierModel) deve ser diferente do modelo gerador (generatorModel).',
+              path: ['review', 'verifierModel'],
+            });
+          }
         }
         if (!data.review.approvedBy || data.review.approvedBy.trim() === '') {
           ctx.addIssue({

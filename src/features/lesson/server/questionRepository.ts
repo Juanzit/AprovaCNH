@@ -1,10 +1,15 @@
 import { createClient } from '@/lib/supabase/server';
 import { questionSchema, type ValidatedQuestion } from '../schemas/questionSchema';
 import fallbackQuestionsRaw from '@/data/questions-sinalizacao.json';
+import bnqQuestionsRaw from '@/data/bnq-v1.0-clean.json';
 
 interface DatabaseQuestionRow {
   id: string;
   version: number;
+  source_question_id: string | null;
+  difficulty: string | null;
+  sign_code: string | null;
+  sign_asset_codes: string[] | null;
   statement: string;
   options: unknown;
   correct_option_id: string;
@@ -48,6 +53,8 @@ interface DatabaseQuestionRow {
         verification_notes: string | null;
         approved_by: string | null;
         approved_at: string | null;
+        approval_method: string | null;
+        approval_batch_id: string | null;
       }
     | Array<{
         generator_model: string | null;
@@ -55,6 +62,8 @@ interface DatabaseQuestionRow {
         verification_notes: string | null;
         approved_by: string | null;
         approved_at: string | null;
+        approval_method: string | null;
+        approval_batch_id: string | null;
       }>
     | null;
 }
@@ -74,6 +83,10 @@ export function mapAndValidateDatabaseQuestion(row: DatabaseQuestionRow): Valida
 
   const candidate = {
     id: row.id,
+    sourceQuestionId: row.source_question_id ?? undefined,
+    difficulty: row.difficulty ?? undefined,
+    signCode: row.sign_code ?? null,
+    signAssetCodes: row.sign_asset_codes ?? [],
     version: row.version,
     statement: row.statement,
     options: row.options,
@@ -104,6 +117,8 @@ export function mapAndValidateDatabaseQuestion(row: DatabaseQuestionRow): Valida
           verificationNotes: reviewRaw.verification_notes ?? null,
           approvedBy: reviewRaw.approved_by ?? null,
           approvedAt: reviewRaw.approved_at ?? null,
+          approvalMethod: (reviewRaw.approval_method as 'individual_human_review' | 'authorized_official_batch' | null) ?? null,
+          approvalBatchId: reviewRaw.approval_batch_id ?? null,
         }
       : null,
   };
@@ -117,95 +132,82 @@ export function mapAndValidateDatabaseQuestion(row: DatabaseQuestionRow): Valida
  * ou se a consulta falhar, recorre ao acervo local aprovado (DETRAN-MG / SENATRAN v2).
  */
 export async function getApprovedQuestionsByTopic(
-  topic = 'Sinalização de Trânsito',
+  topic: string | null = 'Sinalização de Trânsito',
   options: { fallbackToLocal?: boolean } = { fallbackToLocal: true }
 ): Promise<ValidatedQuestion[]> {
+  const PAGE_SIZE = 500;
+
   try {
     const supabase = await createClient();
+    const allRows: DatabaseQuestionRow[] = [];
 
-    const { data, error } = await supabase
-      .from('questions')
-      .select(`
-        id,
-        version,
-        statement,
-        options,
-        correct_option_id,
-        explanation,
-        topic,
-        subtopic,
-        ufs,
-        categories,
-        status,
-        is_example,
-        question_sources (
-          kind,
-          document,
-          provision,
-          url,
-          checked_at,
-          effective_from,
-          effective_until,
-          source_version,
-          license_note,
-          verification_status
-        ),
-        question_reviews (
-          generator_model,
-          verifier_model,
-          verification_notes,
-          approved_by,
-          approved_at
-        )
-      `)
-      .eq('status', 'aprovada')
-      .ilike('topic', `%${topic}%`)
-      .order('id', { ascending: true });
+    for (let from = 0; ; from += PAGE_SIZE) {
+      let query = supabase
+        .from('questions')
+        .select(`
+          id,
+          source_question_id,
+          difficulty,
+          sign_code,
+          sign_asset_codes,
+          version,
+          statement,
+          options,
+          correct_option_id,
+          explanation,
+          topic,
+          subtopic,
+          ufs,
+          categories,
+          status,
+          is_example,
+          question_sources (
+            kind,
+            document,
+            provision,
+            url,
+            checked_at,
+            effective_from,
+            effective_until,
+            source_version,
+            license_note,
+            verification_status
+          ),
+          question_reviews (
+            generator_model,
+            verifier_model,
+            verification_notes,
+            approved_by,
+            approved_at,
+            approval_method,
+            approval_batch_id
+          )
+        `)
+        .eq('status', 'aprovada');
 
-    if (error) {
-      console.warn(`[Supabase Repository] Aviso ao consultar 'questions': ${error.message}`);
-      if (options.fallbackToLocal) {
-        return getFallbackApprovedQuestions();
+      if (topic) query = query.eq('topic', topic);
+
+      const { data, error } = await query
+        .order('id', { ascending: true })
+        .range(from, from + PAGE_SIZE - 1);
+
+      if (error) {
+        console.warn(`[Supabase Repository] Aviso ao consultar 'questions': ${error.message}`);
+        if (options.fallbackToLocal) return getFallbackApprovedQuestions(topic);
+        throw error;
       }
-      throw error;
+
+      const page = (data ?? []) as unknown as DatabaseQuestionRow[];
+      allRows.push(...page);
+      if (page.length < PAGE_SIZE) break;
     }
 
-    if (!data || data.length === 0) {
-      if (options.fallbackToLocal) {
-        return getFallbackApprovedQuestions();
-      }
-      return [];
-    }
+    if (allRows.length === 0) return [];
 
-    // Passa todos os registros pela Anti-Corruption Layer do Zod
-    const validatedQuestions = (data as unknown as DatabaseQuestionRow[]).map(
-      mapAndValidateDatabaseQuestion
-    );
-
-    // Se o banco ainda estiver na versão 1 (pré-atualização DETRAN-MG v2) e o fallback estiver ativo,
-    // entrega imediatamente a versão 2 atualizada sem quebrar o estudo do aluno.
-    if (options.fallbackToLocal && validatedQuestions.some((q) => q.version < 2)) {
-      return getFallbackApprovedQuestions();
-    }
-
-    if (options.fallbackToLocal) {
-      const fallback = getFallbackApprovedQuestions();
-      if (validatedQuestions.length < fallback.length) {
-        const byId = new Map(validatedQuestions.map((q) => [q.id, q]));
-        for (const q of fallback) {
-          if (!byId.has(q.id)) {
-            byId.set(q.id, q);
-          }
-        }
-        return Array.from(byId.values());
-      }
-    }
-
-    return validatedQuestions;
+    const validatedQuestions = allRows.map(mapAndValidateDatabaseQuestion);
+    return validatedQuestions.filter((question) => question.status === 'aprovada' && !question.isExample);
   } catch (err) {
-    if (options.fallbackToLocal) {
-      return getFallbackApprovedQuestions();
-    }
+    if (options.fallbackToLocal) return getFallbackApprovedQuestions(topic);
     throw err;
   }
 }
@@ -213,6 +215,20 @@ export async function getApprovedQuestionsByTopic(
 /**
  * Carrega e valida o acervo local homologado como fallback seguro.
  */
-export function getFallbackApprovedQuestions(): ValidatedQuestion[] {
-  return (fallbackQuestionsRaw as unknown[]).map((q) => questionSchema.parse(q));
+export function getFallbackApprovedQuestions(topic: string | null = null): ValidatedQuestion[] {
+  const localRows = [
+    ...(fallbackQuestionsRaw as unknown[]),
+    ...(bnqQuestionsRaw as unknown[]),
+  ];
+  const approved = localRows.filter((raw) => {
+    if (!raw || typeof raw !== 'object') return false;
+    const q = raw as { status?: unknown; isExample?: unknown; topic?: unknown };
+    return q.status === 'aprovada' && q.isExample === false && (!topic || q.topic === topic);
+  });
+  const byId = new Map<string, ValidatedQuestion>();
+  for (const raw of approved) {
+    const parsed = questionSchema.parse(raw);
+    if (!byId.has(parsed.id)) byId.set(parsed.id, parsed);
+  }
+  return [...byId.values()];
 }

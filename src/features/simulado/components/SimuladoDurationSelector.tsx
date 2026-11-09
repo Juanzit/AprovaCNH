@@ -44,7 +44,7 @@ export function SimuladoDurationSelector({
                 60 minutos (Configuração padrão)
               </strong>
               <span className="text-xs text-slate-600 leading-snug block mt-0.5">
-                Tempo regulamentar padrão para a resolução das 30 questões do simulado temático.
+                Tempo regulamentar padrão para a resolução das 30 questões multidisciplinares do treino.
               </span>
             </div>
           </label>
@@ -84,7 +84,7 @@ export function SimuladoDurationSelector({
           data-testid="start-simulado-cta"
           className="inline-flex items-center justify-center min-h-12 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
         >
-          Iniciar Simulado Temático ({duration} min) →
+          Iniciar Simulado Multidisciplinar ({duration} min) →
         </Link>
 
         <Link

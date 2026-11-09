@@ -29,7 +29,7 @@ export type ExamConfig = z.infer<typeof examConfigSchema>;
 
 export const DEFAULT_EXAM_CONFIG: ExamConfig = {
   id: 'detran-mg-default',
-  name: 'Simulado Temático — Sinalização de Trânsito',
+  name: 'Simulado Multidisciplinar Proporcional — BNQ v1.0',
   uf: 'MG',
   totalQuestions: 30,
   durationMinutes: 60,

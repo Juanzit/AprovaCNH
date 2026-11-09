@@ -5,142 +5,97 @@ import {
   getApprovedQuestionsByTopic,
 } from '@/features/lesson/server/questionRepository';
 
-vi.mock('@/lib/supabase/server', () => ({
-  createClient: vi.fn(),
-}));
+vi.mock('@/lib/supabase/server', () => ({ createClient: vi.fn() }));
 
-describe('questionRepository (Anti-Corruption Layer)', () => {
+describe('questionRepository — validação, fallback e gate de publicação', () => {
   const validDbRow = {
-    id: 'sin-db-001',
+    id: 'bnq-db-001',
+    source_question_id: 'p1-m1-q1',
+    difficulty: 'facil',
+    sign_code: 'A-33a',
+    sign_asset_codes: [],
     version: 1,
-    statement: 'Qual a conduta correta diante da ordem de parada do agente de trânsito?',
+    statement: 'Ao ver a placa de área escolar, qual conduta deve adotar?',
     options: [
-      { id: 'a', text: 'Parar o veículo imediatamente conforme a determinação.' },
-      { id: 'b', text: 'Ignorar a ordem caso o semáforo esteja verde.' },
-      { id: 'c', text: 'Acelerar para desobstruir a via.' },
-      { id: 'd', text: 'Aguardar sinalização de pedestres.' },
+      { id: 'a', text: 'Reduzir a velocidade e redobrar a atenção.' },
+      { id: 'b', text: 'Acelerar para passar rapidamente.' },
+      { id: 'c', text: 'Buzinar para avisar os pedestres.' },
+      { id: 'd', text: 'Manter a velocidade sem observar o entorno.' },
     ],
     correct_option_id: 'a',
-    explanation: 'As ordens do agente prevalecem sobre os demais sinais viários (Art. 89, I do CTB).',
+    explanation: 'A placa alerta para área escolar e exige prudência.',
     topic: 'Sinalização de Trânsito',
-    subtopic: 'Ordens do Agente (Art. 195)',
+    subtopic: 'Módulo 1: Placas, Cores e Caminhos',
     ufs: [],
-    categories: ['A', 'B'],
+    categories: [],
     status: 'aprovada',
     is_example: false,
-    question_sources: [
-      {
-        kind: 'official',
-        document: 'Resolução CONTRAN nº 985/2022 (MBFT)',
-        provision: 'Art. 195 (Ficha 583-50)',
-        url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9852022.pdf',
-        checked_at: '2026-11-07T23:00:00Z',
-        effective_from: '2023-01-02',
-        effective_until: null,
-        source_version: 'MBFT 2022',
-        license_note: 'Domínio Público',
-        verification_status: 'verified',
-      },
-    ],
-    question_reviews: [
-      {
-        generator_model: 'Antigravity/Gemini-3.8-Flash',
-        verifier_model: 'Independent/Auditor-Juridico',
-        verification_notes: 'Validado em conformidade com o CTB.',
-        approved_by: 'Tech Lead / Responsável pelo Produto',
-        approved_at: '2026-11-07T23:43:10Z',
-      },
-    ],
+    question_sources: [{
+      kind: 'official',
+      document: 'Banco Nacional de Questões v1.0 — SENATRAN',
+      provision: 'Parte 1, Módulo 1, questão p1-m1-q1',
+      url: 'https://eadcnh.bsa.estaleiro.serpro.gov.br/cursos/673a6cc7e3bb091c6db844aa/material-complementar',
+      checked_at: '2026-11-09T14:00:00Z',
+      effective_from: '2025-12-01',
+      effective_until: null,
+      source_version: 'BNQ v1.0',
+      license_note: 'Origem oficial do material-fonte; autorização de lote registrada separadamente.',
+      verification_status: 'verified',
+    }],
+    question_reviews: [{
+      generator_model: null,
+      verifier_model: null,
+      verification_notes: 'Autorização de lote aprovada pelo responsável do produto.',
+      approved_by: 'Responsável pelo Produto — autorização expressa de lote (2026-11-09)',
+      approved_at: '2026-11-09T14:00:00Z',
+      approval_method: 'authorized_official_batch',
+      approval_batch_id: 'SENATRAN-BNQ-v1.0-2026-11-09',
+    }],
   };
 
-  it('mapeia e valida com sucesso um registro válido do PostgreSQL no modelo Zod de domínio', () => {
+  it('mapeia metadados BNQ, código da placa e aprovação de lote sem inventar revisão por IA', () => {
     const question = mapAndValidateDatabaseQuestion(validDbRow);
-
-    expect(question.id).toBe('sin-db-001');
-    expect(question.status).toBe('aprovada');
-    expect(question.correctOptionId).toBe('a');
-    expect(question.options).toHaveLength(4);
-    expect(question.source.kind).toBe('official');
-    expect(question.source.verificationStatus).toBe('verified');
-    expect(question.review?.approvedBy).toBe('Tech Lead / Responsável pelo Produto');
+    expect(question.id).toBe('bnq-db-001');
+    expect(question.sourceQuestionId).toBe('p1-m1-q1');
+    expect(question.difficulty).toBe('facil');
+    expect(question.signCode).toBe('A-33a');
+    expect(question.signAssetCodes).toEqual([]);
+    expect(question.review?.approvalMethod).toBe('authorized_official_batch');
+    expect(question.review?.approvalBatchId).toBe('SENATRAN-BNQ-v1.0-2026-11-09');
+    expect(question.review?.generatorModel).toBeNull();
+    expect(question.review?.verifierModel).toBeNull();
   });
 
-  it('rejeita com erro Zod quando a tupla de alternativas contém menos de 4 itens', () => {
-    const invalidRow = {
-      ...validDbRow,
-      options: [
-        { id: 'a', text: 'Opção 1' },
-        { id: 'b', text: 'Opção 2' },
-      ],
-    };
-
-    expect(() => mapAndValidateDatabaseQuestion(invalidRow)).toThrow();
+  it('rejeita uma linha com menos de quatro alternativas', () => {
+    const invalid = { ...validDbRow, options: validDbRow.options.slice(0, 2) };
+    expect(() => mapAndValidateDatabaseQuestion(invalid)).toThrow();
   });
 
-  it('rejeita com erro Zod quando o modelo gerador e o modelo verificador são idênticos (D003)', () => {
-    const invalidRow = {
-      ...validDbRow,
-      question_reviews: [
-        {
-          ...validDbRow.question_reviews[0],
-          generator_model: 'Mesmo-Modelo',
-          verifier_model: 'Mesmo-Modelo',
-        },
-      ],
-    };
-
-    expect(() => mapAndValidateDatabaseQuestion(invalidRow)).toThrow();
+  it('rejeita uma UF BR, preservando a convenção D014', () => {
+    expect(() => mapAndValidateDatabaseQuestion({ ...validDbRow, ufs: ['BR'] })).toThrow();
   });
 
-  it('rejeita com erro Zod quando ufs contém "BR" (D014)', () => {
-    const invalidRow = {
-      ...validDbRow,
-      ufs: ['BR'],
-    };
-
-    expect(() => mapAndValidateDatabaseQuestion(invalidRow)).toThrow();
-  });
-
-  it('carrega e valida os 30 registros do acervo local homologado via fallback (20 aprovadas e 10 em revisão)', () => {
+  it('fallback local contém o BNQ completo e somente questões aprovadas não demonstrativas', () => {
     const fallback = getFallbackApprovedQuestions();
-    expect(fallback.length).toBeGreaterThanOrEqual(30);
-
-    const approved = fallback.filter((q) => q.status === 'aprovada');
-    expect(approved).toHaveLength(20);
-    approved.forEach((q) => {
-      expect(q.options).toHaveLength(4);
-      expect(q.source.verificationStatus).toBe('verified');
-      expect(q.review?.approvedBy).toBeTruthy();
-    });
-
-    const inReview = fallback.filter((q) => q.status === 'em_revisao');
-    expect(inReview).toHaveLength(10);
-    inReview.forEach((q) => {
-      expect(q.options).toHaveLength(4);
-      expect(q.source.verificationStatus).toBe('pending');
-      expect(q.review?.approvedBy).toBeNull();
-    });
+    expect(fallback).toHaveLength(1509);
+    expect(fallback.filter((question) => question.id.startsWith('bnq-p'))).toHaveLength(1489);
+    expect(fallback.every((question) => question.status === 'aprovada' && !question.isExample)).toBe(true);
+    expect(fallback.some((question) => question.status === 'em_revisao')).toBe(false);
   });
 
-  it('retorna os dados do fallback quando o cliente Supabase lança exceção ou erro', async () => {
-    const { createClient } = await import('@/lib/supabase/server');
-    vi.mocked(createClient).mockResolvedValueOnce({
-      from: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            ilike: vi.fn().mockReturnValue({
-              order: vi.fn().mockResolvedValue({
-                data: null,
-                error: new Error('Tabela não encontrada'),
-              }),
-            }),
-          }),
-        }),
-      }),
-    } as unknown as Awaited<ReturnType<typeof createClient>>);
+  it('fallback respeita topic como disciplina clássica', () => {
+    const defensive = getFallbackApprovedQuestions('Direção Defensiva e Circulação Segura');
+    expect(defensive).toHaveLength(469);
+    expect(defensive.every((question) => question.topic === 'Direção Defensiva e Circulação Segura')).toBe(true);
+  });
 
-    const questions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-    expect(questions.length).toBeGreaterThanOrEqual(30);
-    expect(questions[0].id).toBe('sin-001');
+  it('usa fallback filtrado por topic quando Supabase está indisponível', async () => {
+    const { createClient } = await import('@/lib/supabase/server');
+    vi.mocked(createClient).mockRejectedValueOnce(new Error('offline'));
+
+    const questions = await getApprovedQuestionsByTopic('Primeiros Socorros e Sinistros');
+    expect(questions).toHaveLength(44);
+    expect(questions.every((question) => question.status === 'aprovada')).toBe(true);
+    expect(questions.every((question) => question.topic === 'Primeiros Socorros e Sinistros')).toBe(true);
   });
 });

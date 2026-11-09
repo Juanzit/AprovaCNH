@@ -59,7 +59,7 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
 
           <p className="text-xs sm:text-sm text-slate-700 max-w-2xl leading-relaxed">
             {isApproved
-              ? `Você acertou ${result.score} de ${result.totalQuestions} questões (${result.accuracyPercent}%), superando a meta de referência de ${result.passingScore} acertos da plataforma AprovaCNH para este módulo temático. Ressalva: este resultado é um indicador pedagógico de treino e não representa aprovação no exame oficial do DETRAN.`
+              ? `Você acertou ${result.score} de ${result.totalQuestions} questões (${result.accuracyPercent}%), superando a meta de referência de ${result.passingScore} acertos da plataforma AprovaCNH neste simulado multidisciplinar proporcional do BNQ v1.0. Ressalva: este resultado é um indicador pedagógico de treino e não representa aprovação no exame oficial do DETRAN.`
               : `Você acertou ${result.score} de ${result.totalQuestions} questões (${result.accuracyPercent}%). A meta de estudo de referência da plataforma é de ${result.passingScore} acertos para fixação do conteúdo. Revise abaixo as questões com as micro-aulas comentadas e fundamentação legal!`}
           </p>
         </div>
@@ -108,10 +108,10 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
 
         <div className="bg-white rounded-xl border border-slate-200/90 p-3.5">
           <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-            Módulo Temático
+            Banco de Questões
           </span>
           <strong className="mt-1 block text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
-            Sinalização de Trânsito
+            BNQ v1.0 — seis disciplinas
           </strong>
           <span className="text-xs font-semibold text-blue-700">
             Ref.: Res. CONTRAN 1.020/2025
@@ -124,7 +124,7 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
           href="/simulado/prova"
           className="inline-flex items-center justify-center min-h-11 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
         >
-          Refazer Simulado Temático
+          Refazer Simulado Multidisciplinar
         </Link>
         <Link
           href="/simulado/historico"
@@ -141,7 +141,7 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
       </div>
 
       <p className="text-[11px] text-slate-500 pt-1">
-        Ressalva pedagógica: A plataforma AprovaCNH é uma ferramenta independente de estudo. O desempenho no simulado temático é uma referência de aprendizagem e não substitui nem garante aprovação no exame oficial do DETRAN/SENATRAN.
+        Ressalva pedagógica: A plataforma AprovaCNH é uma ferramenta independente de estudo. O desempenho no simulado multidisciplinar é uma referência de aprendizagem e não substitui nem garante aprovação no exame oficial do DETRAN/SENATRAN.
       </p>
     </section>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { QuestionOption, OptionId } from '../types/question';
 import { AlertCircleIcon, CheckIcon } from '@/components/ui/Icons';
+import { TrafficSignIllustration } from './TrafficSignIllustration';
 
 interface OptionListProps {
   statement: string;
@@ -10,6 +11,8 @@ interface OptionListProps {
   isAnswerSubmitted: boolean;
   onSelectOption: (id: OptionId) => void;
   isExample?: boolean;
+  signAssetCodes?: string[];
+  signCode?: string | null;
 }
 
 export function OptionList({
@@ -20,6 +23,8 @@ export function OptionList({
   isAnswerSubmitted,
   onSelectOption,
   isExample = false,
+  signAssetCodes = [],
+  signCode = null,
 }: OptionListProps) {
   return (
     <fieldset className="w-full border-0 p-0 m-0">
@@ -40,6 +45,10 @@ export function OptionList({
           <CheckIcon className="w-4 h-4 shrink-0 text-emerald-600" />
           <span>Questão baseada no MBFT — Legislação Vigente</span>
         </div>
+      )}
+
+      {signAssetCodes.length > 0 && (
+        <TrafficSignIllustration codes={signAssetCodes} referenceCode={signCode} className="mb-5" />
       )}
 
       {/* Enunciado semântico como legend do fieldset */}

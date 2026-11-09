@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import type { SimuladoEvaluatedItem, SimuladoResult } from '../types/simulado';
+import { TrafficSignIllustration } from '@/features/lesson/components/TrafficSignIllustration';
 
 interface SimuladoReviewListProps {
   result?: SimuladoResult;
@@ -139,6 +140,14 @@ export function SimuladoReviewList({ result, items: propItems }: SimuladoReviewL
                     </span>
                   </div>
                 </div>
+
+                {((question.signAssetCodes?.length ?? 0) > 0 || question.signCode) && (
+                  <TrafficSignIllustration
+                    codes={question.signAssetCodes ?? []}
+                    referenceCode={question.signCode}
+                    className="pt-1"
+                  />
+                )}
 
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">
                   {question.statement}

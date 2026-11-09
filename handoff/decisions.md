@@ -22,6 +22,8 @@ Formato: ID — decisão — motivo — status — observação.
 - D018 — Algoritmo Determinístico de Repetição Espaçada (SRS) e Diagnóstico de Domínio Sem IA: agendamento de revisão baseado no modelo Leitner ponderado por status recente, taxa de erros históricos e tempo de retenção decorrido, associado ao diagnóstico de domínio por dispositivo legal do MBFT — assegurar 100% de reprodutibilidade, transparência pedagógica com justificativas explicáveis, custo zero de inferência e conformidade com o princípio da Fase 5 — **DECIDIDO**.
 - D019 — Enquadramento Editorial e Pedagógico do Simulado Temático (Fase 6 / T006): Denominação formal como "Simulado Temático — Sinalização de Trânsito" com nota de independência institucional em relação ao DETRAN/SENATRAN. Mensagens de resultado alinhadas ao valor pedagógico real ("Meta de estudo alcançada" com 100 XP para ≥ 20 acertos; "Continue praticando" com 30 XP para ≤ 19 acertos), esclarecendo que 20 acertos é meta de referência da plataforma e não assegura aprovação oficial. Tempo estendido de 120 minutos assegurado pelo Art. 33, § 2º da Resolução CONTRAN nº 1.020/2025 para candidatos com dislexia, TDAH ou TEA, sem exigência de laudo médico na interface — **DECIDIDO**.
 
+- D020 — Ingestão oficial do BNQ v1.0 na Fase 6.1: autorização expressa para importar em lote 1.489 questões limpas com `status='aprovada'`, `approval_method='authorized_official_batch'` e identificador rastreável; `topic` por disciplina clássica e `subtopic` pelo módulo oficial BNQ; Onda 1 + Onda 2; metadados `sign_code`/SVG; simulado proporcional ao pool aprovado — **DECIDIDO PELO RESPONSÁVEL DO PRODUTO EM 09/11/2026**. A autorização de lote não deve ser descrita como revisão humana individual.
+
 ## Histórico
 
 - v1.0 — 06/11/2026: consolidação das decisões enviadas pelo responsável e separação dos itens pendentes/propostos.
@@ -32,3 +34,4 @@ Formato: ID — decisão — motivo — status — observação.
 - v1.5 — 08/11/2026: D018 formalizado como DECIDIDO após aprovação do plano T005 pelo responsável.
 - v1.6 — 08/11/2026: D007 formalizado como DECIDIDO com base na Resolução CONTRAN nº 1.020/2025 (30 questões, 60 minutos, 20 acertos) para subsidiar a Fase 6 (T006).
 - v1.7 — 08/11/2026: D019 formalizado como DECIDIDO após diretrizes de aceite editorial e pedagógico do Tech Lead para o Simulado Temático de Sinalização.
+- v1.8 — 09/11/2026: D020 formalizado após autorização expressa do responsável para ingestão BNQ v1.0 em lote e migração do treino para distribuição multidisciplinar proporcional.

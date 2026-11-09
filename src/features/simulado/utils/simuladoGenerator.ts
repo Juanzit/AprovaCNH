@@ -8,12 +8,26 @@ import type {
 } from '../types/simulado';
 
 /**
- * Gerador pseudo-aleatório determinístico opcional (Mulberry32) para reprodutibilidade em testes.
+ * Erro de domínio: o simulado não inicia sem a quantidade solicitada
+ * de questões aprovadas elegíveis. Questões em revisão nunca completam o pool.
  */
-function createRng(seed?: number): () => number {
-  if (seed === undefined) {
-    return () => Math.random();
+export class InsufficientApprovedQuestionsError extends Error {
+  readonly available: number;
+  readonly required: number;
+
+  constructor(available: number, required: number) {
+    super(
+      `Acervo insuficiente: existem ${available} questões BNQ aprovadas elegíveis; são necessárias ${required}.`
+    );
+    this.name = 'InsufficientApprovedQuestionsError';
+    this.available = available;
+    this.required = required;
   }
+}
+
+/** Gerador pseudo-aleatório determinístico opcional (Mulberry32). */
+function createRng(seed?: number): () => number {
+  if (seed === undefined) return () => Math.random();
   let state = seed >>> 0;
   return () => {
     state = (state + 0x6d2b79f5) >>> 0;
@@ -23,29 +37,66 @@ function createRng(seed?: number): () => number {
   };
 }
 
-/**
- * Embaralhamento Fisher-Yates imutável.
- */
+/** Embaralhamento Fisher-Yates imutável. */
 export function shuffleArray<T>(items: readonly T[], rng: () => number = Math.random): T[] {
   const copy = [...items];
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
-    const temp = copy[i];
-    copy[i] = copy[j];
-    copy[j] = temp;
+    [copy[i], copy[j]] = [copy[j], copy[i]];
   }
   return copy;
 }
 
 /**
- * Seleciona e ordena as questões para o Simulado Temático de Sinalização (padrão: 30 questões).
- * Filtra por status 'aprovada', isExample === false e compatibilidade com a UF (ou nacional ufs=[]).
- *
- * Limitação do acervo atual (T004): O banco contém exatamente 30 questões temáticas de Sinalização.
- * Dentro de uma mesma tentativa, o gerador assegura 100% de itens únicos (sem duplicação).
- * Entre diferentes tentativas, o mesmo conjunto de 30 IDs é utilizado, com embaralhamento da ordem
- * das questões e das alternativas, até que o acervo seja expandido com os demais módulos
- * (Direção Defensiva, Primeiros Socorros, Mecânica Básica e Meio Ambiente).
+ * Distribui quotas pelo método dos maiores restos, proporcional ao tamanho
+ * dos pools de cada disciplina. A regra é pedagógica do AprovaCNH e não
+ * representa quotas oficiais de prova, que não foram publicadas pela SENATRAN.
+ */
+export function calculateProportionalTopicQuotas(
+  topicCounts: ReadonlyMap<string, number> | Record<string, number>,
+  totalQuestions: number
+): Map<string, number> {
+  if (!Number.isInteger(totalQuestions) || totalQuestions < 1) {
+    throw new RangeError('totalQuestions deve ser um inteiro positivo.');
+  }
+
+  const entries =
+    topicCounts instanceof Map ? [...topicCounts.entries()] : Object.entries(topicCounts);
+  const positive = entries.filter(([, count]) => Number.isInteger(count) && count > 0);
+  const available = positive.reduce((sum, [, count]) => sum + count, 0);
+
+  if (available < totalQuestions) {
+    throw new InsufficientApprovedQuestionsError(available, totalQuestions);
+  }
+
+  const allocations = positive.map(([topic, count]) => {
+    const exact = (count / available) * totalQuestions;
+    return { topic, base: Math.floor(exact), remainder: exact - Math.floor(exact) };
+  });
+
+  let remaining = totalQuestions - allocations.reduce((sum, item) => sum + item.base, 0);
+  allocations.sort(
+    (a, b) => b.remainder - a.remainder || a.topic.localeCompare(b.topic, 'pt-BR')
+  );
+
+  for (let i = 0; i < allocations.length && remaining > 0; i++, remaining--) {
+    allocations[i].base += 1;
+  }
+
+  return new Map(
+    allocations
+      .filter((item) => item.base > 0)
+      .sort((a, b) => a.topic.localeCompare(b.topic, 'pt-BR'))
+      .map((item) => [item.topic, item.base])
+  );
+}
+
+/**
+ * Simulado multidisciplinar do BNQ:
+ * - aceita apenas questões aprovadas, não demonstrativas e identificadas como BNQ;
+ * - respeita a UF (ufs=[] significa escopo nacional);
+ * - distribui 30 questões proporcionalmente às disciplinas disponíveis;
+ * - falha explicitamente se não houver acervo aprovado suficiente.
  */
 export function generateSimuladoQuestions(
   questionBank: readonly Question[],
@@ -56,33 +107,57 @@ export function generateSimuladoQuestions(
   } = {}
 ): SimuladoQuestionItem[] {
   const totalQuestions = options.totalQuestions ?? 30;
-  const targetUf = options.uf?.trim().toUpperCase() || null;
-  const rng = createRng(options.seed);
-
-  const eligiblePool = questionBank.filter((q) => {
-    if (q.isExample) return false;
-    if (q.status !== 'aprovada' && q.status !== 'em_revisao') return false;
-    if (!targetUf || q.ufs.length === 0) return true;
-    return q.ufs.includes(targetUf);
-  });
-
-  const basePool = eligiblePool.length > 0 ? eligiblePool : [...questionBank];
-  if (basePool.length === 0) {
-    return [];
+  if (!Number.isInteger(totalQuestions) || totalQuestions < 1) {
+    throw new RangeError('totalQuestions deve ser um inteiro positivo.');
   }
 
-  const shuffledPass = shuffleArray(basePool, rng);
-  const selectedQuestions = shuffledPass.slice(0, totalQuestions);
+  const targetUf = options.uf?.trim().toUpperCase() || null;
+  const eligiblePool = questionBank.filter((question) => {
+    if (!question.id.startsWith('bnq-p')) return false;
+    if (question.status !== 'aprovada' || question.isExample) return false;
+    if (!targetUf || question.ufs.length === 0) return true;
+    return question.ufs.some((uf) => uf.toUpperCase() === targetUf);
+  });
 
-  return selectedQuestions.map((question, idx) => ({
-    questionOrder: idx + 1,
+  if (eligiblePool.length < totalQuestions) {
+    throw new InsufficientApprovedQuestionsError(eligiblePool.length, totalQuestions);
+  }
+
+  const pools = new Map<string, Question[]>();
+  for (const question of eligiblePool) {
+    const pool = pools.get(question.topic) ?? [];
+    pool.push(question);
+    pools.set(question.topic, pool);
+  }
+
+  const quotas = calculateProportionalTopicQuotas(
+    new Map([...pools.entries()].map(([topic, questions]) => [topic, questions.length])),
+    totalQuestions
+  );
+  const rng = createRng(options.seed);
+  const selected: Question[] = [];
+
+  for (const [topic, quota] of quotas) {
+    const topicPool = pools.get(topic) ?? [];
+    if (topicPool.length < quota) {
+      throw new InsufficientApprovedQuestionsError(eligiblePool.length, totalQuestions);
+    }
+    selected.push(...shuffleArray(topicPool, rng).slice(0, quota));
+  }
+
+  if (selected.length !== totalQuestions) {
+    throw new Error(
+      `Distribuição inválida: ${selected.length} de ${totalQuestions} questões foram selecionadas.`
+    );
+  }
+
+  return shuffleArray(selected, rng).map((question, index) => ({
+    questionOrder: index + 1,
     question,
   }));
 }
 
-/**
- * Avalia de forma determinística e autoritativa uma submissão de simulado contra o gabarito oficial.
- */
+/** Avalia a submissão apenas contra questões BNQ aprovadas. */
 export function evaluateSimuladoSubmission(
   payload: SimuladoSubmissionPayload,
   questionBank: readonly Question[],
@@ -90,32 +165,29 @@ export function evaluateSimuladoSubmission(
   finishedAtIso: string = new Date().toISOString()
 ): SimuladoResult {
   const questionMap = new Map<string, Question>();
-  for (const q of questionBank) {
-    questionMap.set(q.id, q);
+  for (const question of questionBank) {
+    if (
+      question.id.startsWith('bnq-p') &&
+      question.status === 'aprovada' &&
+      !question.isExample
+    ) {
+      questionMap.set(question.id, question);
+    }
   }
 
   const sortedItems = [...payload.items].sort((a, b) => a.questionOrder - b.questionOrder);
-
   let score = 0;
   let answeredCount = 0;
   const evaluatedItems: SimuladoEvaluatedItem[] = [];
 
   for (const item of sortedItems) {
     const question = questionMap.get(item.questionId);
-    if (!question) {
-      continue;
-    }
+    if (!question) continue;
 
-    if (item.selectedOptionId !== null) {
-      answeredCount++;
-    }
-
+    if (item.selectedOptionId !== null) answeredCount++;
     const isCorrect =
       item.selectedOptionId !== null && item.selectedOptionId === question.correctOptionId;
-
-    if (isCorrect) {
-      score++;
-    }
+    if (isCorrect) score++;
 
     evaluatedItems.push({
       questionOrder: item.questionOrder,
@@ -131,7 +203,6 @@ export function evaluateSimuladoSubmission(
   const accuracyPercent = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
   const isApproved = score >= config.passingScore;
   const status = payload.timedOut ? 'timed_out' : 'completed';
-  const xpEarned = isApproved ? 100 : 30;
 
   return {
     simuladoId: payload.simuladoId,
@@ -147,14 +218,12 @@ export function evaluateSimuladoSubmission(
     accuracyPercent,
     isApproved,
     status,
-    xpEarned,
+    xpEarned: isApproved ? 100 : 30,
     evaluatedItems,
   };
 }
 
-/**
- * Formata segundos em MM:SS (ex.: 3600 -> "60:00", 295 -> "04:55").
- */
+/** Formata segundos em MM:SS. */
 export function formatDurationMmSs(totalSeconds: number): string {
   const safeSeconds = Math.max(0, Math.floor(totalSeconds));
   const minutes = Math.floor(safeSeconds / 60);
@@ -162,15 +231,11 @@ export function formatDurationMmSs(totalSeconds: number): string {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
-/**
- * Formata segundos em descrição legível (ex.: 2538 -> "42 min 18 seg").
- */
+/** Formata segundos em texto legível. */
 export function formatDurationHuman(totalSeconds: number): string {
   const safeSeconds = Math.max(0, Math.floor(totalSeconds));
   const minutes = Math.floor(safeSeconds / 60);
   const seconds = safeSeconds % 60;
-  if (minutes === 0) {
-    return `${seconds} seg`;
-  }
+  if (minutes === 0) return `${seconds} seg`;
   return `${minutes} min ${String(seconds).padStart(2, '0')} seg`;
 }

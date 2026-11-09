@@ -80,6 +80,11 @@ export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<Exa
  * Inicializa uma nova sessão de Simulado Configurável (30 questões, 60 min, corte 20).
  * Persiste no Supabase quando o aluno está autenticado; retorna sessão em memória para visitantes.
  */
+async function getBnqApprovedQuestionBank() {
+  const approvedQuestions = await getApprovedQuestionsByTopic(null);
+  return approvedQuestions.filter((question) => question.id.startsWith('bnq-p'));
+}
+
 export async function initializeSimuladoSession(options?: {
   uf?: string | null;
   seed?: number;
@@ -93,7 +98,7 @@ export async function initializeSimuladoSession(options?: {
 }> {
   const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig(options?.uf ?? 'MG'),
-    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    getBnqApprovedQuestionBank(),
   ]);
 
   const config: ExamConfig = options?.durationMinutes
@@ -241,7 +246,7 @@ export async function submitAndEvaluateSimulado(rawPayload: unknown): Promise<{
   const payload = parsed.data;
   const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig('MG'),
-    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    getBnqApprovedQuestionBank(),
   ]);
 
   const config: ExamConfig = payload.durationMinutes
@@ -397,7 +402,7 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
         .eq('simulado_id', simuladoId)
         .order('question_order', { ascending: true }),
       getActiveExamConfig('MG'),
-      getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+      getApprovedQuestionsByTopic(null),
     ]);
 
     const questionMap = new Map(questions.map((q) => [q.id, q]));

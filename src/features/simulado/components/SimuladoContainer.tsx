@@ -358,7 +358,7 @@ export function SimuladoContainer({
             data-testid="finish-on-last-btn"
             className="min-h-11 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-colors shadow-xs"
           >
-            Finalizar Simulado Temático ✓
+            Finalizar Simulado Multidisciplinar ✓
           </button>
         )}
       </div>

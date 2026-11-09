@@ -22,7 +22,7 @@ export default async function SimuladoLobbyPage() {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-extrabold">
-              Treino Temático • Sinalização de Trânsito
+              Simulado Multidisciplinar • BNQ v1.0
             </span>
             <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">
               {config.normativeAct}
@@ -33,11 +33,11 @@ export default async function SimuladoLobbyPage() {
             id="simulado-lobby-heading"
             className="text-xl sm:text-2xl font-extrabold text-slate-900"
           >
-            Simulado Temático — Sinalização de Trânsito
+            Simulado Multidisciplinar Proporcional
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-            Treino prático focado nas 30 questões do módulo de Sinalização de Trânsito e Normas de Circulação.
+            Treino prático de 30 questões do BNQ v1.0, sorteadas proporcionalmente entre seis disciplinas clássicas.
             Durante a prova, não há dicas nem correção imediata: você pode navegar livremente entre as questões,
             marcar itens para revisar e conferir o gabarito comentado da plataforma com fundamentação legal ao entregar.
           </p>
@@ -46,13 +46,11 @@ export default async function SimuladoLobbyPage() {
         {/* Nota Institucional e Limitação do Acervo (T001 / T004) */}
         <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200 text-xs sm:text-sm text-amber-950 space-y-1.5">
           <strong className="font-extrabold block text-amber-900">
-            Aviso importante sobre este Simulado Temático:
+            Aviso importante sobre o simulado multidisciplinar:
           </strong>
           <p className="text-amber-900/90 leading-relaxed">
             Esta é uma ferramenta independente de preparação e fixação de conteúdo desenvolvida pela plataforma AprovaCNH.
-            O acervo atual é composto por <strong>30 questões temáticas exclusivas de Sinalização e Normas de Circulação</strong>.
-            Ele <strong>não reproduz necessariamente a distribuição multidisciplinar</strong> (Legislação, Direção Defensiva, Primeiros Socorros, Mecânica e Meio Ambiente)
-            nem o conjunto de questões do exame oficial do DETRAN/SENATRAN.
+            O treino utiliza o BNQ v1.0 nas seis disciplinas clássicas. A distribuição é proporcional ao conjunto de questões aprovado e carregado no AprovaCNH; <strong>não representa quotas oficiais publicadas pela SENATRAN</strong>.
           </p>
         </div>
 
@@ -68,7 +66,7 @@ export default async function SimuladoLobbyPage() {
             <strong className="mt-1 block text-xl font-extrabold text-slate-900">
               {config.totalQuestions} questões
             </strong>
-            <span className="text-xs text-slate-600">Acervo temático de Sinalização (4 opções)</span>
+            <span className="text-xs text-slate-600">Banco multidisciplinar BNQ v1.0</span>
           </div>
 
           <div

@@ -148,6 +148,8 @@ export function LessonContainer({
           isAnswerSubmitted={isAnswerSubmitted}
           onSelectOption={selectOption}
           isExample={currentQuestion.isExample}
+          signAssetCodes={currentQuestion.signAssetCodes ?? []}
+          signCode={currentQuestion.signCode ?? null}
         />
 
         {/* Botão de confirmação visível antes da submissão */}

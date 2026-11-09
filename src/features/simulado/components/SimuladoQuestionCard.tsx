@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { OptionId, Question } from '@/features/lesson/types/question';
+import { TrafficSignIllustration } from '@/features/lesson/components/TrafficSignIllustration';
 
 interface SimuladoQuestionCardProps {
   questionOrder: number;
@@ -54,6 +55,10 @@ export function SimuladoQuestionCard({
           <span>{isMarkedForReview ? 'Marcada para revisão' : 'Marcar para revisar'}</span>
         </button>
       </div>
+
+      {question.signAssetCodes && question.signAssetCodes.length > 0 && (
+        <TrafficSignIllustration codes={question.signAssetCodes} referenceCode={question.signCode} className="mb-5" />
+      )}
 
       <fieldset className="space-y-4">
         <legend className="text-base sm:text-lg font-bold text-slate-900 leading-relaxed mb-4">
