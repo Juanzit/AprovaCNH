@@ -6,7 +6,10 @@
 - **Rastreabilidade de Commits da Rodada:**
   - **Commit de Implementação Técnica (RLS & sin-021):** `63a95d275eda2467c6240db8319f73e7545904c6`
   - **Commit Documental Homologado:** `7c567a58ee73af2057c2ed490cb9d01b725aa001`
-- **Execução Homologada na CI GitHub Actions:** [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (Checkout confirmado no SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001` — **100% Green**)
+  - **Commit de Auditoria de Colunas & Retificação RLS:** `58c70ae7db19a3fed25235fe0f3406cd083044b5`
+- **Execuções Homologadas na CI GitHub Actions:**
+  - [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001` — **100% Green**)
+  - [Run #42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (SHA `58c70ae7db19a3fed25235fe0f3406cd083044b5` — **100% Green**)
 - **Repositório:** Juanzit/AprovaCNH
 - **Responsável Técnico / Auditor:** Antigravity (Senior Software Engineer / Pair Programming)
 - **Status do Merge na Main:** **NÃO MERGEADO** (Branch isolada estritamente preservada)
@@ -150,12 +153,14 @@ A experiência discente e as travas de segurança foram verificadas de ponta a p
 | **Build Next.js** | `pnpm build` | **APROVADO (Exit Code 0)** | 4.8s | 10 páginas estáticas compiladas com sucesso via Turbopack. |
 
 ### 8.2 Execução Remota da CI GitHub Actions
-- **Execução Homologada Mais Recente:** [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519)
-- **Status:** `completed` | **Conclusion:** `success` (**100% Green**)
-- **Checkout Confirmado:** SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001`
+- **Execuções Homologadas Recentes:**
+  - [Run #42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (SHA `7c567a58ee73af2057c2ed490cb9d01b725aa001`) — `success`
+  - [Run #42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (SHA `58c70ae7db19a3fed25235fe0f3406cd083044b5`) — `success`
+- **Status do Job:** `completed` | **Conclusion:** `success` (**100% Green**)
+- **Checkout Confirmado:** SHA `58c70ae7db19a3fed25235fe0f3406cd083044b5`
 - **Resultados dos Gates na Nuvem do GitHub Actions:**
   1. `Set up job`: **success**
-  2. `Checkout repository`: **success** (commit `7c567a5`)
+  2. `Checkout repository`: **success** (commit `58c70ae`)
   3. `Install pnpm`: **success** (versão `12.18.0` configurada via action `setup-pnpm@v4`)
   4. `Setup Node.js`: **success** (Node.js 24 runner)
   5. `Install dependencies`: **success** (`pnpm install --frozen-lockfile`)
@@ -184,7 +189,7 @@ A experiência discente e as travas de segurança foram verificadas de ponta a p
 | **Interface: bloqueio de rota direta e retorno seguro ao lobby** | `✅ COMPROVADO` | Playwright E2E (`simulado-flow.spec.ts`) valida `/simulado/prova` -> contingência -> retorno ao lobby. |
 | **Coerência e exatidão normativa de `sin-021` a `sin-030` (JSON)** | `✅ COMPROVADO` | URLs do Planalto conferidas; didática não normativa de `sin-021` removida; fundamentação positiva estrita. |
 | **Distinção entre MBST (sinalização) e MBFT (fiscalização complementar)** | `✅ COMPROVADO` | Subtítulo e identificação corrigidos em `TrackUnitCard.tsx` (MBST Res. 973/2022 c/c MBFT Res. 985/2022 e 1.031/2026). |
-| **Execução dos 5 gates de CI no GitHub Actions com pnpm 12** | `✅ COMPROVADO` | Run [#42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (commit `7c567a5`) com 100% de sucesso. |
+| **Execução dos 5 gates de CI no GitHub Actions com pnpm 12** | `✅ COMPROVADO` | Runs [#42696822519](https://github.com/Juanzit/AprovaCNH/actions/runs/42696822519) (`7c567a5`) e [#42699523402](https://github.com/Juanzit/AprovaCNH/actions/runs/42699523402) (`58c70ae`) com 100% de sucesso. |
 | **Proposta cirúrgica da migration 000007 sem sobrescrita de conteúdo** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Validada estruturalmente em `migrationIntegrity.test.ts`, porém sem execução em banco PostgreSQL real. |
 | **Alinhamento e blindagem das políticas RLS à regra discente (000008)** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Migration 000008 criada e validada em testes unitários estáticos, porém sem execução em PostgreSQL real. |
 | **Execução de migration contra PostgreSQL real com conflitos simulados** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Sem Docker ou PostgreSQL local disponível no ambiente; Supabase remoto protegido contra comandos de escrita. |
