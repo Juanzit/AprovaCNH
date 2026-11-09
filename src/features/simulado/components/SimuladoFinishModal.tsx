@@ -74,7 +74,7 @@ export function SimuladoFinishModal({
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h2 id="finish-modal-title" className="text-lg font-extrabold text-slate-900">
-            Finalizar Simulado?
+            Finalizar Simulado Temático?
           </h2>
           <button
             type="button"
@@ -108,7 +108,7 @@ export function SimuladoFinishModal({
             </div>
           ) : (
             <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs sm:text-sm font-medium">
-              Todas as {totalQuestions} questões foram preenchidas. Deseja encerrar o simulado e
+              Todas as {totalQuestions} questões foram preenchidas. Deseja encerrar o simulado temático e
               conferir seu resultado e o gabarito comentado da plataforma?
             </div>
           )}

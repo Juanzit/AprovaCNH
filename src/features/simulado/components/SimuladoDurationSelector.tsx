@@ -41,10 +41,10 @@ export function SimuladoDurationSelector({
             />
             <div>
               <strong className="block text-sm font-extrabold text-slate-900">
-                60 minutos (Padrão Oficial)
+                60 minutos (Configuração padrão)
               </strong>
               <span className="text-xs text-slate-600 leading-snug block mt-0.5">
-                Tempo regulamentar para o exame teórico de 30 questões.
+                Tempo regulamentar padrão para a resolução das 30 questões do simulado temático.
               </span>
             </div>
           </label>
@@ -68,10 +68,10 @@ export function SimuladoDurationSelector({
             />
             <div>
               <strong className="block text-sm font-extrabold text-slate-900">
-                120 minutos (Adaptação PCD / Especial)
+                120 minutos (Tempo estendido)
               </strong>
               <span className="text-xs text-slate-600 leading-snug block mt-0.5">
-                Tempo estendido (dobro) para candidatos com deficiência, TDAH ou dislexia.
+                Tempo dobrado conforme Art. 33, § 2º da Resolução CONTRAN nº 1.020/2025 para candidatos com dislexia, TDAH ou TEA (livre escolha, sem exigência de laudo médico).
               </span>
             </div>
           </label>
@@ -84,14 +84,14 @@ export function SimuladoDurationSelector({
           data-testid="start-simulado-cta"
           className="inline-flex items-center justify-center min-h-12 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
         >
-          Iniciar Simulado ({duration} min) →
+          Iniciar Simulado Temático ({duration} min) →
         </Link>
 
         <Link
           href="/simulado/historico"
           className="inline-flex items-center justify-center min-h-12 px-4 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
         >
-          Ver Histórico Completo
+          Ver Histórico de Treinos
         </Link>
       </div>
     </div>

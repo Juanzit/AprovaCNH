@@ -32,7 +32,7 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
                   : 'bg-amber-600 text-white'
               }`}
             >
-              {isApproved ? '✓ APROVADO NO SIMULADO!' : '⚠ NÃO ATINGIU O CORTE (20 ACERTOS)'}
+              {isApproved ? '✓ META DE ESTUDO ALCANÇADA' : '⚠ CONTINUE PRATICANDO'}
             </span>
 
             {result.status === 'timed_out' && (
@@ -53,14 +53,14 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
             className="text-xl sm:text-2xl font-extrabold text-slate-950"
           >
             {isApproved
-              ? 'Parabéns! Você atingiu a pontuação de corte para aprovação'
-              : 'Continue praticando para alcançar os 20 acertos regulamentares'}
+              ? 'Parabéns! Meta de estudo alcançada'
+              : 'Continue praticando para alcançar a meta de estudo'}
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-700 max-w-2xl leading-relaxed">
             {isApproved
-              ? `Você acertou ${result.score} de ${result.totalQuestions} questões (${result.accuracyPercent}%), superando a nota mínima de corte de ${result.passingScore} acertos prevista na Resolução CONTRAN nº 1.020/2025.`
-              : `Você acertou ${result.score} de ${result.totalQuestions} questões (${result.accuracyPercent}%). A nota de corte regulamentar é de ${result.passingScore} acertos. Revise abaixo as questões erradas com as micro-aulas e fundamentação legal!`}
+              ? `Você acertou ${result.score} de ${result.totalQuestions} questões (${result.accuracyPercent}%), superando a meta de referência de ${result.passingScore} acertos da plataforma AprovaCNH para este módulo temático. Ressalva: este resultado é um indicador pedagógico de treino e não representa aprovação no exame oficial do DETRAN.`
+              : `Você acertou ${result.score} de ${result.totalQuestions} questões (${result.accuracyPercent}%). A meta de estudo de referência da plataforma é de ${result.passingScore} acertos para fixação do conteúdo. Revise abaixo as questões com as micro-aulas comentadas e fundamentação legal!`}
           </p>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
         <div className="bg-white rounded-xl border border-slate-200/90 p-3.5">
           <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-            Pontuação Final
+            Pontuação no Treino
           </span>
           <strong
             data-testid="simulado-score-value"
@@ -83,12 +83,12 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
 
         <div className="bg-white rounded-xl border border-slate-200/90 p-3.5">
           <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-            Nota de Corte
+            Meta da Plataforma
           </span>
           <strong className="mt-1 block text-xl sm:text-2xl font-extrabold text-slate-900">
             {result.passingScore} acertos
           </strong>
-          <span className="text-xs font-semibold text-slate-600">Mínimo regulamentar (D007)</span>
+          <span className="text-xs font-semibold text-slate-600">Referência pedagógica (D007)</span>
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200/90 p-3.5">
@@ -108,13 +108,13 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
 
         <div className="bg-white rounded-xl border border-slate-200/90 p-3.5">
           <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-            Base Normativa
+            Módulo Temático
           </span>
           <strong className="mt-1 block text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
-            Res. CONTRAN 1.020/2025
+            Sinalização de Trânsito
           </strong>
           <span className="text-xs font-semibold text-blue-700">
-            {result.config.uf ?? 'MG'} • DETRAN-MG / SENATRAN
+            Ref.: Res. CONTRAN 1.020/2025
           </span>
         </div>
       </div>
@@ -124,13 +124,13 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
           href="/simulado/prova"
           className="inline-flex items-center justify-center min-h-11 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
         >
-          Refazer Simulado Prático
+          Refazer Simulado Temático
         </Link>
         <Link
           href="/simulado/historico"
           className="inline-flex items-center justify-center min-h-11 px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
         >
-          Histórico de Simulados
+          Histórico de Treinos
         </Link>
         <Link
           href="/"
@@ -141,7 +141,7 @@ export function SimuladoResultSummary({ result }: SimuladoResultSummaryProps) {
       </div>
 
       <p className="text-[11px] text-slate-500 pt-1">
-        Nota de transparência: Plataforma independente de estudos para a CNH — Simulado elaborado conforme as diretrizes da Resolução CONTRAN nº 1.020/2025 e do BNQ/SENATRAN.
+        Ressalva pedagógica: A plataforma AprovaCNH é uma ferramenta independente de estudo. O desempenho no simulado temático é uma referência de aprendizagem e não substitui nem garante aprovação no exame oficial do DETRAN/SENATRAN.
       </p>
     </section>
   );

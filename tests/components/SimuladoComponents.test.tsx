@@ -165,7 +165,7 @@ describe('Componentes do Simulado Configurável (T006)', () => {
     );
 
     expect(screen.getByTestId('simulado-approval-badge')).toHaveTextContent(
-      'APROVADO NO SIMULADO!'
+      'META DE ESTUDO ALCANÇADA'
     );
     expect(screen.getByTestId('review-question-1')).toBeInTheDocument();
     expect(screen.getByTestId('review-question-2')).toBeInTheDocument();

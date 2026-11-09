@@ -12,13 +12,13 @@ export default async function SimuladoHistoricoPage() {
       <div className="flex flex-wrap items-center justify-between gap-3 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
         <div>
           <span className="text-xs font-extrabold uppercase tracking-wider text-blue-700">
-            DETRAN-MG / SENATRAN • Resolução CONTRAN nº 1.020/2025
+            AprovaCNH • Treino Temático de Sinalização de Trânsito
           </span>
           <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 mt-0.5">
-            Histórico de Simulados Oficiais
+            Histórico de Treinos do Simulado Temático
           </h1>
           <p className="text-xs sm:text-sm text-slate-600">
-            Acompanhe sua evolução nas provas simuladas de 30 questões (nota de corte: 20 acertos).
+            Acompanhe seu desempenho nos treinos de 30 questões (meta pedagógica de referência: 20 acertos).
           </p>
         </div>
 
@@ -27,13 +27,13 @@ export default async function SimuladoHistoricoPage() {
             href="/simulado"
             className="inline-flex items-center justify-center min-h-10 px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold"
           >
-            ← Regras do Simulado
+            ← Painel do Simulado
           </Link>
           <Link
             href="/simulado/prova"
             className="inline-flex items-center justify-center min-h-10 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold"
           >
-            Novo Simulado →
+            Novo Treino →
           </Link>
         </div>
       </div>

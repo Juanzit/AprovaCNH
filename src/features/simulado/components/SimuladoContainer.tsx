@@ -244,10 +244,10 @@ export function SimuladoContainer({
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-blue-700 block">
-              Simulado Prático • {config.uf ?? 'MG'} (Res. CONTRAN 1.020/2025)
+              Simulado Temático • Sinalização de Trânsito
             </span>
             <h1 className="text-sm sm:text-base font-extrabold text-slate-900">
-              Prova Teórica DETRAN-MG / SENATRAN
+              Simulado Temático — Sinalização de Trânsito
             </h1>
           </div>
 
@@ -278,7 +278,7 @@ export function SimuladoContainer({
               Respondidas: <strong className="text-slate-900">{answeredCount}</strong> de{' '}
               {items.length}
             </span>
-            <span>Nota de corte regulamentar: {config.passingScore} acertos</span>
+            <span>Meta de estudo: {config.passingScore} acertos</span>
           </div>
           <div
             role="progressbar"
@@ -358,7 +358,7 @@ export function SimuladoContainer({
             data-testid="finish-on-last-btn"
             className="min-h-11 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-colors shadow-xs"
           >
-            Finalizar Simulado ✓
+            Finalizar Simulado Temático ✓
           </button>
         )}
       </div>

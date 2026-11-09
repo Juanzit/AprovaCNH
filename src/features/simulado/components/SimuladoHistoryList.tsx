@@ -33,7 +33,7 @@ export function SimuladoHistoryList({ serverHistory = [] }: SimuladoHistoryListP
         className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 text-center space-y-3 shadow-xs"
       >
         <p className="text-sm font-bold text-slate-800">
-          Você ainda não concluiu nenhum simulado prático.
+          Você ainda não concluiu nenhum simulado temático.
         </p>
         <p className="text-xs text-slate-600 max-w-md mx-auto">
           Realize sua primeira prova simulada com 30 questões para medir sua
@@ -44,7 +44,7 @@ export function SimuladoHistoryList({ serverHistory = [] }: SimuladoHistoryListP
             href="/simulado/prova"
             className="inline-flex items-center justify-center min-h-11 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-extrabold"
           >
-            Iniciar Primeiro Simulado →
+            Iniciar Primeiro Treino →
           </Link>
         </div>
       </div>
@@ -77,7 +77,7 @@ export function SimuladoHistoryList({ serverHistory = [] }: SimuladoHistoryListP
                       : 'bg-amber-100 text-amber-900'
                   }`}
                 >
-                  {item.isApproved ? '✓ Aprovado' : '⚠ Não atingiu o corte'}
+                  {item.isApproved ? '✓ Meta alcançada' : '⚠ Continue praticando'}
                 </span>
                 <span className="text-xs text-slate-500 font-medium">{formattedDate}</span>
                 {item.xpEarned > 0 && (
@@ -89,7 +89,7 @@ export function SimuladoHistoryList({ serverHistory = [] }: SimuladoHistoryListP
                 Nota: {item.score} de {item.totalQuestions} ({item.accuracyPercent}%)
               </p>
               <p className="text-xs text-slate-600">
-                Tempo gasto: {formatDurationHuman(item.durationSeconds)} • Corte regulamentar:{' '}
+                Tempo gasto: {formatDurationHuman(item.durationSeconds)} • Meta de referência:{' '}
                 {item.passingScore} acertos
               </p>
             </div>

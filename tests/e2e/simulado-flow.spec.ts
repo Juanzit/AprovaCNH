@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Simulado Configurável — Fase 6 (T006 / Regra D007)', () => {
-  test('deve exibir as regras regulamentares (30 questões, 60 min, corte 20) no lobby /simulado', async ({
+test.describe('Simulado Temático de Sinalização — Fase 6 (T006 / Regra D007)', () => {
+  test('deve exibir as regras do simulado temático (30 questões, 60 min, corte 20) no lobby /simulado', async ({
     page,
   }) => {
     await page.goto('/simulado');
 
     await expect(
       page.getByRole('heading', {
-        name: /Simulado Prático da Prova Teórica de 1ª Habilitação/i,
+        name: /Simulado Temático — Sinalização de Trânsito/i,
       })
     ).toBeVisible();
 
@@ -57,17 +57,25 @@ test.describe('Simulado Configurável — Fase 6 (T006 / Regra D007)', () => {
       page.getByRole('heading', { name: /Gabarito Comentado da Plataforma/i })
     ).toBeVisible();
 
+    // Valida resultado pedagógico (Meta de estudo / Continue praticando)
+    await expect(page.getByTestId('simulado-approval-badge')).toBeVisible();
+
     // Filtra apenas erros no gabarito
     await page.getByTestId('filter-errors-btn').click();
     await expect(page.getByTestId('filter-errors-btn')).toHaveAttribute('aria-pressed', 'true');
   });
 
-  test('deve permitir selecionar tempo estendido de 120 minutos para adaptação PCD (Res. CONTRAN 1.020/2025)', async ({
+  test('deve permitir selecionar tempo estendido de 120 minutos para adaptação PCD, TDAH ou TEA (Art. 33, § 2º)', async ({
     page,
   }) => {
     await page.goto('/simulado');
 
-    // Seleciona a opção de 120 minutos PCD
+    // Verifica menção expressa a TEA e Art. 33, § 2º
+    const pcdLabel = page.locator('label[for="duration-opt-120"]');
+    await expect(pcdLabel).toContainText('TEA');
+    await expect(pcdLabel).toContainText('Art. 33, § 2º');
+
+    // Seleciona a opção de 120 minutos PCD/TEA
     const pcdRadio = page.locator('input#duration-opt-120');
     await pcdRadio.check();
 

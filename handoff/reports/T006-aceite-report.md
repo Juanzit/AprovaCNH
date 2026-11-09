@@ -1,72 +1,94 @@
-# Relatório de Validação Funcional e Aceite Técnico — Fase 6 (T006)
-
+# Relatório de Aceite Editorial, Pedagógico e Técnico — Fase 6 (T006)
 **Data:** 08/11/2026
-**Tarefa:** T006 — Simulado Configurável (Resolução CONTRAN nº 1.020/2025 & Regra D007)
-**Branch de Ajustes/Aceite:** `fix/T006-aceite-simulado-ajustes`
-**Branch Base:** `main` (commit `b69b7b69e2183ca1d4cc843c524a303c7aad487d`)
-**Responsável Técnico / Auditor:** Antigravity (Auditor Jurídico-Editorial e de Software)
-**Status do Aceite:** **RECOMENDADO PARA ACEITE E MERGE**
-
+**Tarefa:** T006 — Simulado Configurável (Ajustes Finais de Aceite Editorial, Pedagógico e Integração)
+**Branch de Trabalho:** `fix/T006-aceite-simulado-ajustes`
+**Branch Base:** `main` (commit intacto: `b69b7b69e2183ca1d4cc843c524a303c7aad487d`)
+**Responsável Técnico / Auditor:** Antigravity (Auditor Editorial, Pedagógico e de Software)
+**Status do Merge:** **NÃO MERGEADO** (Branch preservada conforme determinação expressa do Tech Lead)
+**Status da Fase 7 (Tutor de IA):** **NÃO INICIADA / BLOQUEADA**
 ---
-
-## 1. Visão Geral da Validação
-
-A Fase 6 (T006) implementou o **Simulado Configurável** do AprovaCNH, parametrizado com base na **Resolução CONTRAN nº 1.020/2025** e nas diretrizes do Banco Nacional de Questões (BNQ) da SENATRAN para o exame teórico de 1ª Habilitação.
-
-O objetivo desta auditoria final de ponta a ponta (E2E) foi validar os critérios rigorosos de aceite estipulados pelo Tech Lead, cobrindo:
-1. **Acervo de Questões Expandido (30 questões):** Expansão do banco de questões para 30 itens reais no padrão DETRAN-MG/SENATRAN (`sin-001` a `sin-030`), eliminando qualquer reciclagem ou duplicidade no exame simulado.
-2. **Nomenclatura Institucional e Independência (D006 / Lei nº 9.610/1998):** Eliminação de termos ambíguos ou enganosos ("Simulado Oficial", "Gabarito Oficial") na interface, explicitando a independência da plataforma e a procedência das normas em domínio público.
-3. **Resiliência a Recarregamento (F5) e Prevenção de Submissão Duplicada:** Preservação de respostas marcadas, flags de revisão e cronômetro ativo em `sessionStorage` (para visitantes) e no Supabase (para usuários autenticados), com travas de idempotência no cliente (`useRef`) e no servidor (`simuladoRepository`).
-4. **Acessibilidade e Tempo Estendido PCD (120 min):** Inclusão de seletor regulamentar de 120 minutos (dobro do tempo) para candidatos com deficiência, TDAH ou dislexia, conforme previsto na Resolução CONTRAN nº 1.020/2025, além de indicadores visuais textuais que não dependem unicamente de cor (`✓ Selecionada` e bordas tracejadas no mapa).
-5. **Cobertura Automatizada Rigorosa:** 100% de aprovação em TypeScript strict, ESLint, 107 testes Vitest e 30 testes Playwright (Desktop e Mobile).
-
+## 1. Resumo Executivo e Atendimento às Diretrizes do Tech Lead
+Em atendimento direto à ordem de serviço do Tech Lead, a branch `fix/T006-aceite-simulado-ajustes` foi mantida isolada sem merge na `main`. Foram implementadas integralmente as correções editoriais, o alinhamento pedagógico, a revisão de acessibilidade com TEA, o registro de limitação do acervo e as instruções para migração no Supabase:
+1. **T001 — Nomenclatura Editorial e Transparência:**
+   - Denominação padronizada em toda a aplicação como **"Simulado Temático — Sinalização de Trânsito"**.
+   - Adicionada nota destacada em caixa âmbar no lobby (`/simulado`) e nota de esclarecimento na tela de resultados (`/simulado/resultado/[id]`), explicitando que a plataforma AprovaCNH é uma ferramenta independente de estudo e não reproduz necessariamente a distribuição multidisciplinar nem o conjunto de questões do exame oficial.
+   - Expressões indutoras de erro ("Simulado Oficial", "Gabarito Oficial", "Aprovado no Exame") foram totalmente removidas ou substituídas por termos transparentes como *"Gabarito Comentado da Plataforma"*, *"Resposta Correta (CTB / CONTRAN)"* e *"Treino Temático de Sinalização"*.
+2. **T002 — Alinhamento Pedagógico das Mensagens de Resultado:**
+   - Mensagem binária oficial ("Aprovado / Reprovado") substituída pela avaliação formativa da plataforma:
+     - **$\ge 20$ acertos:** *"✓ META DE ESTUDO ALCANÇADA"* (+100 XP), com esclarecimento de que os 20 acertos são uma meta de referência pedagógica interna e não asseguram aprovação no exame oficial do DETRAN.
+     - **$\le 19$ acertos:** *"⚠ CONTINUE PRATICANDO"* (+30 XP), com recomendação didática para revisão dos itens através das micro-aulas comentadas e fundamentação legal.
+3. **T003 — Acessibilidade e Nomenclatura do Tempo Estendido (TEA e Res. 1.020/2025):**
+   - Configuração clara no lobby:
+     - **60 minutos (Configuração padrão):** Tempo regulamentar para resolução das 30 questões temáticas.
+     - **120 minutos (Tempo estendido):** Tempo dobrado conforme previsto no **Art. 33, § 2º da Resolução CONTRAN nº 1.020/2025** para candidatos com dislexia, TDAH ou **TEA (Transtorno do Espectro Autista)**.
+   - Inclusão expressa do termo **TEA** na interface e no seletor, sem exigir qualquer tipo de laudo ou diagnóstico médico para sua ativação.
+4. **T004 — Registro Explícito da Limitação do Acervo Atual:**
+   - O banco de questões possui atualmente **exatamente 30 questões temáticas** (`sin-001` a `sin-030`), concentradas no módulo de Sinalização de Trânsito e Normas de Circulação.
+   - Cada tentativa consome integralmente os 30 itens sem duplicação interna, aplicando embaralhamento aleatório (Fisher-Yates) tanto na ordem das 30 questões quanto na ordem das alternativas (A, B, C, D).
+   - Entre diferentes tentativas, os mesmos 30 IDs são reutilizados sob novas permutações aleatórias, não havendo questões sobressalentes até a futura expansão do banco.
+   - O simulado atual não reflete a proporcionalidade multidisciplinar do exame oficial do DETRAN (Direção Defensiva, Primeiros Socorros, Mecânica Básica e Meio Ambiente).
+   - Registrada no backlog a necessidade prioritária de expansão multidisciplinar do acervo antes do lançamento comercial.
+5. **T005 — Instruções Detalhadas para Migração no Supabase:**
+   - O status da migration de expansão de questões está documentado de forma transparente (detalhes na Seção 4 deste relatório), com passo a passo seguro para aplicação no SQL Editor e consulta de verificação `SELECT count(*) FROM questions;`.
+6. **T006 — Testes Automatizados:**
+   - Suíte técnica 100% verde: TypeScript strict (0 erros), ESLint (0 avisos), Vitest (108 testes em 20 arquivos), Next.js Turbopack Build (sucesso) e Playwright E2E (30 testes em Desktop e Mobile Chrome).
+7. **T007 — Pull Request:**
+   - Branch publicada no GitHub (`origin/fix/T006-aceite-simulado-ajustes`), pronta para revisão em Pull Request direcionado para `main`, com histórico limpo e preservado.
+8. **T008 — Documentação e Google Drive:**
+   - Arquivo sincronizado com o espelho local e pronto para upload no Google Drive.
 ---
-
-## 2. Resultados das Verificações Automatizadas
-
-Todas as verificações foram executadas em ambiente real com os seguintes resultados:
-
+## 2. Resultados Reais das Verificações Automatizadas
+Todas as verificações foram executadas no ambiente local do repositório, com os seguintes resultados literais:
 ### 2.1 Verificação de Tipos TypeScript (`pnpm typecheck`)
 - **Comando:** `pnpm typecheck` (`tsc --noEmit`)
 - **Resultado:** **APROVADO (Código 0)**
+- **Tempo:** ~4.5s
 - **Saída:**
   ```text
   $ tsc --noEmit
   ```
-
-### 2.2 Análise Estática ESLint (`pnpm lint`)
+### 2.2 Análise Estática de Código (`pnpm lint`)
 - **Comando:** `pnpm lint` (`eslint .`)
-- **Resultado:** **APROVADO (0 erros, 0 avisos)**
+- **Resultado:** **APROVADO (Código 0, 0 erros, 0 avisos)**
+- **Tempo:** ~14s
 - **Saída:**
   ```text
   $ eslint .
   ```
-
-### 2.3 Testes Unitários e de Componentes Vitest (`pnpm test`)
+### 2.3 Testes Unitários e de Componentes (`pnpm test`)
 - **Comando:** `pnpm test` (`vitest run`)
-- **Resultado:** **APROVADO (20 arquivos, 107 testes)**
-- **Duração:** 4.06s
-- **Sumário de Testes:**
-  - `questionRepository.test.ts`: 6 testes aprovados (incluindo validação de ao menos 30 questões via Anti-Corruption Layer e fallback).
-  - `simuladoGenerator.test.ts`: 7 testes aprovados (seleção de 30 questões únicas sem repetição, corte de 20 acertos aprovado, 19 acertos reprovado, cálculo de XP e semente determinística).
-  - `SimuladoComponents.test.tsx`: 5 testes aprovados (cronômetro, gaveta de mapa 1..30, cartão de questão sem feedback imediato, modal de confirmação e resumo com gabarito).
-  - `questionSchema.test.ts`: 13 testes aprovados (Zod strict, 4 opções, 1 correta, dupla validação de modelos).
-  - `srsAlgorithm.test.ts`: 13 testes aprovados.
-  - `masteryCalculator.test.ts`: 11 testes aprovados.
-  - `streakCalculator.test.ts`: 7 testes aprovados.
-  - `supabase-live.test.ts`: 1 teste aprovado (integração real com nuvem Supabase).
-
+- **Resultado:** **APROVADO (Código 0 — 20 arquivos de teste, 108 testes aprovados)**
+- **Duração:** 9.71s
+- **Detalhamento dos Testes Executados:**
+  - `tests/components/SimuladoComponents.test.tsx`: 5 testes aprovados (cronômetro, gaveta de mapa 1..30, rádio sem feedback imediato, modal de entrega e resumo com badge "META DE ESTUDO ALCANÇADA").
+  - `tests/unit/simuladoGenerator.test.ts`: 8 testes aprovados (incluindo teste T004 de integridade das 30 questões com sementes distintas, corte de 20 acertos, 19 acertos abaixo da meta, e cálculo de XP).
+  - `tests/unit/questionRepository.test.ts`: 6 testes aprovados (Anti-Corruption Layer, busca por 30 questões e fallback).
+  - `tests/integration/supabase-live.test.ts`: 1 teste aprovado (comunicação em nuvem com o Supabase).
+  - `tests/unit/questionSchema.test.ts`: 13 testes aprovados (Zod strict, 4 alternativas, 1 correta).
+  - `tests/unit/srsAlgorithm.test.ts`: 13 testes aprovados (algoritmo Leitner determinístico).
+  - `tests/unit/masteryCalculator.test.ts`: 11 testes aprovados (domínio por dispositivo legal).
+  - `tests/unit/streakCalculator.test.ts`: 7 testes aprovados.
+  - `tests/components/AuthPages.test.tsx`: 4 testes aprovados.
+  - Demais arquivos de componentes e repositórios: 40 testes aprovados.
 ### 2.4 Compilação de Produção Turbopack (`pnpm build`)
 - **Comando:** `pnpm build` (`next build`)
 - **Resultado:** **APROVADO (Código 0)**
-- **Saída:**
+- **Duração:** 2.9s (compilação) + 4.6s (typecheck) + 0.9s (páginas estáticas)
+- **Saída do Build:**
   ```text
   ▲ Next.js 16.4.5 (Turbopack)
-  ✓ Compiled successfully in 1200ms
-  ✓ Generating static pages using 3 workers (10/10) in 12.6s
+  - Environments: .env.local
+  ✓ Running next.config.ts took 209ms
+  ✓ Compiled successfully in 2.9s
+  ✓ Generating static pages using 3 workers (10/10) in 910ms
   Route (app)
-  ├ ○ /
+  ┌ ƒ /
+  ├ ○ /_not-found
+  ├ ƒ /auth/callback
+  ├ ƒ /auth/signout
+  ├ ○ /cadastro
   ├ ƒ /licao/sinalizacao
+  ├ ○ /login
   ├ ƒ /revisao
   ├ ƒ /revisao/pratica
   ├ ƒ /simulado
@@ -74,108 +96,69 @@ Todas as verificações foram executadas em ambiente real com os seguintes resul
   ├ ƒ /simulado/prova
   └ ƒ /simulado/resultado/[id]
   ```
-
 ### 2.5 Testes de Ponta a Ponta Playwright (`pnpm test:e2e`)
 - **Comando:** `pnpm test:e2e` (`playwright test`)
-- **Resultado:** **APROVADO (30 testes aprovados, 0 falhas)**
-- **Projetos:** 15 testes em `Desktop Chrome` (1280x720) + 15 testes em `Mobile Chrome` (Pixel 5 / 393x851).
+- **Resultado:** **APROVADO (Código 0 — 30 testes aprovados, 0 falhas)**
+- **Duração:** 50.0s (execução paralela com 2 workers)
+- **Cobertura de Dispositivos:**
+  - 15 testes em `Desktop Chrome` (1280x720)
+  - 15 testes em `Mobile Chrome` (Pixel 5 / 393x851)
 - **Cenários do Simulado Validados:**
-  - `lobby /simulado`: regras regulamentares exibidas (30 questões, 60 min, corte 20).
-  - `fluxo de prova`: cronômetro regressivo, questão 1 a 30, seleção de rádio, botão 🚩, mapa de navegação com salto direto para questão 5, modal com alerta de 29 questões em branco, submissão e gabarito comentado.
-  - `tempo estendido 120 min PCD`: seleção no lobby via rádio, propagação via query param `?tempo=120` e cronômetro iniciando em 120 minutos.
-  - `persistência a reload (F5)`: seleção de alternativa na questão 1, marcação de flag para revisão, F5 / recarregamento da página e verificação de que alternativa e flag permanecem marcadas.
-
+  1. `lobby /simulado`: regras regulamentares exibidas com nova nomenclatura (30 questões, 60 min, corte 20) e aviso de ferramenta independente.
+  2. `fluxo de prova`: cronômetro regressivo, questão 1 a 30, seleção de alternativa, marcação de flag `🚩`, drawer com salto direto para questão 5, modal de confirmação com aviso de questões em branco e redirecionamento para o gabarito comentado.
+  3. `tempo estendido 120 min PCD/TEA`: seleção no lobby comprovando texto com **TEA** e **Art. 33, § 2º**, navegação com `?tempo=120` e cronômetro regressivo operando a partir de 120 minutos.
+  4. `resiliência a reload (F5)`: seleção na questão 1, flag `🚩`, F5 / reload e verificação de integridade do estado e cronômetro.
 ---
-
-## 3. Matriz de Testes Manuais e Validação de Ponta a Ponta
-
-| # | Cenário de Teste | Passos Executados | Resultado Esperado | Resultado Obtido | Status |
-|---|---|---|---|---|---|
-| **01** | **Geração de 30 questões sem repetição** | Iniciar simulado e percorrer as 30 posições no mapa e no cartão. | Exatamente 30 questões distintas, com IDs únicos e sem duplicação de enunciado. | 30 questões únicas amostradas do acervo homologado `sin-001` a `sin-030`. | **APROVADO** |
-| **02** | **Quatro alternativas e 1 correta** | Inspecionar a estrutura de cada uma das 30 questões. | Cada item possui exatamente 4 opções (A, B, C, D) e 1 única alternativa correta. | 100% em conformidade com o schema estrito `questionSchema`. | **APROVADO** |
-| **03** | **Cronômetro de 60 minutos** | Acessar `/simulado/prova` no modo padrão. | Cronômetro regressivo iniciar em `60:00`, com urgência normal, warning (<5 min) e critical (<1 min). | Contagem regressiva precisa com sincronização contra o relógio do sistema via `Date.now()`. | **APROVADO** |
-| **04** | **Tempo estendido de 120 minutos (PCD)** | Selecionar "120 minutos" no lobby `/simulado` e iniciar. | Navegar para `/simulado/prova?tempo=120` com cronômetro iniciando em `120:00`. | Cronômetro inicializa em 120 minutos e submissão respeita o limite estendido. | **APROVADO** |
-| **05** | **Mapa da prova (1 a 30)** | Abrir drawer do mapa e clicar na questão 15. | Exibir grade 1 a 30; salto imediato para a questão 15 mantendo estado das demais. | Drawer com `aria-expanded`, salto imediato e indicador de questão atual (`aria-current="step"`). | **APROVADO** |
-| **06** | **Marcar / desmarcar para revisão (🚩)** | Clicar em "Marcar para revisar" na questão 1, avançar e reabrir. | Flag `🚩` visível no cabeçalho do cartão e na célula do mapa; persistência do status booleano. | Botão alterna `aria-pressed="true/false"` e célula no mapa exibe badge `🚩`. | **APROVADO** |
-| **07** | **Identificação de itens não respondidos** | Visualizar células não preenchidas no mapa da prova. | Distinção não apenas por cor (célula com borda tracejada `border-dashed` e texto de acessibilidade). | Itens em branco possuem borda tracejada; itens respondidos possuem fundo azul e estado anunciado por leitor de tela. | **APROVADO** |
-| **08** | **Confirmação antes da entrega** | Clicar em "Finalizar Prova" com apenas 1 questão preenchida. | Modal nativo `<dialog>` alertando explicitamente sobre "29 questão(ões) em branco". | Alerta sonoro/visual em `role="alert"` informando que questões em branco contam como erro. | **APROVADO** |
-| **09** | **Entrega automática ao término do tempo** | Simular expiração do cronômetro (`onTimeUp`). | Disparo automático de submissão com status `timed_out` e cálculo de nota. | Prova encerrada imediatamente sem travar a interface e sem perda de respostas parciais. | **APROVADO** |
-| **10** | **Cálculo de corte: 20 acertos (Aprovado)** | Submeter simulado com 20 acertos e 10 erros. | `isApproved: true`, status `completed`, 100 XP e badge verde de aprovação. | Aprovado com 67% de aproveitamento; mensagem comemorativa citando a Res. CONTRAN 1.020/2025. | **APROVADO** |
-| **11** | **Cálculo de corte: 19 acertos (Reprovado)** | Submeter simulado com 19 acertos e 11 erros. | `isApproved: false`, status `completed`, 30 XP e badge âmbar de corte não atingido. | Reprovado com 63% de aproveitamento; orientação didática para revisar micro-aulas. | **APROVADO** |
-| **12** | **Gabarito comentado com fundamentação legal** | Acessar `/simulado/resultado/[id]`. | Exibição de todas as questões, alternativa do aluno, gabarito da plataforma, micro-aula e link oficial. | Todas as questões trazem dispositivo legal (ex: Art. 29, 35, 40 do CTB) e link verificado do Planalto. | **APROVADO** |
-| **13** | **Persistência de Visitante (Sem Login)** | Realizar simulado no modo visitante e inspecionar storage e histórico. | Sessão opera normalmente; resultado gravado em `sessionStorage` e listado em `/simulado/historico`. | `saveSimuladoResultToSession` preserva histórico local de até 25 tentativas sem exigir cadastro prévio. | **APROVADO** |
-| **14** | **Persistência de Usuário Autenticado** | Submeter simulado como usuário logado. | Registro persistido nas tabelas `simulado_sessions`, `simulado_answers` e `user_answers` (alimentando o SRS). | Registro seguro no PostgreSQL Supabase com RLS ativo e créditos de XP no perfil do aluno. | **APROVADO** |
-| **15** | **Resiliência a recarregamento de página (F5)** | Preencher questões 1, 2 e 3, marcar questão 2 com flag e pressionar F5. | Ao recarregar, as respostas marcadas, flags e o tempo decorrido permanecem intactos. | Estado hidratado do `sessionStorage` (`aprovacnh_simulado_active_draft`); o cronômetro não reinicia do zero. | **APROVADO** |
-| **16** | **Prevenção de submissão duplicada** | Clicar repetidamente no botão "Confirmar e Entregar" do modal. | Apenas uma requisição de entrega é despachada; bloqueio imediato no cliente e idempotência no servidor. | `hasSubmittedRef = true` bloqueia chamadas concorrentes; servidor verifica se sessão já foi finalizada. | **APROVADO** |
-
+## 3. Matriz de Validação dos Ajustes de Aceite (T001 a T004)
+| Requisito | Descrição do Ajuste | Arquivos Alterados | Evidência de Validação | Status |
+|---|---|---|---|---|
+| **T001 — Nomenclatura** | Substituição por "Simulado Temático — Sinalização de Trânsito", nota de ferramenta independente e remoção de termos como "Oficial". | `src/app/page.tsx`, `src/app/simulado/page.tsx`, `src/app/simulado/historico/page.tsx`, `SimuladoContainer.tsx`, `SimuladoResultSummary.tsx`, `simulado.ts`. | Validação visual no lobby e na home; assertions em `simulado-flow.spec.ts` aprovadas. | **Implementado e Testado** |
+| **T002 — Resultado Pedagógico** | Troca de status Aprovado/Reprovado por "Meta de estudo alcançada" ($\ge 20$) e "Continue praticando" ($\le 19$); nota de referência de estudo; XP mantido (100 / 30). | `SimuladoResultSummary.tsx`, `SimuladoHistoryList.tsx`, `simuladoGenerator.ts`, `SimuladoComponents.test.tsx`. | Testes unitários com corte em 20 acertos (+100 XP) e 19 acertos (+30 XP) aprovados; badge visível no E2E. | **Implementado e Testado** |
+| **T003 — Tempo Estendido TEA** | Inclusão de 120 min com citação ao Art. 33, § 2º da Res. 1.020/2025 para dislexia, TDAH ou TEA, sem solicitação de laudo. | `SimuladoDurationSelector.tsx`, `simulado-flow.spec.ts`. | Teste E2E checa presença do texto 'TEA' e 'Art. 33, § 2º' no label e inicialização do cronômetro em 120:00. | **Implementado e Testado** |
+| **T004 — Limitação do Acervo** | Documentação inequívoca de que o acervo tem exatamente 30 questões de Sinalização, sorteadas sem repetição interna, reutilizadas entre tentativas com randomização. | `src/app/simulado/page.tsx`, `simuladoGenerator.ts`, `simuladoGenerator.test.ts`. | Caixa âmbar explicativa no lobby; teste unitário validando que tentativas usam os 30 IDs sob permutações distintas. | **Implementado e Testado** |
 ---
-
-## 4. Auditoria de Acessibilidade e Responsividade
-
-### 4.1 Responsividade em Múltiplas Viewports
-- **Desktop Chrome (1280x720):** Layout centralizado (`max-w-3xl` e `max-w-4xl`), grid de parâmetros em 3 colunas, mapa da prova em grid de 10 colunas e controles de navegação com espaçamento confortável.
-- **Mobile Chrome (360x800 e 396x774):**
-  - Grid de navegação rápida adapta-se para 6 colunas, com altura mínima de toque (`min-h-10` / `min-h-11` $\ge 44\text{px}$).
-  - A alternativa selecionada exibe o badge `✓ Selecionada`, facilitando a leitura mesmo em telas estreitas.
-  - Cartão de perfil e cabeçalho do simulado mantêm o cronômetro e botão de finalizar na primeira dobra.
-
-### 4.2 Navegação por Teclado e Foco Acessível
-- Atalhos numéricos e alfabéticos nativos disponíveis em toda a prova:
-  - Teclas `A` / `1`, `B` / `2`, `C` / `3`, `D` / `4` selecionam instantaneamente as alternativas correspondentes.
-  - Foco gerenciado com anéis de alto contraste (`focus:ring-2 focus:ring-blue-600 focus:outline-none`).
-  - Inputs do formulário possuem suporte a `has-[:focus-visible]`.
-  - O modal nativo `<dialog>` aprisiona o foco e fecha com tecla `Escape`.
-
-### 4.3 Indicadores Visuais Não Dependentes Exclusivamente de Cor
-- **Alternativas:** Além da borda azul e fundo diferenciado, exibe badge textual explícito `✓ Selecionada`.
-- **Células do Mapa da Prova:**
-  - Respondida: fundo azul sólido com contraste 4.5:1.
-  - Em branco: fundo branco com **borda tracejada dupla (`border-2 border-dashed`)**.
-  - Marcada para revisão: ícone explícito `🚩` no canto superior.
-  - Leitor de tela: `aria-label` descritivo anuncia: *"Ir para questão X: Respondida (B), Marcada para revisão, Questão atual"*.
-
+## 4. Instruções para Execução da Migração no Supabase (T005)
+### 4.1 Status Real da Integração
+- As primeiras 20 questões (`sin-001` a `sin-020`) já foram aplicadas na nuvem via migration `20261108000004_update_questions_detran_mg_style.sql`.
+- As 10 questões complementares (`sin-021` a `sin-030`) estão preparadas no repositório no arquivo `supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql`.
+- O Anti-Corruption Layer do AprovaCNH (`src/features/lesson/server/questionRepository.ts`) possui fallback automático com o arquivo local `src/data/questions-sinalizacao.json`, assegurando que o simulado funciona imediatamente com as 30 questões mesmo antes da migração na nuvem.
+### 4.2 Passo a Passo para Aplicação no Supabase SQL Editor
+Para persistir as 10 questões complementares no banco gerenciado:
+1. Acesse o painel do Supabase do projeto AprovaCNH: [https://supabase.com/dashboard/project/vhciqawgrnlnouhvvrer](https://supabase.com/dashboard/project/vhciqawgrnlnouhvvrer)
+2. No menu lateral esquerdo, clique em **SQL Editor**.
+3. Clique em **+ New query**.
+4. Copie integralmente o conteúdo do arquivo local:
+   `supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql`
+5. Cole no editor e clique no botão **Run** (ou pressione `Ctrl + Enter`).
+6. Verifique o resultado no painel: a mensagem de sucesso deve indicar `Success. No rows returned` (ou inserção concluída).
+### 4.3 Verificação Pós-Execução
+No mesmo SQL Editor, abra uma nova consulta e execute:
+```sql
+SELECT count(*) AS total_questoes FROM questions;
+```
+- **Resultado Esperado:** O valor retornado deve ser exatamente `30`.
+- Para inspecionar as novas questões adicionadas:
+  ```sql
+  SELECT id, code, device, status FROM questions WHERE id BETWEEN 'sin-021' AND 'sin-030' ORDER BY id;
+  ```
 ---
-
-## 5. Auditoria Editorial e de Conformidade Legal (D006 / Lei 9.610/1998)
-
-1. **Eliminação de Ambiguidade Institucional:**
-   - As expressões enganosas *"Simulado Oficial"* e *"Gabarito Oficial"* foram **100% eliminadas** da interface, botões, modais e relatórios.
-   - Substituídas por designações precisas e transparentes:
-     - *"Simulado Prático (Padrão DETRAN-MG / SENATRAN)"*
-     - *"Gabarito Comentado da Plataforma"*
-     - *"Resposta Correta (CTB / CONTRAN)"*
-     - *"Corte Regulamentar: 20 acertos (Res. CONTRAN 1.020/2025)"*
-2. **Declaração de Transparência Institucional:**
-   - Adicionada nota explícita no rodapé do lobby e na tela de resultados:
-     > *"Nota de transparência: A plataforma AprovaCNH é independente e não possui vínculo formal com o DETRAN ou a SENATRAN. Nossos simulados seguem estritamente as diretrizes da Resolução CONTRAN nº 1.020/2025, o Código de Trânsito Brasileiro e os temas do Banco Nacional de Questões (SENATRAN). Os textos de leis e atos normativos são de domínio público (Art. 8º, IV da Lei nº 9.610/1998)."*
-3. **Fundamentação Legal Completa em 100% das 30 Questões:**
-   - Todas as 30 questões possuem citação de artigo da Lei nº 9.503/1997 (CTB) e/ou Resoluções CONTRAN aplicáveis (ex.: Res. 973/2022, Res. 985/2022, Res. 1.020/2025), data de verificação, status `verified` e link clicável para o portal da legislação do Planalto.
-4. **Alinhamento Rigoroso com a Resolução CONTRAN nº 1.020/2025:**
-   - 30 questões de múltipla escolha com 4 opções.
-   - Tempo regulamentar padrão de 60 minutos.
-   - Opção de tempo estendido de 120 minutos para pessoas com deficiência / TDAH / dislexia.
-   - Nota de corte: 20 acertos (aprovação com $\ge 70\%$).
-
+## 5. Estado do Repositório Git e Pull Request (T007)
+- **Branch de Trabalho:** `fix/T006-aceite-simulado-ajustes`
+- **Branch Alvo:** `main`
+- **Merge Realizado:** **NÃO** (a branch `main` permanece intacta no commit `b69b7b69e2183ca1d4cc843c524a303c7aad487d`).
+- **Repositório Remoto:** `origin` (`https://github.com/Juanzit/AprovaCNH.git`)
+- **Link para Abertura do Pull Request:**
+  [https://github.com/Juanzit/AprovaCNH/pull/new/fix/T006-aceite-simulado-ajustes](https://github.com/Juanzit/AprovaCNH/pull/new/fix/T006-aceite-simulado-ajustes)
 ---
-
-## 6. Limitações Conhecidas e Débitos Técnicos
-
-1. **Execução da Migration de Expansão no SQL Editor do Supabase:**
-   - A migration `supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql` foi gerada e está pronta no repositório.
-   - Enquanto o usuário não executá-la no painel do Supabase, o Anti-Corruption Layer do repositório (`questionRepository.ts`) complementa automaticamente o banco em nuvem com o acervo local homologado, garantindo 100% de disponibilidade das 30 questões sem qualquer impacto ao aluno.
-2. **Banco de Dados Monotemático Atual:**
-   - O acervo atual de 30 questões foca no módulo de Sinalização de Trânsito e Normas de Circulação. Nas próximas fases de conteúdo, novos módulos (Direção Defensiva, Primeiros Socorros, Mecânica Básica e Meio Ambiente) serão adicionados ao banco de questões com a mesma estrutura.
-
+## 6. Registro de Backlog e Limitações Conhecidas
+1. **Expansão Multidisciplinar do Banco de Questões (Alta Prioridade):**
+   - O acervo atual possui 30 questões exclusivamente do tema de Sinalização de Trânsito e Normas de Circulação.
+   - Antes do lançamento comercial/oficial da plataforma, o banco deve ser expandido para contemplar os demais módulos regulamentares da prova teórica: Direção Defensiva, Primeiros Socorros, Mecânica Básica de Veículos e Cidadania/Meio Ambiente, mantendo o mesmo padrão editorial e fundamentação legal estrita.
+2. **Histórico Local vs Remoto para Visitantes:**
+   - Usuários não logados têm seu histórico gravado em `sessionStorage` (até 25 registros). Ao fechar a aba em modo anônimo ou limpar os dados de navegação, esse histórico local é redefinido.
 ---
-
-## 7. Conclusão e Parecer de Aceite
-
-A implementação da Fase 6 (T006 — Simulado Configurável) atende integralmente a todos os critérios de aceitação funcional, de produto, de acessibilidade e de conformidade legal.
-
-- **Typecheck:** Aprovado (0 erros).
-- **ESLint:** Aprovado (0 problemas).
-- **Testes Vitest:** 107/107 aprovados (100%).
-- **Testes Playwright E2E:** 30/30 aprovados (Desktop e Mobile, 100%).
-- **Resolução CONTRAN 1.020/2025 e Regra D007:** Estritamente respeitadas.
-
-**Recomendação:** APROVADO para merge da branch `fix/T006-aceite-simulado-ajustes` na branch `main`. Conforme a determinação expressa do Tech Lead, a Fase 7 (Tutor de IA) **NÃO** foi iniciada e aguarda nova ordem de serviço.
+## 7. Status Consolidado das Entregas
+- **Implementado:** Nomenclatura editorial transparente (T001); mensagens de resultado pedagógico (T002); tempo estendido com menção a TEA sem exigência de laudo (T003); documentação e aviso de limitação do acervo (T004); instruções passo a passo para Supabase (T005); decisão D019 formalizada em `handoff/decisions.md`.
+- **Testado:** 100% aprovado em `typecheck` (0 erros), `lint` (0 problemas), `test` (108 unitários/componentes), `build` (compilação Turbopack) e `test:e2e` (30 testes Playwright Desktop e Mobile).
+- **Parcial:** N/A.
+- **Pendente:** Execução manual do script SQL `20261108000006_add_questions_sin_021_to_030.sql` pelo responsável no console do Supabase; autorização do Tech Lead para merge na `main`; autorização para início da Fase 7 (Tutor de IA).
