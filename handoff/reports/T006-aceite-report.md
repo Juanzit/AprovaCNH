@@ -4,11 +4,13 @@
 - **Branch de Trabalho:** `fix/T006-publicacao-segura-pos-merge`
 - **Base da Main:** `b31937f2755d98c9f6dd7eb72d1bc22121d9307a`
 - **Commit Publicado Anterior:** `e379c834199ae3366d3fd34f31f738f491e7920f`
+- **Commit Atual Homologado:** `4ff16fbd4e827175dcecd5e3f63b5c6633f3885a`
 - **Repositório:** Juanzit/AprovaCNH
 - **Responsável Técnico / Auditor:** Antigravity (Senior Software Engineer / Pair Programming)
 - **Status do Merge na Main:** **NÃO MERGEADO** (Branch isolada preservada)
 - **Status de Criação do PR:** **NÃO CRIADO** (Aguardando autorização explícita do Tech Lead)
 - **Status da Fase 7 (Tutor de IA) e T007 (Dark Mode):** **BLOQUEADAS / NÃO INICIADAS**
+- **Status da CI GitHub Actions:** **APROVADO (100% Green no Run #42665123282)**
 
 ---
 
@@ -40,6 +42,23 @@ No arquivo [`.github/workflows/ci.yml`](file:///c:/Projetos/AprovaCNH/.github/wo
 1. Atualizada a action de setup para `pnpm/action-setup@v4`.
 2. Definida a versão exata do pnpm para `12.18.0`, em total harmonia com o `package.json` e o ambiente de desenvolvimento local.
 3. Protegido o teste de integração em nuvem `tests/integration/supabase-live.test.ts` para ignorar graciosamente conexões ao vivo quando executado em forks ou PRs que utilizam mock credentials (`mock.supabase.co`).
+4. Isolado o cliente do Supabase no teste `tests/unit/publicationSecurity.test.ts` para garantir execução hermética e independente de rede externa durante a suíte de testes unitários.
+
+### 2.3 Execução Remota Homologada da CI GitHub Actions (#42665123282)
+- **URL da Execução:** [https://github.com/Juanzit/AprovaCNH/actions/runs/42665123282](https://github.com/Juanzit/AprovaCNH/actions/runs/42665123282)
+- **Status:** **completed** | **Conclusion:** **success**
+- **Commit:** `4ff16fbd4e827175dcecd5e3f63b5c6633f3885a`
+- **Resultados dos Gates na Nuvem do GitHub Actions:**
+  1. `Set up job`: **success**
+  2. `Checkout repository`: **success**
+  3. `Install pnpm`: **success** (versão `12.18.0` configurada com action `setup-pnpm@v4`)
+  4. `Setup Node.js`: **success** (Node.js 24.x)
+  5. `Install dependencies`: **success** (`pnpm install --frozen-lockfile`)
+  6. `Typecheck`: **success** (`pnpm typecheck` / `tsc --noEmit`, 0 erros)
+  7. `Lint`: **success** (`pnpm lint` / `eslint .`, 0 erros, 0 avisos)
+  8. `Unit & Integration Tests (Vitest)`: **success** (`pnpm test` / `vitest run`, 22 arquivos, 125 testes aprovados)
+  9. `Build Application (Next.js)`: **success** (`pnpm build` / `next build`, 10 páginas estáticas compiladas)
+  10. `Complete job`: **success**
 
 ---
 
@@ -244,5 +263,5 @@ Conforme orientação do Tech Lead, cada critério é avaliado sob categorias es
 | **Execução de migration contra PostgreSQL real com conflitos simulados** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | A infraestrutura local não dispõe de PostgreSQL local ou Docker; Supabase remoto protegido contra escrita. |
 | **Registro de histórico na tabela `supabase_migrations` remota** | `⚪ NÃO VERIFICADO` | Falha de conectividade IPv6 direta da CLI e tabela interna não exposta no PostgREST. |
 | **Aplicação da migration corretiva 000007 no Supabase remoto** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Script gerado e versionado, porém não aplicado para respeitar a governança do banco. |
-| **Execução dos 5 gates de CI no GitHub Actions com pnpm 12** | `🟡 IMPLEMENTADO, MAS NÃO COMPROVADO` | Configuração corrigida em `.github/workflows/ci.yml`; aguarda commit e push para disparar o run remoto. |
+| **Execução dos 5 gates de CI no GitHub Actions com pnpm 12** | `✅ COMPROVADO` | Run [#42665123282](https://github.com/Juanzit/AprovaCNH/actions/runs/42665123282) executou com 100% de sucesso (Install pnpm 12.18.0, Typecheck, Lint, Vitest e Next.js Build). |
 | **Homologação editorial final das 10 questões complementares** | `❌ BLOQUEADO` | Requer aprovação humana individualizada pelo Tech Lead. |
