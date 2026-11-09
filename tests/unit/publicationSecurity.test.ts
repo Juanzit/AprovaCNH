@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import rawQuestions from '@/data/questions-sinalizacao.json';
 import {
   isQuestionEligibleForStudents,
@@ -17,6 +17,29 @@ import {
   generateSimuladoQuestions,
   InsufficientApprovedQuestionsError,
 } from '@/features/simulado/utils/simuladoGenerator';
+
+// Mock hermético do Supabase Server para garantir isolamento de rede em testes unitários / CI
+vi.mock('@/lib/supabase/server', () => {
+  const createMockBuilder = () => {
+    const builder: Record<string, unknown> = {};
+    builder.select = vi.fn().mockReturnValue(builder);
+    builder.eq = vi.fn().mockReturnValue(builder);
+    builder.ilike = vi.fn().mockReturnValue(builder);
+    builder.order = vi.fn().mockReturnValue(builder);
+    builder.then = (resolve: (value: { data: unknown[]; error: null }) => void) =>
+      resolve({ data: [], error: null });
+    return builder;
+  };
+
+  return {
+    createClient: vi.fn(async () => ({
+      auth: {
+        getUser: vi.fn(async () => ({ data: { user: null }, error: null })),
+      },
+      from: vi.fn(() => createMockBuilder()),
+    })),
+  };
+});
 
 describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Discentes — P0 (AGENTS.md / D010)', () => {
   const parsedBank = questionBankSchema.parse(rawQuestions);
