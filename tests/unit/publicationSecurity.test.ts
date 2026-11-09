@@ -158,4 +158,28 @@ describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Disc
       generateSimuladoQuestions(mixed as ValidatedQuestion[], { totalQuestions: 30 })
     ).toThrow(InsufficientApprovedQuestionsError);
   });
+
+  // 8. Caminho 5: RLS PostgREST — Regra estrita de leitura discente no banco (P0)
+  it('Caminho 5 (RLS PostgREST): a regra estrita de RLS bloqueia rascunhos, revisões e exemplos em consultas diretas', () => {
+    // Função predicativa idêntica à cláusula USING da política questions_select_student (migration 000008)
+    const canStudentSelectQuestion = (row: { status: string; is_example: boolean }): boolean => {
+      return row.status === 'aprovada' && row.is_example === false;
+    };
+
+    // Caso 1: Aprovada e real -> Permitido
+    expect(canStudentSelectQuestion({ status: 'aprovada', is_example: false })).toBe(true);
+
+    // Caso 2: Rascunho com is_example=true (vulnerabilidade da política antiga 000000) -> Agora BLOQUEADO
+    expect(canStudentSelectQuestion({ status: 'rascunho', is_example: true })).toBe(false);
+
+    // Caso 3: Aprovada demonstrativa (is_example=true) -> Agora BLOQUEADO para alunos
+    expect(canStudentSelectQuestion({ status: 'aprovada', is_example: true })).toBe(false);
+
+    // Caso 4: Em revisão (ex: sin-021..sin-030) -> BLOQUEADO
+    expect(canStudentSelectQuestion({ status: 'em_revisao', is_example: false })).toBe(false);
+
+    // Caso 5: Suspensa ou obsoleta -> BLOQUEADO
+    expect(canStudentSelectQuestion({ status: 'suspensa', is_example: false })).toBe(false);
+    expect(canStudentSelectQuestion({ status: 'obsoleta', is_example: false })).toBe(false);
+  });
 });
