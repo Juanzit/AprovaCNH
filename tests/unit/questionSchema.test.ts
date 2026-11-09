@@ -93,14 +93,17 @@ describe('questionSchema & lessonSeedSchema (T001)', () => {
 });
 
 describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)', () => {
-  it('deve validar com 100% de sucesso as 20 questões em status "aprovada" de questions-sinalizacao.json', () => {
+  it('deve validar com 100% de sucesso as questões do acervo (20 aprovadas e 10 em revisão)', () => {
     const result = questionBankSchema.safeParse(rawBank);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data).toHaveLength(20);
-      result.data.forEach((q) => {
+      expect(result.data.length).toBeGreaterThanOrEqual(30);
+
+      // 20 primeiras questões aprovadas (Piloto Editorial T002)
+      const approvedQuestions = result.data.filter((q) => q.status === 'aprovada');
+      expect(approvedQuestions).toHaveLength(20);
+      approvedQuestions.forEach((q) => {
         expect(q.isExample).toBe(false);
-        expect(q.status).toBe('aprovada');
         expect(q.source.kind).toBe('official');
         expect(q.source.verificationStatus).toBe('verified');
         expect(q.source.document).toBeTruthy();
@@ -117,6 +120,23 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
         expect(q.review?.approvedAt).toBeTruthy();
         expect(q.options).toHaveLength(4);
         expect(q.ufs).toContain('MG');
+      });
+
+      // 10 questões em revisão técnica/editorial (sin-021 a sin-030) sem aprovação fictícia
+      const inReviewQuestions = result.data.filter((q) => q.status === 'em_revisao');
+      expect(inReviewQuestions).toHaveLength(10);
+      inReviewQuestions.forEach((q) => {
+        expect(q.isExample).toBe(false);
+        expect(q.source.kind).toBe('official');
+        expect(q.source.verificationStatus).toBe('pending');
+        expect(q.source.document).toBeTruthy();
+        expect(q.source.provision).toBeTruthy();
+        expect(q.source.url).toBeTruthy();
+        expect(q.source.checkedAt).toBeTruthy();
+        expect(q.source.effectiveFrom).toBeTruthy();
+        expect(q.review?.approvedBy).toBeNull();
+        expect(q.review?.approvedAt).toBeNull();
+        expect(q.options).toHaveLength(4);
       });
     }
   });

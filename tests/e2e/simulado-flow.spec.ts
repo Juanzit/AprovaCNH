@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Simulado Configurável — Fase 6 (T006 / Regra D007)', () => {
-  test('deve exibir as regras oficiais (30 questões, 60 min, corte 20) no lobby /simulado', async ({
+test.describe('Simulado Temático de Sinalização — Fase 6 (T006 / Regra D007)', () => {
+  test('deve exibir as regras do simulado temático (30 questões, 60 min, corte 20) no lobby /simulado', async ({
     page,
   }) => {
     await page.goto('/simulado');
 
     await expect(
       page.getByRole('heading', {
-        name: /Simulado Oficial da Prova Teórica de 1ª Habilitação/i,
+        name: /Simulado Temático — Sinalização de Trânsito/i,
       })
     ).toBeVisible();
 
@@ -54,11 +54,60 @@ test.describe('Simulado Configurável — Fase 6 (T006 / Regra D007)', () => {
     await expect(page).toHaveURL(/\/simulado\/resultado\//, { timeout: 15000 });
     await expect(page.getByTestId('simulado-result-summary')).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: /Gabarito Oficial Comentado/i })
+      page.getByRole('heading', { name: /Gabarito Comentado da Plataforma/i })
     ).toBeVisible();
+
+    // Valida resultado pedagógico (Meta de estudo / Continue praticando)
+    await expect(page.getByTestId('simulado-approval-badge')).toBeVisible();
 
     // Filtra apenas erros no gabarito
     await page.getByTestId('filter-errors-btn').click();
     await expect(page.getByTestId('filter-errors-btn')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  test('deve permitir selecionar tempo estendido de 120 minutos para adaptação PCD, TDAH ou TEA (Art. 33, § 2º)', async ({
+    page,
+  }) => {
+    await page.goto('/simulado');
+
+    // Verifica menção expressa a TEA e Art. 33, § 2º
+    const pcdLabel = page.locator('label[for="duration-opt-120"]');
+    await expect(pcdLabel).toContainText('TEA');
+    await expect(pcdLabel).toContainText('Art. 33, § 2º');
+
+    // Seleciona a opção de 120 minutos PCD/TEA
+    const pcdRadio = page.locator('input#duration-opt-120');
+    await pcdRadio.check();
+
+    // O botão de CTA agora reflete os 120 minutos
+    const cta = page.getByTestId('start-simulado-cta');
+    await expect(cta).toContainText('120 min');
+    await cta.click();
+
+    await expect(page).toHaveURL(/\/simulado\/prova\?tempo=120/);
+    await expect(page.getByTestId('simulado-timer')).toContainText(/120:00|119:\d{2}/);
+  });
+
+  test('deve preservar respostas e tempo ao recarregar a página (F5) durante o simulado', async ({
+    page,
+  }) => {
+    await page.goto('/simulado/prova');
+
+    // Seleciona uma alternativa na questão 1
+    const firstRadio = page.locator('input[type="radio"]').first();
+    await firstRadio.check();
+    await expect(firstRadio).toBeChecked();
+
+    // Marca questão 1 para revisão
+    await page.getByTestId('mark-review-btn').click();
+    await expect(page.getByTestId('mark-review-btn')).toHaveAttribute('aria-pressed', 'true');
+
+    // Recarrega a página (F5)
+    await page.reload();
+
+    // Resposta e flag de revisão continuam preservadas após o reload
+    const reloadedRadio = page.locator('input[type="radio"]').first();
+    await expect(reloadedRadio).toBeChecked();
+    await expect(page.getByTestId('mark-review-btn')).toHaveAttribute('aria-pressed', 'true');
   });
 });

@@ -16,7 +16,7 @@ import {
 describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Avaliação', () => {
   const questionBank = questionBankSchema.parse(rawQuestions);
 
-  it('valida a configuração oficial padrão (30 questões, 60 min, corte 20 — Res. CONTRAN 1.020/2025)', () => {
+  it('valida a configuração padrão do simulado temático (30 questões, 60 min, corte 20 — Res. CONTRAN 1.020/2025)', () => {
     const parsed = examConfigSchema.safeParse(DEFAULT_EXAM_CONFIG);
     expect(parsed.success).toBe(true);
     expect(DEFAULT_EXAM_CONFIG.totalQuestions).toBe(30);
@@ -33,7 +33,7 @@ describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Av
     expect(invalid.success).toBe(false);
   });
 
-  it('gera exatamente 30 questões ordenadas de 1 a 30 cobrindo todas as 20 questões únicas da base', () => {
+  it('gera exatamente 30 questões ordenadas de 1 a 30 com 100% de questões únicas sem duplicação', () => {
     const items = generateSimuladoQuestions(questionBank, {
       totalQuestions: 30,
       uf: 'MG',
@@ -45,7 +45,7 @@ describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Av
     expect(items[29].questionOrder).toBe(30);
 
     const uniqueIds = new Set(items.map((i) => i.question.id));
-    expect(uniqueIds.size).toBe(20);
+    expect(uniqueIds.size).toBe(30);
   });
 
   it('produz a mesma sequência de questões quando a mesma semente (seed) é informada', () => {
@@ -55,7 +55,7 @@ describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Av
     expect(run1.map((i) => i.question.id)).toEqual(run2.map((i) => i.question.id));
   });
 
-  it('aprova o estudante com exatamente 20 acertos (nota de corte D007) e concede 100 XP', () => {
+  it('atinge a meta pedagógica com exatamente 20 acertos (referência D007) e concede 100 XP', () => {
     const items = generateSimuladoQuestions(questionBank, { totalQuestions: 30, seed: 99 });
 
     const submission: SimuladoSubmissionPayload = {
@@ -85,7 +85,7 @@ describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Av
     expect(result.status).toBe('completed');
   });
 
-  it('reprova o estudante com 19 acertos (abaixo do corte de 20), contabiliza questões em branco e concede 30 XP', () => {
+  it('reprova o corte de referência com 19 acertos (abaixo de 20), contabiliza questões em branco e concede 30 XP', () => {
     const items = generateSimuladoQuestions(questionBank, { totalQuestions: 30, seed: 99 });
 
     const submission: SimuladoSubmissionPayload = {
@@ -109,6 +109,19 @@ describe('Simulado Configurável — Regras D007, Seleção de 30 Questões e Av
     expect(result.isApproved).toBe(false);
     expect(result.xpEarned).toBe(30);
     expect(result.status).toBe('timed_out');
+  });
+
+  it('documenta que diferentes tentativas utilizam o mesmo conjunto de 30 IDs temáticos com embaralhamento (T004)', () => {
+    const runA = generateSimuladoQuestions(questionBank, { totalQuestions: 30, seed: 1 });
+    const runB = generateSimuladoQuestions(questionBank, { totalQuestions: 30, seed: 2 });
+
+    const setA = new Set(runA.map((i) => i.question.id));
+    const setB = new Set(runB.map((i) => i.question.id));
+
+    expect(setA.size).toBe(30);
+    expect(setB.size).toBe(30);
+    expect([...setA].sort()).toEqual([...setB].sort());
+    expect(runA.map((i) => i.question.id)).not.toEqual(runB.map((i) => i.question.id));
   });
 
   it('formata corretamente o tempo em MM:SS e texto legível', () => {

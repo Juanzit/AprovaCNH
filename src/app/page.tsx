@@ -54,7 +54,7 @@ export default async function HomePage() {
           >
             <div className="flex items-center justify-between gap-2">
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-blue-700">
-                Prova Teórica Oficial (D007)
+                Simulado Temático (Sinalização)
               </span>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
                 30 questões • 60 min
@@ -64,10 +64,10 @@ export default async function HomePage() {
               id="dashboard-simulado-heading"
               className="text-sm font-extrabold text-slate-900"
             >
-              Simulado DETRAN-MG / SENATRAN
+              Treino Temático de Sinalização
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Teste seus conhecimentos sob cronômetro regressivo de 60 minutos (corte: 20 acertos)
+              Pratique sob cronômetro com as 30 questões do módulo (meta: 20 acertos)
               e receba o gabarito comentado ao final.
             </p>
             <div className="pt-1">
@@ -76,7 +76,7 @@ export default async function HomePage() {
                 data-testid="dashboard-simulado-link"
                 className="inline-flex items-center justify-center w-full min-h-10 px-4 py-2 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-extrabold transition-colors"
               >
-                Acessar Simulado Oficial →
+                Acessar Simulado Temático →
               </Link>
             </div>
           </section>

@@ -83,6 +83,7 @@ export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<Exa
 export async function initializeSimuladoSession(options?: {
   uf?: string | null;
   seed?: number;
+  durationMinutes?: number;
 }): Promise<{
   simuladoId: string;
   config: ExamConfig;
@@ -90,10 +91,14 @@ export async function initializeSimuladoSession(options?: {
   items: SimuladoQuestionItem[];
   isGuest: boolean;
 }> {
-  const [config, questions] = await Promise.all([
+  const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig(options?.uf ?? 'MG'),
     getApprovedQuestionsByTopic('Sinalização de Trânsito'),
   ]);
+
+  const config: ExamConfig = options?.durationMinutes
+    ? { ...baseConfig, durationMinutes: options.durationMinutes }
+    : baseConfig;
 
   const items = generateSimuladoQuestions(questions, {
     totalQuestions: config.totalQuestions,
@@ -118,6 +123,51 @@ export async function initializeSimuladoSession(options?: {
         items,
         isGuest: true,
       };
+    }
+
+    // Verifica se já existe uma sessão recente em andamento (recuperação transparente em caso de reload)
+    const { data: existingSession } = await supabase
+      .from('simulado_sessions')
+      .select('id, started_at, total_questions, passing_score, status')
+      .eq('user_id', user.id)
+      .eq('status', 'in_progress')
+      .order('started_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (existingSession?.started_at) {
+      const elapsedSec = (Date.now() - new Date(existingSession.started_at).getTime()) / 1000;
+      if (elapsedSec < config.durationMinutes * 60) {
+        const { data: existingAnswers } = await supabase
+          .from('simulado_answers')
+          .select('question_id, question_order, selected_option_id, is_marked_for_review')
+          .eq('simulado_id', existingSession.id)
+          .order('question_order', { ascending: true });
+
+        if (existingAnswers && existingAnswers.length === config.totalQuestions) {
+          const questionMap = new Map(questions.map((q) => [q.id, q]));
+          const restoredItems: SimuladoQuestionItem[] = [];
+          for (const ans of existingAnswers) {
+            const q = questionMap.get(ans.question_id);
+            if (q) {
+              restoredItems.push({
+                questionOrder: ans.question_order,
+                question: q,
+              });
+            }
+          }
+
+          if (restoredItems.length === config.totalQuestions) {
+            return {
+              simuladoId: existingSession.id,
+              config,
+              startedAt: existingSession.started_at,
+              items: restoredItems,
+              isGuest: false,
+            };
+          }
+        }
+      }
     }
 
     const { data: sessionRow, error: sessionErr } = await supabase
@@ -189,10 +239,14 @@ export async function submitAndEvaluateSimulado(rawPayload: unknown): Promise<{
   }
 
   const payload = parsed.data;
-  const [config, questions] = await Promise.all([
+  const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig('MG'),
     getApprovedQuestionsByTopic('Sinalização de Trânsito'),
   ]);
+
+  const config: ExamConfig = payload.durationMinutes
+    ? { ...baseConfig, durationMinutes: payload.durationMinutes }
+    : baseConfig;
 
   const finishedAt = new Date().toISOString();
   const result = evaluateSimuladoSubmission(payload, questions, config, finishedAt);
@@ -204,6 +258,23 @@ export async function submitAndEvaluateSimulado(rawPayload: unknown): Promise<{
     } = await supabase.auth.getUser();
 
     if (user && !payload.simuladoId.startsWith('sim-')) {
+      // Prevenção contra submissão duplicada (idempotência no servidor)
+      const { data: existingSession } = await supabase
+        .from('simulado_sessions')
+        .select('status, score, is_approved, xp_earned, duration_seconds')
+        .eq('id', payload.simuladoId)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (
+        existingSession &&
+        (existingSession.status === 'completed' || existingSession.status === 'timed_out')
+      ) {
+        return {
+          success: true,
+          result,
+        };
+      }
       await supabase
         .from('simulado_sessions')
         .update({

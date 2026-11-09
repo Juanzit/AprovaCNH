@@ -29,21 +29,38 @@ export function SimuladoFinishModal({
     if (!dialog) return;
 
     if (isOpen) {
-      if (typeof dialog.showModal === 'function') {
-        if (!dialog.open) {
+      if (!dialog.open) {
+        if (typeof dialog.showModal === 'function') {
           dialog.showModal();
+        } else {
+          dialog.setAttribute('open', '');
         }
-      } else {
-        dialog.setAttribute('open', '');
       }
     } else {
-      if (typeof dialog.close === 'function' && dialog.open) {
-        dialog.close();
-      } else {
-        dialog.removeAttribute('open');
+      if (dialog.open) {
+        if (typeof dialog.close === 'function') {
+          dialog.close();
+        } else {
+          dialog.removeAttribute('open');
+        }
       }
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const handleCancel = (e: Event) => {
+      e.preventDefault();
+      if (!isSubmitting) {
+        onCancel();
+      }
+    };
+
+    dialog.addEventListener('cancel', handleCancel);
+    return () => dialog.removeEventListener('cancel', handleCancel);
+  }, [isSubmitting, onCancel]);
 
   if (!isOpen) return null;
 
@@ -57,7 +74,7 @@ export function SimuladoFinishModal({
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h2 id="finish-modal-title" className="text-lg font-extrabold text-slate-900">
-            Finalizar Simulado Oficial?
+            Finalizar Simulado Temático?
           </h2>
           <button
             type="button"
@@ -91,8 +108,8 @@ export function SimuladoFinishModal({
             </div>
           ) : (
             <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs sm:text-sm font-medium">
-              Todas as {totalQuestions} questões foram preenchidas. Deseja encerrar o simulado e
-              conferir seu resultado e o gabarito oficial comentado?
+              Todas as {totalQuestions} questões foram preenchidas. Deseja encerrar o simulado temático e
+              conferir seu resultado e o gabarito comentado da plataforma?
             </div>
           )}
 
@@ -109,23 +126,22 @@ export function SimuladoFinishModal({
         <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
           <button
             type="button"
-            autoFocus={unansweredCount > 0}
             onClick={onCancel}
             disabled={isSubmitting}
             data-testid="cancel-finish-btn"
-            className="min-h-11 px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
+            className="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
           >
-            Continuar respondendo
+            Continuar Prova
           </button>
+
           <button
             type="button"
-            autoFocus={unansweredCount === 0}
             onClick={onConfirmFinish}
             disabled={isSubmitting}
             data-testid="confirm-finish-btn"
-            className="min-h-11 px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:opacity-50 transition-colors shadow-xs"
+            className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-extrabold disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
           >
-            {isSubmitting ? 'Corrigindo prova...' : 'Entregar Prova e Ver Gabarito'}
+            {isSubmitting ? 'Entregando...' : 'Confirmar e Entregar'}
           </button>
         </div>
       </div>

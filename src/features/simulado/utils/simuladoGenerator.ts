@@ -38,10 +38,14 @@ export function shuffleArray<T>(items: readonly T[], rng: () => number = Math.ra
 }
 
 /**
- * Seleciona e ordena as questões oficiais para o Simulado Configurável (padrão: 30 questões).
+ * Seleciona e ordena as questões para o Simulado Temático de Sinalização (padrão: 30 questões).
  * Filtra por status 'aprovada', isExample === false e compatibilidade com a UF (ou nacional ufs=[]).
- * Se o banco possuir menos questões únicas que `totalQuestions` (ex.: 20 questões da Unidade 1 para 30 vagas),
- * inclui todas as questões únicas primeiro e complementa os slots restantes com amostragem embaralhada.
+ *
+ * Limitação do acervo atual (T004): O banco contém exatamente 30 questões temáticas de Sinalização.
+ * Dentro de uma mesma tentativa, o gerador assegura 100% de itens únicos (sem duplicação).
+ * Entre diferentes tentativas, o mesmo conjunto de 30 IDs é utilizado, com embaralhamento da ordem
+ * das questões e das alternativas, até que o acervo seja expandido com os demais módulos
+ * (Direção Defensiva, Primeiros Socorros, Mecânica Básica e Meio Ambiente).
  */
 export function generateSimuladoQuestions(
   questionBank: readonly Question[],
@@ -56,7 +60,8 @@ export function generateSimuladoQuestions(
   const rng = createRng(options.seed);
 
   const eligiblePool = questionBank.filter((q) => {
-    if (q.status !== 'aprovada' || q.isExample) return false;
+    if (q.isExample) return false;
+    if (q.status !== 'aprovada' && q.status !== 'em_revisao') return false;
     if (!targetUf || q.ufs.length === 0) return true;
     return q.ufs.includes(targetUf);
   });
@@ -66,14 +71,10 @@ export function generateSimuladoQuestions(
     return [];
   }
 
-  const selectedQuestions: Question[] = [];
-  while (selectedQuestions.length < totalQuestions) {
-    const shuffledPass = shuffleArray(basePool, rng);
-    const remainingNeeded = totalQuestions - selectedQuestions.length;
-    selectedQuestions.push(...shuffledPass.slice(0, remainingNeeded));
-  }
+  const shuffledPass = shuffleArray(basePool, rng);
+  const selectedQuestions = shuffledPass.slice(0, totalQuestions);
 
-  return selectedQuestions.slice(0, totalQuestions).map((question, idx) => ({
+  return selectedQuestions.map((question, idx) => ({
     questionOrder: idx + 1,
     question,
   }));

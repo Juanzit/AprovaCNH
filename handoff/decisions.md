@@ -20,6 +20,7 @@ Formato: ID — decisão — motivo — status — observação.
 - D016 — Navegação em Livre Acesso na trilha: o estudante tem acesso aberto para praticar qualquer sessão temática (Sessões 1 a 4) sem pré-requisitos bloqueantes — promover autonomia e estudo dirigido para tópicos de maior dificuldade — **DECIDIDO**.
 - D017 — Atribuição de XP apenas na Primeira Conclusão de cada sessão temática: concessão autoritativa de 70 XP no servidor na primeira finalização; revisões e repetições subsequentes preservam histórico e atualizam streak, mas creditam 0 XP adicional — prevenção contra acúmulo artificial de pontuação (anti-farming) e integridade gamificada — **DECIDIDO**.
 - D018 — Algoritmo Determinístico de Repetição Espaçada (SRS) e Diagnóstico de Domínio Sem IA: agendamento de revisão baseado no modelo Leitner ponderado por status recente, taxa de erros históricos e tempo de retenção decorrido, associado ao diagnóstico de domínio por dispositivo legal do MBFT — assegurar 100% de reprodutibilidade, transparência pedagógica com justificativas explicáveis, custo zero de inferência e conformidade com o princípio da Fase 5 — **DECIDIDO**.
+- D019 — Enquadramento Editorial e Pedagógico do Simulado Temático (Fase 6 / T006): Denominação formal como "Simulado Temático — Sinalização de Trânsito" com nota de independência institucional em relação ao DETRAN/SENATRAN. Mensagens de resultado alinhadas ao valor pedagógico real ("Meta de estudo alcançada" com 100 XP para ≥ 20 acertos; "Continue praticando" com 30 XP para ≤ 19 acertos), esclarecendo que 20 acertos é meta de referência da plataforma e não assegura aprovação oficial. Tempo estendido de 120 minutos assegurado pelo Art. 33, § 2º da Resolução CONTRAN nº 1.020/2025 para candidatos com dislexia, TDAH ou TEA, sem exigência de laudo médico na interface — **DECIDIDO**.
 
 ## Histórico
 
@@ -30,3 +31,4 @@ Formato: ID — decisão — motivo — status — observação.
 - v1.4 — 08/11/2026: D016 e D017 formalizados como DECIDIDO após aprovação do planejamento da Fase 4 (T004).
 - v1.5 — 08/11/2026: D018 formalizado como DECIDIDO após aprovação do plano T005 pelo responsável.
 - v1.6 — 08/11/2026: D007 formalizado como DECIDIDO com base na Resolução CONTRAN nº 1.020/2025 (30 questões, 60 minutos, 20 acertos) para subsidiar a Fase 6 (T006).
+- v1.7 — 08/11/2026: D019 formalizado como DECIDIDO após diretrizes de aceite editorial e pedagógico do Tech Lead para o Simulado Temático de Sinalização.

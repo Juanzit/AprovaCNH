@@ -72,3 +72,5 @@ export function getLocalSimuladoHistory(): SimuladoHistorySummary[] {
     return [];
   }
 }
+
+export const getSimuladoHistoryFromSession = getLocalSimuladoHistory;

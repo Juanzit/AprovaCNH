@@ -29,12 +29,12 @@ export type ExamConfig = z.infer<typeof examConfigSchema>;
 
 export const DEFAULT_EXAM_CONFIG: ExamConfig = {
   id: 'detran-mg-default',
-  name: 'DETRAN-MG / SENATRAN — Exame Teórico de 1ª Habilitação',
+  name: 'Simulado Temático — Sinalização de Trânsito',
   uf: 'MG',
   totalQuestions: 30,
   durationMinutes: 60,
   passingScore: 20,
-  normativeAct: 'Resolução CONTRAN nº 1.020/2025 e Banco Nacional de Questões (SENATRAN)',
+  normativeAct: 'Parâmetros baseados na Resolução CONTRAN nº 1.020/2025',
   effectiveFrom: '2025-01-01',
   effectiveUntil: null,
   version: 1,
@@ -74,6 +74,7 @@ export const simuladoSubmissionSchema = z.object({
   configId: z.string().min(1).default('detran-mg-default'),
   startedAt: z.string().min(1),
   durationSeconds: z.number().int().min(0),
+  durationMinutes: z.number().int().positive().optional(),
   timedOut: z.boolean().optional().default(false),
   items: z.array(simuladoAnswerInputSchema).min(1).max(30),
 });

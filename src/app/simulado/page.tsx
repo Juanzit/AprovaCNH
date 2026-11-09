@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import {
   getActiveExamConfig,
   getSimuladoHistory,
 } from '@/features/simulado/server/simuladoRepository';
 import { SimuladoHistoryList } from '@/features/simulado/components/SimuladoHistoryList';
+import { SimuladoDurationSelector } from '@/features/simulado/components/SimuladoDurationSelector';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,7 +22,7 @@ export default async function SimuladoLobbyPage() {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-extrabold">
-              {config.uf ?? 'MG'} • DETRAN-MG / SENATRAN
+              Treino Temático • Sinalização de Trânsito
             </span>
             <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">
               {config.normativeAct}
@@ -33,17 +33,30 @@ export default async function SimuladoLobbyPage() {
             id="simulado-lobby-heading"
             className="text-xl sm:text-2xl font-extrabold text-slate-900"
           >
-            Simulado Oficial da Prova Teórica de 1ª Habilitação
+            Simulado Temático — Sinalização de Trânsito
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-            Experimente as condições reais do exame teórico oficial. Durante a prova, não há dicas
-            nem correção imediata: você pode navegar livremente entre as questões, marcar itens para
-            revisar e conferir o gabarito comentado completo ao entregar.
+            Treino prático focado nas 30 questões do módulo de Sinalização de Trânsito e Normas de Circulação.
+            Durante a prova, não há dicas nem correção imediata: você pode navegar livremente entre as questões,
+            marcar itens para revisar e conferir o gabarito comentado da plataforma com fundamentação legal ao entregar.
           </p>
         </div>
 
-        {/* Grade de Parâmetros Regulatórios Vigentes (D007) */}
+        {/* Nota Institucional e Limitação do Acervo (T001 / T004) */}
+        <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200 text-xs sm:text-sm text-amber-950 space-y-1.5">
+          <strong className="font-extrabold block text-amber-900">
+            Aviso importante sobre este Simulado Temático:
+          </strong>
+          <p className="text-amber-900/90 leading-relaxed">
+            Esta é uma ferramenta independente de preparação e fixação de conteúdo desenvolvida pela plataforma AprovaCNH.
+            O acervo atual é composto por <strong>30 questões temáticas exclusivas de Sinalização e Normas de Circulação</strong>.
+            Ele <strong>não reproduz necessariamente a distribuição multidisciplinar</strong> (Legislação, Direção Defensiva, Primeiros Socorros, Mecânica e Meio Ambiente)
+            nem o conjunto de questões do exame oficial do DETRAN/SENATRAN.
+          </p>
+        </div>
+
+        {/* Grade de Parâmetros de Treino da Plataforma (Res. CONTRAN 1.020/2025) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div
             data-testid="rule-total-questions"
@@ -55,7 +68,7 @@ export default async function SimuladoLobbyPage() {
             <strong className="mt-1 block text-xl font-extrabold text-slate-900">
               {config.totalQuestions} questões
             </strong>
-            <span className="text-xs text-slate-600">Múltipla escolha (4 alternativas)</span>
+            <span className="text-xs text-slate-600">Acervo temático de Sinalização (4 opções)</span>
           </div>
 
           <div
@@ -68,7 +81,7 @@ export default async function SimuladoLobbyPage() {
             <strong className="mt-1 block text-xl font-extrabold text-slate-900">
               {config.durationMinutes} minutos
             </strong>
-            <span className="text-xs text-slate-600">Cronômetro regressivo resiliente</span>
+            <span className="text-xs text-slate-600">Padrão 60 min ou 120 min (PCD/TEA/TDAH)</span>
           </div>
 
           <div
@@ -76,12 +89,12 @@ export default async function SimuladoLobbyPage() {
             className="p-4 rounded-xl bg-slate-50 border border-slate-200/80"
           >
             <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-              Nota de Corte
+              Meta da Plataforma
             </span>
             <strong className="mt-1 block text-xl font-extrabold text-emerald-700">
               {config.passingScore} acertos
             </strong>
-            <span className="text-xs text-slate-600">Aprovação oficial (~70% da prova)</span>
+            <span className="text-xs text-slate-600">Referência pedagógica (~70% do treino)</span>
           </div>
         </div>
 
@@ -99,34 +112,24 @@ export default async function SimuladoLobbyPage() {
               para retornar a elas antes de entregar.
             </li>
             <li>
-              Ao concluir (ou quando o tempo de 60 minutos chegar a zero), o gabarito comentado com
-              fundamentação legal será exibido.
+              Ao concluir (ou quando o cronômetro chegar a zero), o gabarito comentado da plataforma
+              com fundamentação legal no CTB e resoluções do CONTRAN será exibido.
             </li>
           </ul>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          <Link
-            href="/simulado/prova"
-            data-testid="start-simulado-cta"
-            className="inline-flex items-center justify-center min-h-12 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
-          >
-            Iniciar Simulado Oficial ({config.durationMinutes} min) →
-          </Link>
+        {/* Seletor de Duração (Padrão 60 min vs Tempo Dobrado 120 min Art. 33, § 2º) e CTA */}
+        <SimuladoDurationSelector defaultDurationMinutes={config.durationMinutes} />
 
-          <Link
-            href="/simulado/historico"
-            className="inline-flex items-center justify-center min-h-12 px-4 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
-          >
-            Ver Histórico Completo
-          </Link>
-        </div>
+        <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+          Nota de transparência: A plataforma AprovaCNH é independente e não possui vínculo com o DETRAN ou a SENATRAN. O conteúdo baseia-se em normas e dispositivos legais de domínio público (Art. 8º, IV da Lei nº 9.610/1998).
+        </p>
       </section>
 
       <section aria-labelledby="recent-simulados-heading" className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 id="recent-simulados-heading" className="text-base font-extrabold text-slate-900">
-            Seus Simulados Recentes
+            Seus Treinos Recentes
           </h2>
         </div>
         <SimuladoHistoryList serverHistory={history} />
