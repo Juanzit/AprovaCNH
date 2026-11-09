@@ -1,7 +1,9 @@
-const postcssConfig = {
-  plugins: {
-    '@tailwindcss/postcss': {},
-  },
-};
+const postcssConfig = process.env.VITEST
+  ? { plugins: {} }
+  : {
+      plugins: {
+        '@tailwindcss/postcss': {},
+      },
+    };
 
 export default postcssConfig;

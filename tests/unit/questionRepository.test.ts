@@ -101,14 +101,24 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
     expect(() => mapAndValidateDatabaseQuestion(invalidRow)).toThrow();
   });
 
-  it('carrega e valida os 20 registros do acervo local homologado via fallback', () => {
+  it('carrega e valida os 30 registros do acervo local homologado via fallback (20 aprovadas e 10 em revisão)', () => {
     const fallback = getFallbackApprovedQuestions();
     expect(fallback.length).toBeGreaterThanOrEqual(30);
-    fallback.forEach((q) => {
-      expect(q.status).toBe('aprovada');
+
+    const approved = fallback.filter((q) => q.status === 'aprovada');
+    expect(approved).toHaveLength(20);
+    approved.forEach((q) => {
       expect(q.options).toHaveLength(4);
       expect(q.source.verificationStatus).toBe('verified');
       expect(q.review?.approvedBy).toBeTruthy();
+    });
+
+    const inReview = fallback.filter((q) => q.status === 'em_revisao');
+    expect(inReview).toHaveLength(10);
+    inReview.forEach((q) => {
+      expect(q.options).toHaveLength(4);
+      expect(q.source.verificationStatus).toBe('pending');
+      expect(q.review?.approvedBy).toBeNull();
     });
   });
 

@@ -7,7 +7,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    pool: 'vmThreads',
+    pool: 'forks',
     testTimeout: 15000,
     setupFiles: ['./tests/setup.ts'],
     include: [
@@ -18,7 +18,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(import.meta.dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src').replace(/\\/g, '/'),
     },
   },
 });

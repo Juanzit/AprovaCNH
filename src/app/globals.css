@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../**/*.{ts,tsx}";
 
 :root {
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;

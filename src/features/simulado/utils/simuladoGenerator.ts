@@ -60,7 +60,8 @@ export function generateSimuladoQuestions(
   const rng = createRng(options.seed);
 
   const eligiblePool = questionBank.filter((q) => {
-    if (q.status !== 'aprovada' || q.isExample) return false;
+    if (q.isExample) return false;
+    if (q.status !== 'aprovada' && q.status !== 'em_revisao') return false;
     if (!targetUf || q.ufs.length === 0) return true;
     return q.ufs.includes(targetUf);
   });
