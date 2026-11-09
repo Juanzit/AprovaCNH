@@ -6,10 +6,12 @@ describe('Integridade das Migrations, Políticas RLS e Preservação de Curadori
   const migration6Path = path.resolve('supabase/migrations/20261108000006_add_questions_sin_021_to_030.sql');
   const migration7Path = path.resolve('supabase/migrations/20261109000007_remediate_sin_021_to_030_editorial_safety.sql');
   const migration8Path = path.resolve('supabase/migrations/20261109000008_harden_rls_student_eligibility.sql');
+  const migration9Path = path.resolve('supabase/migrations/20261109000009_protect_internal_columns_and_reviews.sql');
 
   const migration6Sql = fs.readFileSync(migration6Path, 'utf8');
   const migration7Sql = fs.readFileSync(migration7Path, 'utf8');
   const migration8Sql = fs.readFileSync(migration8Path, 'utf8');
+  const migration9Sql = fs.readFileSync(migration9Path, 'utf8');
 
   it('a migration 000006 histórica está preservada como na main', () => {
     expect(fs.existsSync(migration6Path)).toBe(true);
@@ -68,5 +70,39 @@ describe('Integridade das Migrations, Políticas RLS e Preservação de Curadori
     // 3. Exige estritamente aprovada e não-exemplo para students/anon
     expect(executableSql).toContain("status = 'aprovada'");
     expect(executableSql).toContain('is_example = false');
+  });
+
+  it('a migration 000009 implementa Column-Level Security, revoga question_reviews e cria interface sanitizada', () => {
+    expect(fs.existsSync(migration9Path)).toBe(true);
+    expect(migration9Sql).toMatch(/\bBEGIN;\s*/);
+    expect(migration9Sql.trim()).toMatch(/COMMIT;$/);
+
+    // 1. Revogação de acesso a question_reviews para estudantes e anônimos
+    expect(migration9Sql).toContain('REVOKE ALL ON public.question_reviews FROM anon, authenticated;');
+    expect(migration9Sql).toContain('DROP POLICY IF EXISTS reviews_select_student ON public.question_reviews;');
+
+    // 2. Revogação de SELECT amplo e aplicação de Column-Level Security (CLS)
+    expect(migration9Sql).toContain('REVOKE SELECT ON public.questions FROM anon, authenticated;');
+    expect(migration9Sql).toContain('GRANT SELECT (');
+    expect(migration9Sql).toContain('statement,');
+    expect(migration9Sql).toContain('options,');
+
+    // 3. Omissão estrita de colunas sensíveis no GRANT para anon e authenticated
+    const grantRegex = /GRANT SELECT \(([^)]+)\) ON public\.questions TO anon, authenticated;/s;
+    const match = migration9Sql.match(grantRegex);
+    expect(match).not.toBeNull();
+    const grantedColumns = match![1];
+    expect(grantedColumns).not.toContain('correct_option_id');
+    expect(grantedColumns).not.toContain('explanation');
+
+    // 4. Criação da View Sanitizada com security_invoker = true
+    expect(migration9Sql).toContain('CREATE OR REPLACE VIEW public.student_questions');
+    expect(migration9Sql).toContain('WITH (security_invoker = true)');
+    expect(migration9Sql).toContain('GRANT SELECT ON public.student_questions TO anon, authenticated;');
+
+    // 5. Criação da RPC segura verify_student_answer com SECURITY DEFINER
+    expect(migration9Sql).toContain('CREATE OR REPLACE FUNCTION public.verify_student_answer(');
+    expect(migration9Sql).toContain('SECURITY DEFINER');
+    expect(migration9Sql).toContain('GRANT EXECUTE ON FUNCTION public.verify_student_answer(text, text) TO anon, authenticated;');
   });
 });

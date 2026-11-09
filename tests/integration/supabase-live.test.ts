@@ -3,20 +3,13 @@ import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRe
 import { isQuestionEligibleForStudents } from '@/features/lesson/schemas/questionSchema';
 import { createBrowserClient } from '@supabase/ssr';
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const isMockOrMissing = !supabaseUrl || supabaseUrl.includes('mock.supabase.co');
+
 describe('Validação em Nuvem do Supabase — Live Integration & Auditoria por Status', () => {
-  it(
+  it.skipIf(isMockOrMissing)(
     'conecta ao Supabase, verifica separadamente quantidades por status e valida que apenas questões elegíveis são retornadas',
     async () => {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const isMock = !supabaseUrl || supabaseUrl.includes('mock.supabase.co');
-
-      if (isMock) {
-        console.warn(
-          '[Integration Test] NEXT_PUBLIC_SUPABASE_URL é mock ou indefinido neste ambiente. Teste de nuvem ignorado com segurança.'
-        );
-        return;
-      }
-
       // 1. Consulta através do questionRepository com fallbackToLocal: false
       const repoQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito', {
         fallbackToLocal: false,
@@ -36,7 +29,7 @@ describe('Validação em Nuvem do Supabase — Live Integration & Auditoria por 
 
       // 2. Consulta direta física ao Supabase para auditar a distribuição por status no banco
       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-      const client = createBrowserClient(supabaseUrl, supabaseAnonKey);
+      const client = createBrowserClient(supabaseUrl!, supabaseAnonKey);
 
       const { data: dbRows, error } = await client
         .from('questions')
