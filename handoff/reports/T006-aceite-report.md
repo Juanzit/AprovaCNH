@@ -6,7 +6,7 @@
 - **Commits Homologados na CI GitHub Actions:**
   - `4ff16fbd4e827175dcecd5e3f63b5c6633f3885a` (Run #42665123282)
   - `351ef309b4707c32a993c91af35404ae41ea475a` (Run #42692927783)
-- **Commit Atual da Branch:** `a ser registrado após o commit da auditoria complementar`
+- **Commit Atual da Branch:** `63a95d275eda2467c6240db8319f73e7545904c6`
 - **Repositório:** Juanzit/AprovaCNH
 - **Responsável Técnico / Auditor:** Antigravity (Senior Software Engineer / Pair Programming)
 - **Status do Merge na Main:** **NÃO MERGEADO** (Branch isolada estritamente preservada)
