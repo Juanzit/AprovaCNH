@@ -68,4 +68,23 @@ test.describe('Simulado Temático de Sinalização — Fase 6 (T006 / Regra D007
     const cta = page.getByTestId('start-simulado-cta');
     await expect(cta).toBeDisabled();
   });
+
+  test('deve permitir acesso ao lobby a partir da tela inicial (botão Acessar Simulado Temático ativo)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+
+    // Botão de acesso ao lobby na home está ativo e navegável
+    const homeSimuladoLink = page.getByTestId('dashboard-simulado-link');
+    await expect(homeSimuladoLink).toBeVisible();
+    await expect(homeSimuladoLink).toContainText(/Acessar Simulado Temático/i);
+
+    // Clica para navegar ao lobby informativo
+    await homeSimuladoLink.click();
+    await expect(page).toHaveURL(/\/simulado$/);
+
+    // No lobby, confirma que as regras são exibidas mas a prova em si permanece bloqueada
+    await expect(page.getByTestId('simulado-insufficient-alert')).toBeVisible();
+    await expect(page.getByTestId('start-simulado-cta')).toBeDisabled();
+  });
 });

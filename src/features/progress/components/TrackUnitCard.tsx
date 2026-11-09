@@ -140,7 +140,7 @@ export function TrackUnitCard({
             Sinalização de Trânsito
           </h2>
           <p className="text-xs text-slate-600 mt-0.5">
-            Manual Brasileiro de Fiscalização de Trânsito — MBFT (Resolução CONTRAN nº 985/2022)
+            Manual Brasileiro de Sinalização de Trânsito — MBST (Resolução CONTRAN nº 973/2022: Vol. I Regulamentação e Vol. II Advertência) • Fichas infracionais complementares do MBFT (Resoluções CONTRAN nº 985/2022 e nº 1.031/2026)
           </p>
         </div>
 
