@@ -4,7 +4,7 @@
 - **Branch de Trabalho:** `fix/T006-publicacao-segura-pos-merge`
 - **Base da Main:** `b31937f2755d98c9f6dd7eb72d1bc22121d9307a`
 - **Commit Homologado na CI:** `4ff16fbd4e827175dcecd5e3f63b5c6633f3885a`
-- **Commit Atual da Branch:** `a ser registrado após o commit das correções`
+- **Commit Atual da Branch:** `a89216087916cf3a62d02c7b37406bd6f3f33f12`
 - **Repositório:** Juanzit/AprovaCNH
 - **Responsável Técnico / Auditor:** Antigravity (Senior Software Engineer / Pair Programming)
 - **Status do Merge na Main:** **NÃO MERGEADO** (Branch isolada estritamente preservada)
