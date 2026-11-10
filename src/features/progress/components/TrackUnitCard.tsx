@@ -102,7 +102,7 @@ export function TrackUnitCard({
       {/* Cartão Principal: Sua Próxima Atividade (Único CTA Primário de Alto Destaque) */}
       <div
         data-testid="next-activity-card"
-        className="rounded-2xl bg-gradient-to-br from-blue-50/90 via-white to-indigo-50/50 border-2 border-blue-200 p-4 sm:p-5 space-y-3.5 shadow-2xs"
+        className="rounded-2xl bg-white dark:bg-slate-900 border border-blue-200/70 dark:border-blue-500/30 border-l-4 border-l-blue-500 p-4 sm:p-5 space-y-3.5 shadow-2xs"
       >
         <div className="flex items-center justify-between gap-2 flex-wrap">
           <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-blue-800">
@@ -111,7 +111,7 @@ export function TrackUnitCard({
           </span>
           <span
             data-testid="next-activity-time"
-            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-slate-700 text-xs font-bold border border-slate-200"
+            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-200 dark:border-slate-700"
           >
             <span aria-hidden="true">⏱️</span>
             <span>{primaryCta.estimatedTime}</span>
@@ -130,7 +130,7 @@ export function TrackUnitCard({
         <Link
           href={primaryCta.href}
           data-testid="primary-unit-cta"
-          className="w-full min-h-12 flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+          className="w-full min-h-12 flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
         >
           <span aria-hidden="true">▶</span>
           <span>{primaryCta.label}</span>
@@ -207,12 +207,12 @@ export function TrackUnitCard({
                 <div
                   className={`flex-1 p-3.5 sm:p-4 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
                     needsReview
-                      ? 'border-amber-200 bg-amber-50/30'
+                      ? 'border-amber-200 dark:border-amber-500/30 bg-white dark:bg-slate-900'
                       : isCompleted
-                      ? 'border-emerald-200 bg-emerald-50/30'
+                      ? 'border-emerald-200 dark:border-emerald-500/30 bg-white dark:bg-slate-900'
                       : isInProgress
-                      ? 'border-blue-300 bg-blue-50/20'
-                      : 'border-slate-200 hover:border-slate-300 bg-white'
+                      ? 'border-blue-300/70 dark:border-blue-500/30 bg-white dark:bg-slate-900'
+                      : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900'
                   }`}
                 >
                   <div className="space-y-1">
@@ -245,7 +245,7 @@ export function TrackUnitCard({
                     <Link
                       href={`/licao/sinalizacao?sessao=${meta.sessionId}`}
                       data-testid={`session-action-${meta.sessionId}`}
-                      className="min-h-11 min-w-[104px] px-3.5 py-2 rounded-xl text-xs font-bold inline-flex items-center justify-center transition-colors border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 hover:text-blue-700 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      className="min-h-11 min-w-[104px] px-3.5 py-2 rounded-xl text-xs font-bold inline-flex items-center justify-center transition-colors border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-blue-700 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
                     >
                       {needsReview
                         ? 'Reforçar'

@@ -57,7 +57,7 @@ export function OptionList({
 
           // Classes dinâmicas baseadas no estado
           let stateStyle =
-            'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100';
+            'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-slate-100';
 
           if (isAnswerSubmitted) {
             if (isCorrectOption) {
@@ -65,7 +65,7 @@ export function OptionList({
             } else if (isSelected && !isCorrectOption) {
               stateStyle = 'bg-red-50 border-red-500 text-red-950 dark:bg-red-500/15 dark:border-red-500 dark:text-red-50';
             } else {
-              stateStyle = 'bg-slate-50 border-slate-200 text-slate-400 opacity-60 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400';
+              stateStyle = 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300';
             }
           } else if (isSelected) {
             stateStyle = 'bg-blue-50 border-blue-600 text-blue-950 shadow-sm dark:bg-blue-600/25 dark:border-blue-500 dark:text-white';

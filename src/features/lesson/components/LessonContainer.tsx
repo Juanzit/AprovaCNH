@@ -195,7 +195,7 @@ export function LessonContainer({
         totalQuestions={totalQuestions}
       />
 
-      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 md:p-8 shadow-sm mb-6">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 md:p-8 shadow-sm mb-6">
         <OptionList
           statement={currentQuestion.statement}
           options={currentQuestion.options}
@@ -217,8 +217,8 @@ export function LessonContainer({
               aria-busy={isVerifying}
               className={`w-full min-h-11 py-3.5 px-6 rounded-xl font-bold text-white transition-all shadow-sm ${
                 selectedOptionId && !isVerifying
-                  ? 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 cursor-pointer'
-                  : 'bg-slate-300 cursor-not-allowed text-slate-500'
+                  ? 'bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-500/20 cursor-pointer'
+                  : 'bg-slate-200 dark:bg-slate-800 cursor-not-allowed text-slate-500'
               } focus:outline-none`}
             >
               Confirmar resposta

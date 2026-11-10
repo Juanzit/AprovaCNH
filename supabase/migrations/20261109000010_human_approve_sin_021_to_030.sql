@@ -35,7 +35,7 @@ WHERE id IN (
 )
   AND is_example = false;
 
-INSERT INTO public.question_reviews (
+INSERT INTO public.question_reviews AS existing_review (
   question_id,
   approved_by,
   approved_at,
@@ -53,13 +53,13 @@ WHERE q.id IN (
 )
 ON CONFLICT (question_id) DO UPDATE SET
   approved_by = EXCLUDED.approved_by,
-  approved_at = COALESCE(public.question_reviews.approved_at, EXCLUDED.approved_at),
+  approved_at = COALESCE(existing_review.approved_at, EXCLUDED.approved_at),
   verification_notes = CASE
-    WHEN position('Homologação humana formal aprovada em 09/11/2026.' IN COALESCE(public.question_reviews.verification_notes, '')) > 0
-      THEN public.question_reviews.verification_notes
+    WHEN position('Homologação humana formal aprovada em 09/11/2026.' IN COALESCE(existing_review.verification_notes, '')) > 0
+      THEN existing_review.verification_notes
     ELSE concat_ws(
       E'\n',
-      NULLIF(public.question_reviews.verification_notes, ''),
+      NULLIF(existing_review.verification_notes, ''),
       EXCLUDED.verification_notes
     )
   END;
