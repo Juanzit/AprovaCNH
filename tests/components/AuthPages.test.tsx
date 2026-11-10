@@ -156,7 +156,7 @@ describe('Telas de Autenticação (Segurança de Senha, Tradução de Erros e Fl
 
     expect(screen.getByRole('heading', { name: /Cadastro realizado!/i })).toBeInTheDocument();
     expect(
-      screen.getByText(/Enviamos um link de confirmação para seu e-mail/i)
+      screen.getByText(/Solicitação de cadastro processada/i)
     ).toBeInTheDocument();
     expect(screen.queryByLabelText(/senha de acesso/i)).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Voltar para entrar/i })).toHaveAttribute(
