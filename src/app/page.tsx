@@ -7,6 +7,7 @@ import { getReviewDashboardData } from '@/features/review/server/reviewRepositor
 import { StudentHeader } from '@/features/progress/components/StudentHeader';
 import { TrackUnitCard } from '@/features/progress/components/TrackUnitCard';
 import { GuestXpStat } from '@/features/progress/components/GuestXpStat';
+import { GuestSessionStats } from '@/features/progress/components/GuestSessionStats';
 import { getPrimaryCtaConfig } from '@/features/progress/utils/trackCta';
 import { DailyReviewCard } from '@/features/review/components/DailyReviewCard';
 import { StatCard } from '@/components/ui/StatCard';
@@ -105,29 +106,37 @@ export default async function HomePage() {
 
       {/* 2. Grade de Indicadores de Desempenho (KPI Cards) */}
       <section aria-label="Resumo de Desempenho" className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <StatCard
-          label="Taxa de Acerto"
-          value={`${accuracyPercent}%`}
-          sublabel={hasAnsweredQuestions ? 'Meta de estudo: 70%' : 'Inicie uma sessão'}
-          icon={<TargetIcon className="w-5 h-5" />}
-          iconBgColor="bg-emerald-50 text-emerald-600"
-          trend={{
-            text: !hasAnsweredQuestions ? 'Sem dados' : accuracyPercent >= 70 ? '✓ No padrão' : 'Abaixo do corte',
-            isPositive: accuracyPercent >= 70,
-          }}
-        />
-
-        <StatCard
-          label="Questões Estudadas"
-          value={`${totalCompletedQuestions}/20`}
-          sublabel="Unidade 1 • Sinalização"
-          icon={<BookOpenIcon className="w-5 h-5" />}
-          iconBgColor="bg-blue-50 text-blue-600"
-          trend={{
-            text: `${completedSessions.length} de 4 sessões`,
-            isPositive: true,
-          }}
-        />
+        {profile.id === 'guest' ? (
+          <GuestSessionStats
+            initialCompletedSessions={completedSessions.length}
+            initialCorrectAnswers={totalCorrect}
+          />
+        ) : (
+          <>
+            <StatCard
+              label="Taxa de Acerto"
+              value={`${accuracyPercent}%`}
+              sublabel={hasAnsweredQuestions ? 'Meta de estudo: 70%' : 'Inicie uma sessão'}
+              icon={<TargetIcon className="w-5 h-5" />}
+              iconBgColor="bg-emerald-50 text-emerald-600"
+              trend={{
+                text: !hasAnsweredQuestions ? 'Sem dados' : accuracyPercent >= 70 ? '✓ No padrão' : 'Abaixo do corte',
+                isPositive: accuracyPercent >= 70,
+              }}
+            />
+            <StatCard
+              label="Questões Estudadas"
+              value={`${totalCompletedQuestions}/20`}
+              sublabel="Unidade 1 • Sinalização"
+              icon={<BookOpenIcon className="w-5 h-5" />}
+              iconBgColor="bg-blue-50 text-blue-600"
+              trend={{
+                text: `${completedSessions.length} de 4 sessões`,
+                isPositive: true,
+              }}
+            />
+          </>
+        )}
 
         <StatCard
           label="Ofensiva de Estudos"
