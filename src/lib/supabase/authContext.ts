@@ -1,15 +1,25 @@
 import { cache } from 'react';
+import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 
-/**
- * Compartilha uma única leitura de sessão/autenticação por renderização no servidor.
- * Evita repetir auth.getUser() em Home, Trilha e Revisão, inclusive para visitantes.
- */
+/** Auth context compartilhado por request; visitantes não consultam auth.getUser() na rede. */
 export const getSupabaseAuthContext = cache(async () => {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let hasSessionCookie = false;
 
-  return { supabase, user };
+  try {
+    const cookieStore = await cookies();
+    hasSessionCookie = cookieStore.getAll().some(({ name }) =>
+      name.startsWith('sb-') &&
+      name.includes('-auth-token') &&
+      !name.includes('code-verifier')
+    );
+  } catch {
+    // Fora de request scope, não há sessão de navegador para validar.
+  }
+
+  if (!hasSessionCookie) return { supabase, user: null };
+
+  const { data: { user }, error } = await supabase.auth.getUser();
+  return { supabase, user: error ? null : user };
 });

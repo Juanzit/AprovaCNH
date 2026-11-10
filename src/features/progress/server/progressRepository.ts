@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server';
 import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
 import { getApprovedQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
 import { calculateDailyStreak } from '../utils/streakCalculator';
@@ -206,10 +205,7 @@ export async function evaluateAndRecordSession(
   }
 
   // Obter usuário autenticado
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user } = await getSupabaseAuthContext();
 
   // Se não autenticado (modo visitante), calcula os resultados em memória sem gravar no banco
   if (!user) {

@@ -62,10 +62,18 @@ export async function getUserAnswerRecords(customUserId?: string): Promise<UserA
  * - Fila determinística de repetição espaçada com prioridades e explicações
  */
 export async function getReviewDashboardData(customUserId?: string): Promise<ReviewDashboardData> {
-  const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-  const questionMap = new Map<string, StudentQuestion>(allQuestions.map((q) => [q.id, q]));
+  const { user } = customUserId
+    ? { user: { id: customUserId } }
+    : await getSupabaseAuthContext();
 
-  const records = await getUserAnswerRecords(customUserId);
+  const [records, allQuestions] = user
+    ? await Promise.all([
+        getUserAnswerRecords(user.id),
+        getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+      ])
+    : [await getUserAnswerRecords(), []];
+
+  const questionMap = new Map<string, StudentQuestion>(allQuestions.map((q) => [q.id, q]));
 
   // Agrupa respostas por question_id
   const answersByQuestionId = new Map<string, UserAnswerRecord[]>();

@@ -16,6 +16,24 @@ import fallbackQuestionsRaw from '@/data/questions-sinalizacao.json';
 
 export type RepositoryDataSource = 'remote' | 'local_fallback';
 
+const APPROVED_QUESTION_CACHE_TTL_MS = 45_000;
+const APPROVED_QUESTION_TIMEOUT_MS = 1_500;
+const approvedQuestionCache = new Map<string, { expiresAt: number; result: QuestionLoadResult }>();
+
+function withTimeout<T>(promiseLike: PromiseLike<T>, timeoutMs: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('Timeout ao consultar o acervo de questões.')), timeoutMs);
+    Promise.resolve(promiseLike).then(
+      (value) => { clearTimeout(timer); resolve(value); },
+      (error) => { clearTimeout(timer); reject(error); }
+    );
+  });
+}
+
+function cacheApprovedQuestions(key: string, result: QuestionLoadResult, ttl = APPROVED_QUESTION_CACHE_TTL_MS) {
+  approvedQuestionCache.set(key, { expiresAt: Date.now() + ttl, result });
+}
+
 export interface QuestionLoadResult {
   questions: StudentQuestion[];
   source: RepositoryDataSource;
@@ -160,11 +178,18 @@ export async function getApprovedQuestionsWithReport(
   topic = 'Sinalização de Trânsito',
   options: { fallbackToLocal?: boolean } = { fallbackToLocal: true }
 ): Promise<QuestionLoadResult> {
+  const cacheKey = topic.toLocaleLowerCase('pt-BR');
+  if (options.fallbackToLocal !== false) {
+    const cached = approvedQuestionCache.get(cacheKey);
+    if (cached && cached.expiresAt > Date.now()) return cached.result;
+    if (cached) approvedQuestionCache.delete(cacheKey);
+  }
+
   try {
     const supabase = await createClient();
 
     // Consulta estritamente as colunas públicas permitidas na migration 000009
-    const { data, error } = await supabase
+    const { data, error } = await withTimeout(supabase
       .from('questions')
       .select(`
         id,
@@ -193,18 +218,16 @@ export async function getApprovedQuestionsWithReport(
       .eq('status', 'aprovada')
       .eq('is_example', false)
       .ilike('topic', `%${topic}%`)
-      .order('id', { ascending: true });
+      .order('id', { ascending: true }), APPROVED_QUESTION_TIMEOUT_MS);
 
     if (error) {
       console.warn(
         `[QuestionRepository][ERROR] Falha na consulta remota ao Supabase: ${error.message} (Code: ${error.code}).`
       );
       if (options.fallbackToLocal) {
-        return {
-          questions: getFallbackApprovedQuestions(),
-          source: 'local_fallback',
-          remoteError: error.message,
-        };
+        const fallback = { questions: getFallbackApprovedQuestions(), source: 'local_fallback' as const, remoteError: error.message };
+        cacheApprovedQuestions(cacheKey, fallback, 8_000);
+        return fallback;
       }
       throw error;
     }
@@ -212,10 +235,9 @@ export async function getApprovedQuestionsWithReport(
     if (!data || data.length === 0) {
       console.info('[QuestionRepository] Nenhuma questão remota retornada para o tópico solicitado.');
       if (options.fallbackToLocal) {
-        return {
-          questions: getFallbackApprovedQuestions(),
-          source: 'local_fallback',
-        };
+        const fallback = { questions: getFallbackApprovedQuestions(), source: 'local_fallback' as const };
+        cacheApprovedQuestions(cacheKey, fallback, 8_000);
+        return fallback;
       }
       return {
         questions: [],
@@ -243,19 +265,19 @@ export async function getApprovedQuestionsWithReport(
     console.info(
       `[QuestionRepository] Disponíveis ${mergedQuestions.length} questões aprovadas sanitizadas (${validatedQuestions.length} remotas).`
     );
-    return {
+    const result: QuestionLoadResult = {
       questions: mergedQuestions,
       source: wasSupplemented ? 'local_fallback' : 'remote',
     };
+    cacheApprovedQuestions(cacheKey, result);
+    return result;
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn(`[QuestionRepository][EXCEPTION] Erro ao carregar questões remotas: ${message}`);
     if (options.fallbackToLocal) {
-      return {
-        questions: getFallbackApprovedQuestions(),
-        source: 'local_fallback',
-        remoteError: message,
-      };
+      const fallback = { questions: getFallbackApprovedQuestions(), source: 'local_fallback' as const, remoteError: message };
+      cacheApprovedQuestions(cacheKey, fallback, 8_000);
+      return fallback;
     }
     throw err;
   }

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
 import { getApprovedQuestionsByTopic, getAuthoritativeQuestionsWithFallback } from '@/features/lesson/server/questionRepository';
 import { toStudentQuestion } from '@/features/lesson/schemas/questionSchema';
 import { calculateDailyStreak } from '@/features/progress/utils/streakCalculator';
@@ -112,10 +113,7 @@ export async function initializeSimuladoSession(options?: {
   const fallbackId = `sim-${Date.now()}`;
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return {
@@ -256,10 +254,7 @@ export async function submitAndEvaluateSimulado(rawPayload: unknown): Promise<{
   const result = evaluateSimuladoSubmission(payload, questions, config, finishedAt);
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (user && !payload.simuladoId.startsWith('sim-')) {
       // Prevenção contra submissão duplicada (idempotência no servidor)
@@ -376,10 +371,7 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
   }
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) return null;
 
@@ -459,10 +451,7 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
  */
 export async function getSimuladoHistory(): Promise<SimuladoHistorySummary[]> {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) return [];
 
