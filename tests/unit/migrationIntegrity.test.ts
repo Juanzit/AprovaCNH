@@ -110,4 +110,20 @@ describe('Integridade das Migrations, Políticas RLS e Preservação de Curadori
     expect(migration9Sql).toContain('GRANT EXECUTE ON FUNCTION public.finish_and_evaluate_simulado');
     expect(migration9Sql).toContain('Resposta já submetida e imutável para esta questão nesta tentativa.');
   });
+  it('a migration 000010 registra a homologação humana formal de sin-021 a sin-030 sem alterar as fontes', () => {
+    const migration10Path = path.resolve('supabase/migrations/20261109000010_human_approve_sin_021_to_030.sql');
+    const migration10Sql = fs.readFileSync(migration10Path, 'utf8');
+
+    expect(migration10Sql).toMatch(/\\bBEGIN;\\s*/);
+    expect(migration10Sql.trim()).toMatch(/COMMIT;$/);
+    expect(migration10Sql).toContain("status = 'aprovada'");
+    expect(migration10Sql).toContain("'Responsável humano pelo projeto / Tech Lead'");
+    expect(migration10Sql).toContain('approved_by');
+    expect(migration10Sql).toContain('approved_at');
+    expect(migration10Sql).not.toContain('UPDATE public.question_sources');
+    for (let i = 21; i <= 30; i++) {
+      expect(migration10Sql).toContain(`'sin-0${i}'`);
+    }
+  });
+
 });

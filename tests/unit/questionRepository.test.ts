@@ -123,21 +123,26 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
     expect(() => mapAndValidateDatabaseQuestion(invalidRow)).toThrow();
   });
 
-  // Requisito Obrigatório 1: Um conjunto com 20 aprovadas e 10 em revisão retorna somente 20 questões no fallback
-  it('carrega o acervo local via fallback e retorna EXCLUSIVAMENTE as 20 questões aprovadas (filtrando as 10 em revisão)', () => {
+  // Requisito Obrigatório 1: Um conjunto após homologação retorna as 30 questões formalmente aprovadas
+  it('carrega o acervo local via fallback e retorna EXCLUSIVAMENTE as 30 questões aprovadas', () => {
     const fallback = getFallbackApprovedQuestions();
-    expect(fallback).toHaveLength(20);
+    expect(fallback).toHaveLength(30);
 
     fallback.forEach((q) => {
       expect(isQuestionEligibleForStudents(q)).toBe(true);
       expect(q.status).toBe('aprovada');
       expect(q.isExample).toBe(false);
       expect(q.options).toHaveLength(4);
-      expect(q.source.verificationStatus).toBe('verified');
+      if (/^sin-0(2[1-9]|30)$/.test(q.id)) {
+        expect(q.source.verificationStatus).toBe('pending');
+        expect(q.review?.approvedBy).toBe('Responsável humano pelo projeto / Tech Lead');
+      } else {
+        expect(q.source.verificationStatus).toBe('verified');
+      }
     });
 
     const authoritativeFallback = getAuthoritativeQuestionsForServer();
-    expect(authoritativeFallback).toHaveLength(20);
+    expect(authoritativeFallback).toHaveLength(30);
     authoritativeFallback.forEach((q) => {
       expect(q.review?.approvedBy).toBeTruthy();
     });
@@ -163,7 +168,7 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
     } as unknown as Awaited<ReturnType<typeof createClient>>);
 
     const questions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-    expect(questions).toHaveLength(20);
+    expect(questions).toHaveLength(30);
     questions.forEach((q) => {
       expect(q.status).toBe('aprovada');
       expect(q.isExample).toBe(false);

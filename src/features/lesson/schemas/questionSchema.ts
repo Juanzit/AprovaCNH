@@ -161,10 +161,16 @@ export const questionSchema = z
           path: ['source', 'kind'],
         });
       }
-      if (data.source.verificationStatus !== 'verified') {
+      const hasFormalHumanApproval =
+        data.review?.approvedBy === 'Responsável humano pelo projeto / Tech Lead' &&
+        Boolean(data.review.approvedAt);
+
+      // A homologação humana explícita pode aprovar editorialmente a questão sem
+      // sobrescrever o estado documental independente da fonte (migration 000007).
+      if (data.source.verificationStatus !== 'verified' && !hasFormalHumanApproval) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Questões aprovadas devem ter source.verificationStatus como "verified".',
+          message: 'Questões aprovadas exigem fonte verificada ou homologação humana formal registrada.',
           path: ['source', 'verificationStatus'],
         });
       }
@@ -204,10 +210,14 @@ export const questionSchema = z
             path: ['review', 'generatorModel'],
           });
         }
-        if (!data.review.verifierModel || data.review.verifierModel.trim() === '') {
+        const hasFormalHumanApproval =
+          data.review.approvedBy === 'Responsável humano pelo projeto / Tech Lead' &&
+          Boolean(data.review.approvedAt);
+
+        if ((!data.review.verifierModel || data.review.verifierModel.trim() === '') && !hasFormalHumanApproval) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'Questões aprovadas exigem review.verifierModel preenchido.',
+            message: 'Questões aprovadas exigem modelo verificador ou homologação humana formal registrada.',
             path: ['review', 'verifierModel'],
           });
         }

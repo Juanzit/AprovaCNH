@@ -1144,14 +1144,14 @@
       "licenseNote": "Dispositivos legais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão fundamentada estritamente no Art. 29, II do CTB. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão fundamentada estritamente no Art. 29, II do CTB. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1199,14 +1199,14 @@
       "licenseNote": "Dispositivos legais e normas oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão em revisão técnica e editorial; validado com a redação da Lei nº 14.071/2020. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão em revisão técnica e editorial; validado com a redação da Lei nº 14.071/2020. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1254,14 +1254,14 @@
       "licenseNote": "Dispositivos legais e normas oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão em revisão técnica e editorial; fundamentação integrada entre Arts. 41 e 227 do CTB e placa R-20. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão em revisão técnica e editorial; fundamentação integrada entre Arts. 41 e 227 do CTB e placa R-20. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1309,14 +1309,14 @@
       "licenseNote": "Norma técnica oficial federal em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Reescrita corretiva da regra de não implicação entre R-4a (virar) e R-5a (retorno) com base no MBST Vol. I (Res. CONTRAN 973/2022). Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Reescrita corretiva da regra de não implicação entre R-4a (virar) e R-5a (retorno) com base no MBST Vol. I (Res. CONTRAN 973/2022). Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1364,14 +1364,14 @@
       "licenseNote": "Dispositivos legais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão em revisão técnica e editorial; classificada na taxonomia de Velocidade e Classificação de Vias. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão em revisão técnica e editorial; classificada na taxonomia de Velocidade e Classificação de Vias. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1419,14 +1419,14 @@
       "licenseNote": "Dispositivos legais e normas oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão em revisão técnica e editorial; classificada na taxonomia de Segurança e Transporte de Passageiros. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão em revisão técnica e editorial; classificada na taxonomia de Segurança e Transporte de Passageiros. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1474,14 +1474,14 @@
       "licenseNote": "Dispositivos legais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Ajustada a redação para incluir a condição de cuidar da própria segurança conforme Art. 244, V do CTB e apontamento do Tech Lead. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Ajustada a redação para incluir a condição de cuidar da própria segurança conforme Art. 244, V do CTB e apontamento do Tech Lead. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1529,14 +1529,14 @@
       "licenseNote": "Normas oficiais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão em revisão técnica e editorial; classificada em Sinalização Vertical. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão em revisão técnica e editorial; classificada em Sinalização Vertical. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1584,14 +1584,14 @@
       "licenseNote": "Dispositivos legais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão em revisão técnica e editorial; classificada na taxonomia de Infrações e Medidas Administrativas. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão em revisão técnica e editorial; classificada na taxonomia de Infrações e Medidas Administrativas. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   },
   {
@@ -1639,14 +1639,14 @@
       "licenseNote": "Dispositivos legais federais em domínio público (Art. 8º, IV da Lei nº 9.610/1998). Conteúdo didático autoral da plataforma AprovaCNH.",
       "verificationStatus": "pending"
     },
-    "status": "em_revisao",
+    "status": "aprovada",
     "isExample": false,
     "review": {
       "generatorModel": "Antigravity/Gemini-3.8-Flash",
       "verifierModel": null,
-      "verificationNotes": "Questão em revisão técnica e editorial; classificada em Normas de Circulação. Pendente de aprovação humana individualizada pelo Tech Lead.",
-      "approvedBy": null,
-      "approvedAt": null
+      "verificationNotes": "Questão em revisão técnica e editorial; classificada em Normas de Circulação. Pendente de aprovação humana individualizada pelo Tech Lead. Homologação humana formalmente aprovada pelo Responsável humano pelo projeto / Tech Lead em 09/11/2026. A verificação documental da fonte permanece registrada separadamente como pending.",
+      "approvedBy": "Responsável humano pelo projeto / Tech Lead",
+      "approvedAt": "2026-11-09T22:08:00-03:00"
     }
   }
 ]
