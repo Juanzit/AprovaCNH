@@ -5,10 +5,16 @@ import Link from 'next/link';
 
 interface SimuladoDurationSelectorProps {
   defaultDurationMinutes?: number;
+  isUnavailable?: boolean;
+  availableCount?: number;
+  requiredCount?: number;
 }
 
 export function SimuladoDurationSelector({
   defaultDurationMinutes = 60,
+  isUnavailable = false,
+  availableCount = 0,
+  requiredCount = 30,
 }: SimuladoDurationSelectorProps) {
   const [duration, setDuration] = useState<60 | 120>(
     defaultDurationMinutes === 120 ? 120 : 60
@@ -79,13 +85,25 @@ export function SimuladoDurationSelector({
       </fieldset>
 
       <div className="flex flex-wrap items-center gap-3 pt-1">
-        <Link
-          href={`/simulado/prova?tempo=${duration}`}
-          data-testid="start-simulado-cta"
-          className="inline-flex items-center justify-center min-h-12 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
-        >
-          Iniciar Simulado Temático ({duration} min) →
-        </Link>
+        {isUnavailable ? (
+          <button
+            type="button"
+            disabled
+            data-testid="start-simulado-cta"
+            aria-disabled="true"
+            className="inline-flex items-center justify-center min-h-12 px-6 py-3 rounded-xl bg-slate-300 text-slate-600 text-sm sm:text-base font-extrabold cursor-not-allowed shadow-none"
+          >
+            Simulado Indisponível ({availableCount}/{requiredCount} questões aprovadas)
+          </button>
+        ) : (
+          <Link
+            href={`/simulado/prova?tempo=${duration}`}
+            data-testid="start-simulado-cta"
+            className="inline-flex items-center justify-center min-h-12 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors shadow-xs"
+          >
+            Iniciar Simulado Temático ({duration} min) →
+          </Link>
+        )}
 
         <Link
           href="/simulado/historico"

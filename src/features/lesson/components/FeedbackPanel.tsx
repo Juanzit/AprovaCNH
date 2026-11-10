@@ -46,16 +46,11 @@ export function FeedbackPanel({
   const ruleSynthesis = getRuleSynthesis(source);
 
   return (
-    <div
+    <section
       role="status"
       aria-live="polite"
-      className={`mt-6 p-4 sm:p-5 rounded-2xl border space-y-4 ${
-        isCorrect
-          ? 'bg-emerald-50/90 border-emerald-300 text-emerald-950'
-          : 'bg-red-50/90 border-red-300 text-red-950'
-      }`}
+      className="mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 sm:p-5 text-slate-900 dark:text-slate-100 space-y-4"
     >
-      {/* Banner de status da resposta (Verde para acerto, Vermelho para erro) */}
       <div className="flex items-center gap-2.5">
         {isCorrect ? (
           <div className="flex items-center justify-center w-7 h-7 rounded-full bg-emerald-600 text-white shrink-0">
@@ -66,92 +61,72 @@ export function FeedbackPanel({
             <XIcon className="w-4 h-4" />
           </div>
         )}
-        <h3 className="text-base font-extrabold tracking-tight text-slate-900">
+        <h3 className={`text-base font-extrabold tracking-tight ${isCorrect ? 'text-emerald-700 dark:text-emerald-300' : 'text-red-700 dark:text-red-300'}`}>
           {isCorrect ? 'Resposta correta!' : 'Resposta incorreta.'}
         </h3>
       </div>
 
-      {/* Bloco 1: Por que essa resposta está correta? (Explicação direta do gabarito) */}
-      <div
-        data-testid="explanation-block"
-        className="bg-white border border-slate-200/90 rounded-xl p-4 shadow-2xs space-y-1.5"
-      >
-        <p className="text-xs font-extrabold uppercase tracking-wider text-blue-800">
+      <div data-testid="explanation-block" className="space-y-1.5">
+        <p className="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Por que essa resposta está correta?
         </p>
-        <p className="text-sm leading-relaxed text-slate-800 font-medium">
+        <p className="text-sm leading-relaxed font-medium text-slate-800 dark:text-slate-100">
           {explanation}
         </p>
       </div>
 
-      {/* Bloco 2: Entenda a regra (Síntese destacada do conceito normativo para memorização) */}
-      <div
-        data-testid="rule-summary-block"
-        className="bg-blue-50/80 border border-blue-200 rounded-xl p-4 space-y-1"
-      >
-        <p className="text-xs font-extrabold uppercase tracking-wider text-blue-900">
+      <div data-testid="rule-summary-block" className="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-1.5">
+        <p className="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Entenda a regra
         </p>
-        <p className="text-xs sm:text-sm leading-relaxed text-slate-800 font-semibold">
+        <p className="text-xs sm:text-sm leading-relaxed font-medium text-slate-700 dark:text-slate-200">
           {ruleSynthesis}
         </p>
       </div>
 
-      {/* Bloco 3: Fundamentação legal (Documento, ficha MBFT/artigo CTB e link oficial) */}
-      <div
-        data-testid="legal-source-block"
-        className="bg-slate-100/90 border border-slate-300 rounded-xl p-4 space-y-2 text-slate-800"
-      >
-        <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-slate-900">
-          <AlertCircleIcon className="w-4 h-4 text-blue-700 shrink-0" />
+      <div data-testid="legal-source-block" className="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-2">
+        <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <AlertCircleIcon className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
           <span>Fundamentação legal</span>
         </div>
-
-        <div className="space-y-1 text-xs sm:text-sm">
-          <div className="font-bold text-slate-900" data-testid="source-document">
+        <div className="space-y-1 text-xs sm:text-sm text-slate-700 dark:text-slate-200">
+          <div className="font-bold text-slate-900 dark:text-slate-100" data-testid="source-document">
             {source.kind === 'demo'
               ? 'Referência legal demonstrativa (Validação jurídica pendente)'
               : source.document || 'Documento oficial'}
           </div>
-
           {source.provision && (
-            <p className="text-slate-800 font-bold" data-testid="source-provision">
-              Dispositivo legal:{' '}
-              <span className="font-semibold text-slate-900">{source.provision}</span>
+            <p className="font-semibold" data-testid="source-provision">
+              Dispositivo legal: <span className="font-medium">{source.provision}</span>
             </p>
           )}
         </div>
-
         {source.url && (
-          <div className="pt-1">
-            <a
-              href={source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 hover:text-blue-900 underline py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              <span>Consultar legislação oficial &rarr;</span>
-            </a>
-          </div>
+          <a
+            href={source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 underline py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          >
+            <span>Consultar legislação oficial →</span>
+          </a>
         )}
-
         {source.licenseNote && (
-          <p className="text-xs font-medium text-slate-700 border-t border-slate-200 pt-1.5">
+          <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-2">
             {source.licenseNote}
           </p>
         )}
       </div>
 
-      {/* Botão de avanço padronizado na cor primária da marca (azul) tanto no acerto quanto no erro */}
       <button
         type="button"
         onClick={onNext}
         data-testid="feedback-next-button"
-        className="w-full min-h-11 py-3 px-5 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 shadow-sm transition-colors flex items-center justify-center gap-2"
+        className="w-full min-h-11 py-3 px-5 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 shadow-sm transition-colors flex items-center justify-center gap-2"
       >
         <span>{isLastQuestion ? 'Finalizar lição' : 'Continuar'}</span>
         <ArrowRightIcon className="w-4 h-4" />
       </button>
-    </div>
+    </section>
   );
 }

@@ -2,14 +2,22 @@ import { describe, it, expect, vi } from 'vitest';
 import {
   mapAndValidateDatabaseQuestion,
   getFallbackApprovedQuestions,
+  getAuthoritativeQuestionsForServer,
   getApprovedQuestionsByTopic,
+  getQuestionAnswerKey,
+  getQuestionAnswerKeys,
 } from '@/features/lesson/server/questionRepository';
+import { isQuestionEligibleForStudents } from '@/features/lesson/schemas/questionSchema';
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(),
 }));
 
-describe('questionRepository (Anti-Corruption Layer)', () => {
+vi.mock('@/lib/supabase/admin', () => ({
+  createAdminClient: vi.fn(),
+}));
+
+describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', () => {
   const validDbRow = {
     id: 'sin-db-001',
     version: 1,
@@ -52,6 +60,20 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
       },
     ],
   };
+
+  it('resolve gabaritos do seed aprovado no servidor sem esperar consulta remota', async () => {
+    const { createAdminClient } = await import('@/lib/supabase/admin');
+    vi.mocked(createAdminClient).mockClear();
+
+    const answerKey = await getQuestionAnswerKey('sin-001');
+    const answerKeys = await getQuestionAnswerKeys(['sin-001', 'sin-002']);
+
+    expect(answerKey?.questionId).toBe('sin-001');
+    expect(answerKey?.explanation.length).toBeGreaterThan(0);
+    expect(answerKeys.has('sin-001')).toBe(true);
+    expect(answerKeys.has('sin-002')).toBe(true);
+    expect(createAdminClient).not.toHaveBeenCalled();
+  });
 
   it('mapeia e valida com sucesso um registro válido do PostgreSQL no modelo Zod de domínio', () => {
     const question = mapAndValidateDatabaseQuestion(validDbRow);
@@ -101,46 +123,79 @@ describe('questionRepository (Anti-Corruption Layer)', () => {
     expect(() => mapAndValidateDatabaseQuestion(invalidRow)).toThrow();
   });
 
-  it('carrega e valida os 30 registros do acervo local homologado via fallback (20 aprovadas e 10 em revisão)', () => {
+  // Requisito Obrigatório 1: Um conjunto após homologação retorna as 30 questões formalmente aprovadas
+  it('carrega o acervo local via fallback e retorna EXCLUSIVAMENTE as 30 questões aprovadas', () => {
     const fallback = getFallbackApprovedQuestions();
-    expect(fallback.length).toBeGreaterThanOrEqual(30);
+    expect(fallback).toHaveLength(30);
 
-    const approved = fallback.filter((q) => q.status === 'aprovada');
-    expect(approved).toHaveLength(20);
-    approved.forEach((q) => {
+    fallback.forEach((q) => {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
       expect(q.options).toHaveLength(4);
-      expect(q.source.verificationStatus).toBe('verified');
+      if (/^sin-0(2[1-9]|30)$/.test(q.id)) {
+        expect(q.source.verificationStatus).toBe('pending');
+      } else {
+        expect(q.source.verificationStatus).toBe('verified');
+      }
+    });
+
+    const authoritativeFallback = getAuthoritativeQuestionsForServer();
+    expect(authoritativeFallback).toHaveLength(30);
+    authoritativeFallback.forEach((q) => {
       expect(q.review?.approvedBy).toBeTruthy();
+      if (/^sin-0(2[1-9]|30)$/.test(q.id)) {
+        expect(q.review?.approvedBy).toBe('Responsável humano pelo projeto / Tech Lead');
+        expect(q.source.verificationStatus).toBe('pending');
+      }
     });
 
-    const inReview = fallback.filter((q) => q.status === 'em_revisao');
-    expect(inReview).toHaveLength(10);
-    inReview.forEach((q) => {
-      expect(q.options).toHaveLength(4);
-      expect(q.source.verificationStatus).toBe('pending');
-      expect(q.review?.approvedBy).toBeNull();
-    });
+    const anyInReview = fallback.some((q) => (q.status as string) === 'em_revisao');
+    expect(anyInReview).toBe(false);
   });
 
-  it('retorna os dados do fallback quando o cliente Supabase lança exceção ou erro', async () => {
+  // Requisito Obrigatório 5: Nenhuma questão em revisão chega à lição, SRS, fallback ou simulado
+  it('garante que nenhuma questão com status em_revisao é retornada por getApprovedQuestionsByTopic via fallback', async () => {
     const { createClient } = await import('@/lib/supabase/server');
+    const mockBuilder: Record<string, any> = {};
+    mockBuilder.select = vi.fn().mockReturnValue(mockBuilder);
+    mockBuilder.eq = vi.fn().mockReturnValue(mockBuilder);
+    mockBuilder.ilike = vi.fn().mockReturnValue(mockBuilder);
+    mockBuilder.order = vi.fn().mockResolvedValue({
+      data: null,
+      error: new Error('Tabela não migrada'),
+    });
+
     vi.mocked(createClient).mockResolvedValueOnce({
-      from: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            ilike: vi.fn().mockReturnValue({
-              order: vi.fn().mockResolvedValue({
-                data: null,
-                error: new Error('Tabela não encontrada'),
-              }),
-            }),
-          }),
-        }),
-      }),
+      from: vi.fn().mockReturnValue(mockBuilder),
     } as unknown as Awaited<ReturnType<typeof createClient>>);
 
     const questions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-    expect(questions.length).toBeGreaterThanOrEqual(30);
-    expect(questions[0].id).toBe('sin-001');
+    expect(questions).toHaveLength(30);
+    questions.forEach((q) => {
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
+    });
+    expect(questions.some((q) => (q.status as string) === 'em_revisao')).toBe(false);
+  });
+
+  // Requisito Obrigatório 6: A ausência de questões aprovadas não causa retorno indiscriminado do JSON
+  it('a ausência de questões aprovadas no banco e no fallback não causa retorno indiscriminado do JSON (retorna array vazio)', async () => {
+    const { createClient } = await import('@/lib/supabase/server');
+    const mockQueryBuilder: Record<string, unknown> = {};
+    mockQueryBuilder.eq = vi.fn().mockReturnValue(mockQueryBuilder);
+    mockQueryBuilder.ilike = vi.fn().mockReturnValue(mockQueryBuilder);
+    mockQueryBuilder.order = vi.fn().mockResolvedValue({
+      data: [],
+      error: null,
+    });
+    mockQueryBuilder.select = vi.fn().mockReturnValue(mockQueryBuilder);
+
+    vi.mocked(createClient).mockResolvedValueOnce({
+      from: vi.fn().mockReturnValue(mockQueryBuilder),
+    } as unknown as Awaited<ReturnType<typeof createClient>>);
+
+    const questions = await getApprovedQuestionsByTopic('Topico Inexistente Sem Fallback', { fallbackToLocal: false });
+    expect(questions).toEqual([]);
   });
 });

@@ -93,19 +93,18 @@ describe('questionSchema & lessonSeedSchema (T001)', () => {
 });
 
 describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)', () => {
-  it('deve validar com 100% de sucesso as questões do acervo (20 aprovadas e 10 em revisão)', () => {
+  it('deve validar com 100% de sucesso as questões do acervo (30 aprovadas por decisão editorial humana)', () => {
     const result = questionBankSchema.safeParse(rawBank);
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.length).toBeGreaterThanOrEqual(30);
 
-      // 20 primeiras questões aprovadas (Piloto Editorial T002)
+      // Trinta questões formalmente aprovadas; a fonte mantém seu estado documental independente.
       const approvedQuestions = result.data.filter((q) => q.status === 'aprovada');
-      expect(approvedQuestions).toHaveLength(20);
+      expect(approvedQuestions).toHaveLength(30);
       approvedQuestions.forEach((q) => {
         expect(q.isExample).toBe(false);
         expect(q.source.kind).toBe('official');
-        expect(q.source.verificationStatus).toBe('verified');
         expect(q.source.document).toBeTruthy();
         expect(q.source.provision).toBeTruthy();
         expect(q.source.url).toBeTruthy();
@@ -114,30 +113,24 @@ describe('questionSchema & questionBankSchema (T002 - Piloto Editorial Aprovado)
         expect(q.source.sourceVersion).toBeTruthy();
         expect(q.source.licenseNote).toBeTruthy();
         expect(q.review?.generatorModel).toBeTruthy();
-        expect(q.review?.verifierModel).toBeTruthy();
-        expect(q.review?.verifierModel).not.toBe(q.review?.generatorModel);
-        expect(q.review?.approvedBy).toBe('Tech Lead / Responsável pelo Produto');
+        if (/^sin-0(2[1-9]|30)$/.test(q.id)) {
+          expect(q.source.verificationStatus).toBe('pending');
+          expect(q.review?.verifierModel).toBeNull();
+          expect(q.review?.approvedBy).toBe('Responsável humano pelo projeto / Tech Lead');
+        } else {
+          expect(q.source.verificationStatus).toBe('verified');
+          expect(q.review?.verifierModel).toBeTruthy();
+          expect(q.review?.verifierModel).not.toBe(q.review?.generatorModel);
+          expect(q.review?.approvedBy).toBe('Tech Lead / Responsável pelo Produto');
+        }
         expect(q.review?.approvedAt).toBeTruthy();
         expect(q.options).toHaveLength(4);
         expect(q.ufs).toContain('MG');
       });
 
-      // 10 questões em revisão técnica/editorial (sin-021 a sin-030) sem aprovação fictícia
+      // sin-021..030 foram aprovadas por decisão humana formal; nenhum registro permanece em revisão.
       const inReviewQuestions = result.data.filter((q) => q.status === 'em_revisao');
-      expect(inReviewQuestions).toHaveLength(10);
-      inReviewQuestions.forEach((q) => {
-        expect(q.isExample).toBe(false);
-        expect(q.source.kind).toBe('official');
-        expect(q.source.verificationStatus).toBe('pending');
-        expect(q.source.document).toBeTruthy();
-        expect(q.source.provision).toBeTruthy();
-        expect(q.source.url).toBeTruthy();
-        expect(q.source.checkedAt).toBeTruthy();
-        expect(q.source.effectiveFrom).toBeTruthy();
-        expect(q.review?.approvedBy).toBeNull();
-        expect(q.review?.approvedAt).toBeNull();
-        expect(q.options).toHaveLength(4);
-      });
+      expect(inReviewQuestions).toHaveLength(0);
     }
   });
 

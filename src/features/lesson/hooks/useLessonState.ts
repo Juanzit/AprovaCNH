@@ -1,9 +1,29 @@
 import { useState, useCallback, useMemo } from 'react';
-import type { Question, OptionId } from '../types/question';
+import type { Question, StudentQuestion, OptionId } from '../types/question';
 import { calculateLessonXp, type XpBreakdown } from '../utils/xpCalculator';
 
+export interface RevealedAnswer {
+  correctOptionId: OptionId;
+  explanation: string;
+}
+
+export interface UseLessonStateOptions {
+  /**
+   * Callback assíncrono para validação autoritativa no servidor (Server Action).
+   * O cliente nunca calcula o gabarito localmente nem possui acesso às chaves antes do envio.
+   */
+  onVerifyAnswer?: (
+    questionId: string,
+    selectedOptionId: OptionId
+  ) => Promise<{
+    isCorrect: boolean;
+    correctOptionId: OptionId;
+    explanation: string;
+  }>;
+}
+
 export interface UseLessonStateReturn {
-  currentQuestion: Question | undefined;
+  currentQuestion: StudentQuestion | Question | undefined;
   currentQuestionIndex: number;
   totalQuestions: number;
   selectedOptionId: OptionId | null;
@@ -13,17 +33,25 @@ export interface UseLessonStateReturn {
   isCompleted: boolean;
   xpBreakdown: XpBreakdown;
   submittedAnswers: Array<{ questionId: string; selectedOptionId: string }>;
+  revealedAnswer: RevealedAnswer | null;
+  isVerifying: boolean;
   selectOption: (id: OptionId) => void;
   submitAnswer: () => void;
   nextQuestion: () => void;
   resetLesson: () => void;
 }
 
-export function useLessonState(questions: Question[]): UseLessonStateReturn {
+export function useLessonState(
+  questions: (StudentQuestion | Question)[],
+  options?: UseLessonStateOptions
+): UseLessonStateReturn {
   const totalQuestions = questions.length;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionId, setSelectedOptionId] = useState<OptionId | null>(null);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [revealedAnswer, setRevealedAnswer] = useState<RevealedAnswer | null>(null);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [submittedAnswers, setSubmittedAnswers] = useState<
@@ -32,38 +60,58 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  const isCorrect = useMemo(() => {
-    if (!isAnswerSubmitted || !selectedOptionId || !currentQuestion) {
-      return null;
-    }
-    return selectedOptionId === currentQuestion.correctOptionId;
-  }, [isAnswerSubmitted, selectedOptionId, currentQuestion]);
-
   const selectOption = useCallback(
     (id: OptionId) => {
-      if (isAnswerSubmitted) {
-        return; // Bloqueia alteração após confirmação
+      if (isAnswerSubmitted || isVerifying) {
+        return; // Bloqueia alteração após confirmação ou durante conferência
       }
       setSelectedOptionId(id);
     },
-    [isAnswerSubmitted]
+    [isAnswerSubmitted, isVerifying]
   );
 
   const submitAnswer = useCallback(() => {
-    if (isAnswerSubmitted || !selectedOptionId || !currentQuestion) {
-      return; // Bloqueia envios duplicados ou sem alternativa selecionada
+    if (isAnswerSubmitted || isVerifying || !selectedOptionId || !currentQuestion) {
+      return;
     }
 
-    const correct = selectedOptionId === currentQuestion.correctOptionId;
-    if (correct) {
-      setCorrectAnswersCount((prev) => prev + 1);
+    const applyVerifiedAnswer = (correctOptionId: OptionId, explanation: string) => {
+      const correct = selectedOptionId === correctOptionId;
+      setIsCorrect(correct);
+      setRevealedAnswer({ correctOptionId, explanation });
+      if (correct) setCorrectAnswersCount((prev) => prev + 1);
+      setSubmittedAnswers((prev) => [
+        ...prev.filter((answer) => answer.questionId !== currentQuestion.id),
+        { questionId: currentQuestion.id, selectedOptionId },
+      ]);
+      setIsAnswerSubmitted(true);
+    };
+
+    // Lição Guiada/Revisão: FormativeQuestion já contém a chave pedagógica.
+    // Atualização síncrona: nenhum await, Server Action ou transition antes do feedback.
+    if (
+      'correctOptionId' in currentQuestion &&
+      currentQuestion.correctOptionId &&
+      'explanation' in currentQuestion
+    ) {
+      applyVerifiedAnswer(
+        currentQuestion.correctOptionId,
+        typeof currentQuestion.explanation === 'string' ? currentQuestion.explanation : ''
+      );
+      return;
     }
-    setSubmittedAnswers((prev) => [
-      ...prev.filter((a) => a.questionId !== currentQuestion.id),
-      { questionId: currentQuestion.id, selectedOptionId },
-    ]);
-    setIsAnswerSubmitted(true);
-  }, [isAnswerSubmitted, selectedOptionId, currentQuestion]);
+
+    // Fallback de compatibilidade para componentes que ainda recebem StudentQuestion sanitizada.
+    if (options?.onVerifyAnswer) {
+      setIsVerifying(true);
+      void options.onVerifyAnswer(currentQuestion.id, selectedOptionId)
+        .then((result) => applyVerifiedAnswer(result.correctOptionId, result.explanation))
+        .catch((error) => {
+          console.error('[useLessonState] Falha ao validar resposta no servidor:', error);
+        })
+        .finally(() => setIsVerifying(false));
+    }
+  }, [isAnswerSubmitted, isVerifying, selectedOptionId, currentQuestion, options]);
 
   const nextQuestion = useCallback(() => {
     if (!isAnswerSubmitted) {
@@ -74,6 +122,8 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
       setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedOptionId(null);
       setIsAnswerSubmitted(false);
+      setIsCorrect(null);
+      setRevealedAnswer(null);
     } else {
       setIsCompleted(true);
     }
@@ -83,6 +133,8 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
     setCurrentQuestionIndex(0);
     setSelectedOptionId(null);
     setIsAnswerSubmitted(false);
+    setIsCorrect(null);
+    setRevealedAnswer(null);
     setCorrectAnswersCount(0);
     setIsCompleted(false);
     setSubmittedAnswers([]);
@@ -109,6 +161,8 @@ export function useLessonState(questions: Question[]): UseLessonStateReturn {
     isCompleted,
     xpBreakdown,
     submittedAnswers,
+    revealedAnswer,
+    isVerifying,
     selectOption,
     submitAnswer,
     nextQuestion,

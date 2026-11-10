@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import type { OptionId, Question } from '@/features/lesson/types/question';
+import type { OptionId, StudentQuestion } from '@/features/lesson/types/question';
 
 interface SimuladoQuestionCardProps {
   questionOrder: number;
   totalQuestions: number;
-  question: Question;
+  question: StudentQuestion;
   selectedOptionId: OptionId | null;
   isMarkedForReview: boolean;
   onSelectOption: (optionId: OptionId) => void;

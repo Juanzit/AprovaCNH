@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import type { Question } from '../types/question';
+import type { Question, StudentQuestion, OptionId } from '../types/question';
 import { useLessonState } from '../hooks/useLessonState';
 import { LessonHeader } from './LessonHeader';
 import { OptionList } from './OptionList';
@@ -9,25 +9,56 @@ import { FeedbackPanel } from './FeedbackPanel';
 import { LessonSummary } from './LessonSummary';
 import { submitSessionAnswersAction } from '@/features/progress/actions/sessionActions';
 import { submitReviewSessionAction } from '@/features/review/actions/reviewActions';
+import { verifyLessonAnswerAction } from '../actions/lessonActions';
 import type { SessionSubmissionResult } from '@/features/progress/types/progress';
+import { completeGuestSession, readGuestProgress, GUEST_PROGRESS_EVENT } from '@/features/progress/utils/guestProgress';
 
 interface LessonContainerProps {
-  questions: Question[];
+  questions: (StudentQuestion | Question)[];
   sessionId?: number;
+  completedSessionIds?: number[];
   isReviewMode?: boolean;
   customTopic?: string;
   backHref?: string;
   backLabel?: string;
+  isGuest?: boolean;
+  onVerifyAnswer?: (
+    questionId: string,
+    selectedOptionId: OptionId
+  ) => Promise<{
+    isCorrect: boolean;
+    correctOptionId: OptionId;
+    explanation: string;
+  }>;
 }
 
 export function LessonContainer({
   questions,
   sessionId = 1,
+  completedSessionIds = [],
   isReviewMode = false,
   customTopic,
   backHref,
   backLabel,
+  isGuest = false,
+  onVerifyAnswer,
 }: LessonContainerProps) {
+  // Callback padrão utilizando a Server Action autoritativa do servidor
+  const defaultVerifyAnswer = useCallback(
+    async (qId: string, optId: OptionId) => {
+      const res = await verifyLessonAnswerAction(qId, optId);
+      if (!res.success || !res.correctOptionId || !res.explanation) {
+        throw new Error(res.error || 'Falha ao validar resposta no servidor.');
+      }
+      return {
+        isCorrect: res.isCorrect ?? false,
+        correctOptionId: res.correctOptionId,
+        explanation: res.explanation,
+      };
+    },
+    []
+  );
+
   const {
     currentQuestion,
     currentQuestionIndex,
@@ -38,13 +69,45 @@ export function LessonContainer({
     isCompleted,
     xpBreakdown,
     submittedAnswers,
+    revealedAnswer,
+    isVerifying,
     selectOption,
     submitAnswer,
     nextQuestion,
     resetLesson,
-  } = useLessonState(questions);
+  } = useLessonState(questions, {
+    onVerifyAnswer: onVerifyAnswer ?? defaultVerifyAnswer,
+  });
 
   const [serverResult, setServerResult] = useState<SessionSubmissionResult | null>(null);
+  const [summaryCompletedSessionIds, setSummaryCompletedSessionIds] = useState(completedSessionIds);
+  const [guestXpAwarded, setGuestXpAwarded] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (!isGuest) return;
+    const sync = (event?: Event) => {
+      setSummaryCompletedSessionIds(readGuestProgress().completedSessionIds);
+      const detail = event instanceof CustomEvent
+        ? event.detail as { sessionId?: number; xpAwarded?: number } | undefined
+        : undefined;
+      if (detail?.sessionId === sessionId && typeof detail.xpAwarded === 'number') {
+        setGuestXpAwarded(detail.xpAwarded);
+      }
+    };
+    sync();
+    const handleProgressUpdate = (event: Event) => sync(event);
+    window.addEventListener(GUEST_PROGRESS_EVENT, handleProgressUpdate);
+    window.addEventListener('storage', handleProgressUpdate);
+    return () => {
+      window.removeEventListener(GUEST_PROGRESS_EVENT, handleProgressUpdate);
+      window.removeEventListener('storage', handleProgressUpdate);
+    };
+  }, [isGuest]);
+
+  useEffect(() => {
+    if (!isGuest || isReviewMode || !isCompleted) return;
+    completeGuestSession(sessionId, xpBreakdown.totalXp, xpBreakdown.correctAnswersCount);
+  }, [isGuest, isReviewMode, isCompleted, sessionId, xpBreakdown.totalXp, xpBreakdown.correctAnswersCount]);
 
   // Submissão autoritativa no servidor ao concluir as questões da sessão
   useEffect(() => {
@@ -59,7 +122,7 @@ export function LessonContainer({
                 success: true,
                 score: submittedAnswers.length,
                 maxScore: submittedAnswers.length,
-                xpAwarded: 0,
+                xpAwarded: xpBreakdown.totalXp,
                 isFirstCompletion: false,
                 currentStreak: 1,
                 longestStreak: 1,
@@ -67,33 +130,22 @@ export function LessonContainer({
               });
             }
           })
-          .catch(() => {
-            // Falha não-bloqueante
+          .catch((err) => {
+            console.error('[LessonContainer] Falha ao registrar sessão de revisão:', err);
           });
       } else {
         submitSessionAnswersAction({
-          topic: questions[0]?.topic ?? 'Sinalização de Trânsito',
           sessionId,
+          topic: customTopic ?? 'Sinalização de Trânsito',
           answers: submittedAnswers,
         })
           .then((res) => {
-            if (isMounted) {
+            if (isMounted && res.success) {
               setServerResult(res);
             }
           })
-          .catch(() => {
-            if (isMounted) {
-              setServerResult({
-                success: true,
-                score: submittedAnswers.length,
-                maxScore: 5,
-                xpAwarded: 70,
-                isFirstCompletion: true,
-                currentStreak: 1,
-                longestStreak: 1,
-                results: [],
-              });
-            }
+          .catch((err) => {
+            console.error('[LessonContainer] Falha ao registrar progresso no servidor:', err);
           });
       }
     }
@@ -101,32 +153,36 @@ export function LessonContainer({
     return () => {
       isMounted = false;
     };
-  }, [isCompleted, serverResult, submittedAnswers, questions, sessionId, isReviewMode]);
-
-  const handleRestart = useCallback(() => {
-    setServerResult(null);
-    resetLesson();
-  }, [resetLesson]);
+  }, [
+    isCompleted,
+    serverResult,
+    submittedAnswers,
+    isReviewMode,
+    sessionId,
+    customTopic,
+    xpBreakdown.totalXp,
+  ]);
 
   if (isCompleted) {
     return (
       <LessonSummary
         xpBreakdown={xpBreakdown}
-        serverResult={serverResult}
-        onRestart={handleRestart}
         sessionId={sessionId}
+        completedSessionIds={summaryCompletedSessionIds}
+        serverResult={serverResult}
+        xpAwardedOverride={isGuest ? guestXpAwarded : undefined}
         isReviewMode={isReviewMode}
-        backHref={backHref ?? (isReviewMode ? '/revisao' : '/')}
-        backLabel={backLabel ?? (isReviewMode ? 'Voltar ao Centro de Revisão' : 'Voltar à Trilha')}
-        badgeText={isReviewMode ? 'Treino de Revisão Espaçada Concluído' : undefined}
+        onRestart={resetLesson}
+        backHref={backHref}
+        backLabel={backLabel}
       />
     );
   }
 
   if (!currentQuestion) {
     return (
-      <div className="text-center py-12 text-slate-600">
-        Nenhuma questão encontrada.
+      <div className="w-full max-w-2xl mx-auto p-6 text-center text-slate-500">
+        Nenhuma questão encontrada para esta lição.
       </div>
     );
   }
@@ -139,15 +195,16 @@ export function LessonContainer({
         totalQuestions={totalQuestions}
       />
 
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 md:p-8 shadow-sm mb-6">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 md:p-8 shadow-sm mb-6">
         <OptionList
           statement={currentQuestion.statement}
           options={currentQuestion.options}
           selectedOptionId={selectedOptionId}
-          correctOptionId={currentQuestion.correctOptionId}
+          correctOptionId={revealedAnswer?.correctOptionId ?? null}
           isAnswerSubmitted={isAnswerSubmitted}
           onSelectOption={selectOption}
           isExample={currentQuestion.isExample}
+          isVerifying={isVerifying}
         />
 
         {/* Botão de confirmação visível antes da submissão */}
@@ -157,10 +214,11 @@ export function LessonContainer({
               type="button"
               disabled={!selectedOptionId}
               onClick={submitAnswer}
+              aria-busy={isVerifying}
               className={`w-full min-h-11 py-3.5 px-6 rounded-xl font-bold text-white transition-all shadow-sm ${
-                selectedOptionId
-                  ? 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 cursor-pointer'
-                  : 'bg-slate-300 cursor-not-allowed text-slate-500'
+                selectedOptionId && !isVerifying
+                  ? 'bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-500/20 cursor-pointer'
+                  : 'bg-slate-200 dark:bg-slate-800 cursor-not-allowed text-slate-500'
               } focus:outline-none`}
             >
               Confirmar resposta
@@ -168,11 +226,17 @@ export function LessonContainer({
           </div>
         )}
 
-        {/* Painel de feedback imediato após confirmação */}
+        {isVerifying && (
+          <p role="status" aria-live="polite" className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            Resposta recebida. Conferindo o gabarito oficial com segurança…
+          </p>
+        )}
+
+        {/* Painel de feedback após confirmação autoritativa */}
         {isAnswerSubmitted && isCorrect !== null && (
           <FeedbackPanel
             isCorrect={isCorrect}
-            explanation={currentQuestion.explanation}
+            explanation={revealedAnswer?.explanation ?? ''}
             source={currentQuestion.source}
             onNext={nextQuestion}
             isLastQuestion={currentQuestionIndex === totalQuestions - 1}

@@ -1,4 +1,4 @@
-import type { Question } from '@/features/lesson/types/question';
+import type { StudentQuestion } from '@/features/lesson/types/question';
 
 export interface UserAnswerRecord {
   id: string;
@@ -39,7 +39,7 @@ export interface SubtopicMastery {
 }
 
 export interface ReviewItem {
-  question: Question;
+  question: StudentQuestion;
   stats: QuestionReviewStats;
 }
 

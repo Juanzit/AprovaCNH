@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
-import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
-import type { Question } from '@/features/lesson/types/question';
+import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
+import { getApprovedQuestionsByTopic, getApprovedFormativeQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
+import type { Question, StudentQuestion, FormativeQuestion } from '@/features/lesson/types/question';
 import type {
   UserAnswerRecord,
   ReviewDashboardData,
@@ -24,15 +25,9 @@ export const inMemoryGuestAnswers: UserAnswerRecord[] = [];
  */
 export async function getUserAnswerRecords(customUserId?: string): Promise<UserAnswerRecord[]> {
   try {
-    const supabase = await createClient();
-    let uid = customUserId;
-
-    if (!uid) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      uid = user?.id;
-    }
+    const authContext = customUserId ? null : await getSupabaseAuthContext();
+    const supabase = authContext?.supabase ?? await createClient();
+    const uid = customUserId ?? authContext?.user?.id;
 
     if (!uid) {
       return [...inMemoryGuestAnswers];
@@ -67,10 +62,25 @@ export async function getUserAnswerRecords(customUserId?: string): Promise<UserA
  * - Fila determinística de repetição espaçada com prioridades e explicações
  */
 export async function getReviewDashboardData(customUserId?: string): Promise<ReviewDashboardData> {
-  const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
-  const questionMap = new Map<string, Question>(allQuestions.map((q) => [q.id, q]));
+  const { user } = customUserId
+    ? { user: { id: customUserId } }
+    : await getSupabaseAuthContext();
 
-  const records = await getUserAnswerRecords(customUserId);
+  let records: UserAnswerRecord[];
+  let allQuestions: StudentQuestion[];
+  if (user) {
+    [records, allQuestions] = await Promise.all([
+      getUserAnswerRecords(user.id),
+      getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    ]);
+  } else {
+    records = await getUserAnswerRecords();
+    allQuestions = records.length > 0
+      ? await getApprovedQuestionsByTopic('Sinalização de Trânsito')
+      : [];
+  }
+
+  const questionMap = new Map<string, StudentQuestion>(allQuestions.map((q) => [q.id, q]));
 
   // Agrupa respostas por question_id
   const answersByQuestionId = new Map<string, UserAnswerRecord[]>();
@@ -105,7 +115,10 @@ export async function getReviewDashboardData(customUserId?: string): Promise<Rev
 
   const totalOverdue = sortedQueue.filter((item) => item.stats.isOverdue).length;
   const totalRecentErrors = sortedQueue.filter((item) => !item.stats.lastIsCorrect).length;
-  const totalPracticedQuestions = answersByQuestionId.size;
+  const unitQuestionIds = new Set(UNIT_1_SUBTOPICS.flatMap((subtopic) => subtopic.questionIds));
+  const totalPracticedQuestions = Array.from(answersByQuestionId.keys()).filter((id) =>
+    unitQuestionIds.has(id)
+  ).length;
 
   return {
     subtopics,
@@ -124,17 +137,18 @@ export async function getReviewDashboardData(customUserId?: string): Promise<Rev
 export async function getPriorityReviewQuestions(
   limit = 5,
   customUserId?: string
-): Promise<Question[]> {
-  const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
+): Promise<FormativeQuestion[]> {
+  const allQuestions = await getApprovedFormativeQuestionsByTopic('Sinalização de Trânsito');
   const dashboard = await getReviewDashboardData(customUserId);
 
-  const selectedQuestions: Question[] = [];
+  const selectedQuestions: FormativeQuestion[] = [];
   const selectedIds = new Set<string>();
 
   // 1. Primeiro seleciona da fila ordenada de prioridade (questões que precisam de revisão)
   for (const item of dashboard.queue) {
     if (selectedQuestions.length >= limit) break;
-    selectedQuestions.push(item.question);
+    const formativeQuestion = allQuestions.find((question) => question.id === item.question.id);
+    if (formativeQuestion) selectedQuestions.push(formativeQuestion);
     selectedIds.add(item.question.id);
   }
 
@@ -161,6 +175,7 @@ export async function submitReviewSession(
   customUserId?: string
 ) {
   const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
+  const answerKeys = await getQuestionAnswerKeys(answers.map((a) => a.questionId));
   const questionMap = new Map(allQuestions.map((q) => [q.id, q]));
 
   const supabase = await createClient();
@@ -186,9 +201,10 @@ export async function submitReviewSession(
 
   for (const sub of answers) {
     const q = questionMap.get(sub.questionId);
-    if (!q) continue;
+    const key = answerKeys.get(sub.questionId);
+    if (!q || !key) continue;
 
-    const isCorrect = sub.selectedOptionId === q.correctOptionId;
+    const isCorrect = sub.selectedOptionId === key.correctOptionId;
     const sessionId = findSessionId(sub.questionId);
 
     const record: UserAnswerRecord = {

@@ -1,0 +1,189 @@
+import { describe, it, expect, vi } from 'vitest';
+import rawQuestions from '@/data/questions-sinalizacao.json';
+import {
+  isQuestionEligibleForStudents,
+  questionBankSchema,
+  type ValidatedQuestion,
+} from '@/features/lesson/schemas/questionSchema';
+import {
+  getApprovedQuestionsByTopic,
+  getFallbackApprovedQuestions,
+} from '@/features/lesson/server/questionRepository';
+import {
+  getPriorityReviewQuestions,
+  getReviewDashboardData,
+} from '@/features/review/server/reviewRepository';
+import {
+  generateSimuladoQuestions,
+  InsufficientApprovedQuestionsError,
+} from '@/features/simulado/utils/simuladoGenerator';
+
+// Mock hermético do Supabase Server para garantir isolamento de rede em testes unitários / CI
+vi.mock('@/lib/supabase/server', () => {
+  const createMockBuilder = () => {
+    const builder: Record<string, unknown> = {};
+    builder.select = vi.fn().mockReturnValue(builder);
+    builder.eq = vi.fn().mockReturnValue(builder);
+    builder.ilike = vi.fn().mockReturnValue(builder);
+    builder.order = vi.fn().mockReturnValue(builder);
+    builder.then = (resolve: (value: { data: unknown[]; error: null }) => void) =>
+      resolve({ data: [], error: null });
+    return builder;
+  };
+
+  return {
+    createClient: vi.fn(async () => ({
+      auth: {
+        getUser: vi.fn(async () => ({ data: { user: null }, error: null })),
+      },
+      from: vi.fn(() => createMockBuilder()),
+    })),
+  };
+});
+
+describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Discentes — P0 (AGENTS.md / D010)', () => {
+  const parsedBank = questionBankSchema.parse(rawQuestions);
+
+  function createMockApprovedBank(count: number): ValidatedQuestion[] {
+    const base = parsedBank.filter((q) => q.status === 'aprovada');
+    const result: ValidatedQuestion[] = [];
+    for (let i = 0; i < count; i++) {
+      const template = base[i % base.length];
+      result.push({
+        ...template,
+        id: `mock-sec-${i + 1}`,
+        status: 'aprovada',
+        isExample: false,
+      });
+    }
+    return result;
+  }
+
+  // 1. Regra Central de Elegibilidade
+  it('isQuestionEligibleForStudents aceita exclusivamente questões com status "aprovada" e isExample === false', () => {
+    expect(isQuestionEligibleForStudents({ status: 'aprovada', isExample: false })).toBe(true);
+    expect(isQuestionEligibleForStudents({ status: 'aprovada', isExample: true })).toBe(false);
+    expect(isQuestionEligibleForStudents({ status: 'em_revisao', isExample: false })).toBe(false);
+    expect(isQuestionEligibleForStudents({ status: 'rascunho', isExample: false })).toBe(false);
+    expect(isQuestionEligibleForStudents({ status: 'suspensa', isExample: false })).toBe(false);
+    expect(isQuestionEligibleForStudents({ status: 'obsoleta', isExample: false })).toBe(false);
+  });
+
+  // 2. Não utilizar verificationStatus como substituto de aprovação editorial
+  it('não permite publicação de questão com verificationStatus="verified" se o status editorial não for "aprovada"', () => {
+    const questionWithVerifiedSource = {
+      ...parsedBank[0],
+      status: 'em_revisao' as const,
+      source: {
+        ...parsedBank[0].source,
+        verificationStatus: 'verified' as const,
+      },
+    };
+
+    expect(isQuestionEligibleForStudents(questionWithVerifiedSource)).toBe(false);
+  });
+
+  // 3. Não inferir aprovação pela existência de fonte oficial
+  it('não permite publicação de questão com fonte oficial se o status for "em_revisao"', () => {
+    const formallyApprovedQuestion = parsedBank.find((q) => q.id === 'sin-021')!;
+    expect(formallyApprovedQuestion.source.kind).toBe('official');
+    expect(formallyApprovedQuestion.status).toBe('aprovada');
+    expect(formallyApprovedQuestion.review?.approvedBy).toBe('Responsável humano pelo projeto / Tech Lead');
+
+    const stillInReview = { ...formallyApprovedQuestion, status: 'em_revisao' as const };
+    expect(isQuestionEligibleForStudents(stillInReview)).toBe(false);
+  });
+
+  // 4. Caminho 1: Fallback local — retorna as 30 questões formalmente homologadas
+  it('Caminho 1 (Fallback Local): retorna as 30 questões formalmente homologadas', () => {
+    const fallback = getFallbackApprovedQuestions();
+    expect(fallback).toHaveLength(30);
+
+    const ids = fallback.map((q) => q.id);
+    expect(ids).toContain('sin-001');
+    expect(ids).toContain('sin-020');
+    expect(ids).toContain('sin-021');
+    expect(ids).toContain('sin-030');
+
+    for (const q of fallback) {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
+    }
+  });
+
+  // 5. Caminho 2: Lições Interativas — getApprovedQuestionsByTopic entrega apenas elegíveis
+  it('Caminho 2 (Lições): getApprovedQuestionsByTopic entrega exclusivamente questões elegíveis para estudantes', async () => {
+    const lessonQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
+    expect(lessonQuestions.length).toBeGreaterThanOrEqual(20);
+
+    for (const q of lessonQuestions) {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
+      expect(q.options).toHaveLength(4);
+    }
+  });
+
+  // 6. Caminho 3: Revisão Espaçada (SRS) — Painel e Fila Prática contêm apenas questões elegíveis
+  it('Caminho 3 (Revisão Espaçada): getReviewDashboardData e getPriorityReviewQuestions usam somente questões elegíveis', async () => {
+    const dashboard = await getReviewDashboardData();
+    for (const item of dashboard.queue) {
+      expect(isQuestionEligibleForStudents(item.question)).toBe(true);
+      expect(item.question.status).toBe('aprovada');
+      expect(item.question.isExample).toBe(false);
+    }
+
+    const priorityQuestions = await getPriorityReviewQuestions(5);
+    expect(priorityQuestions).toHaveLength(5);
+    for (const q of priorityQuestions) {
+      expect(isQuestionEligibleForStudents(q)).toBe(true);
+      expect(q.status).toBe('aprovada');
+      expect(q.isExample).toBe(false);
+    }
+  });
+
+  // 7. Caminho 4: Gerador de Simulado — Rejeita conjunto insuficiente e descarta itens não elegíveis
+  it('Caminho 4 (Simulado): monta 30 questões após homologação e rejeita qualquer pool realmente insuficiente', () => {
+    const fallback = getFallbackApprovedQuestions();
+    expect(fallback).toHaveLength(30);
+    expect(generateSimuladoQuestions(fallback, { totalQuestions: 30, seed: 41 })).toHaveLength(30);
+
+    const twentyNineApproved = createMockApprovedBank(29);
+    const tenPending = parsedBank.slice(0, 10).map((question, index) => ({
+      ...question,
+      id: `pending-security-${index + 1}`,
+      status: 'em_revisao' as const,
+    }));
+
+    expect(() =>
+      generateSimuladoQuestions([...twentyNineApproved, ...tenPending], { totalQuestions: 30 })
+    ).toThrow(InsufficientApprovedQuestionsError);
+  });
+
+  // 8. Caminho 5: Lógica Predicativa em Memória — Simulação de regra booleana em TypeScript
+  // NOTA DE ESCOPO: Este teste unitário valida unicamente a álgebra booleana do predicado em memória.
+  // Ele NÃO executa chamadas PostgREST nem atesta a aplicação de políticas RLS em banco PostgreSQL real.
+  it('Caminho 5 (Validação Lógica em TypeScript): validação unitária em memória do predicado booleano de elegibilidade discente', () => {
+    // Função predicativa em memória equivalente à regra teórica de elegibilidade discente
+    const canStudentSelectQuestion = (row: { status: string; is_example: boolean }): boolean => {
+      return row.status === 'aprovada' && row.is_example === false;
+    };
+
+    // Caso 1: Aprovada e real -> Permitido
+    expect(canStudentSelectQuestion({ status: 'aprovada', is_example: false })).toBe(true);
+
+    // Caso 2: Rascunho com is_example=true (vulnerabilidade da política antiga 000000) -> Agora BLOQUEADO
+    expect(canStudentSelectQuestion({ status: 'rascunho', is_example: true })).toBe(false);
+
+    // Caso 3: Aprovada demonstrativa (is_example=true) -> Agora BLOQUEADO para alunos
+    expect(canStudentSelectQuestion({ status: 'aprovada', is_example: true })).toBe(false);
+
+    // Caso 4: Qualquer questão que permaneça em revisão -> BLOQUEADO
+    expect(canStudentSelectQuestion({ status: 'em_revisao', is_example: false })).toBe(false);
+
+    // Caso 5: Suspensa ou obsoleta -> BLOQUEADO
+    expect(canStudentSelectQuestion({ status: 'suspensa', is_example: false })).toBe(false);
+    expect(canStudentSelectQuestion({ status: 'obsoleta', is_example: false })).toBe(false);
+  });
+});

@@ -59,3 +59,41 @@ export interface Question {
   isExample: boolean;
   review?: QuestionReview | null;
 }
+
+/**
+ * DTO Discente Público: Entregue aos componentes React clientes (Simulado, Lição).
+ * Proibido conter correctOptionId, explanation ou question_reviews.
+ */
+export interface StudentQuestion {
+  id: string;
+  version: number;
+  statement: string;
+  options: [QuestionOption, QuestionOption, QuestionOption, QuestionOption];
+  topic: string;
+  subtopic?: string;
+  ufs: string[];
+  categories: string[];
+  source: QuestionSource;
+  status: 'aprovada';
+  isExample: false;
+}
+
+/**
+ * DTO de uso exclusivamente formativo em Lição Guiada e Revisão.
+ * O gabarito é enviado ao cliente de forma intencional para feedback síncrono.
+ * O Simulado continua usando StudentQuestion e mantém o gabarito somente no servidor.
+ */
+export interface FormativeQuestion extends StudentQuestion {
+  correctOptionId: OptionId;
+  explanation: string;
+}
+
+/**
+ * Estrutura Privada do Servidor: Mantida exclusivamente no backend Node.js.
+ * Utilizada para conferência autoritativa de respostas no servidor.
+ */
+export interface QuestionAnswerKey {
+  questionId: string;
+  correctOptionId: OptionId;
+  explanation: string;
+}

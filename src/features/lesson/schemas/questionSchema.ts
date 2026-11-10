@@ -161,10 +161,16 @@ export const questionSchema = z
           path: ['source', 'kind'],
         });
       }
-      if (data.source.verificationStatus !== 'verified') {
+      const hasFormalHumanApproval =
+        data.review?.approvedBy === 'Responsável humano pelo projeto / Tech Lead' &&
+        Boolean(data.review.approvedAt);
+
+      // A homologação humana explícita pode aprovar editorialmente a questão sem
+      // sobrescrever o estado documental independente da fonte (migration 000007).
+      if (data.source.verificationStatus !== 'verified' && !hasFormalHumanApproval) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Questões aprovadas devem ter source.verificationStatus como "verified".',
+          message: 'Questões aprovadas exigem fonte verificada ou homologação humana formal registrada.',
           path: ['source', 'verificationStatus'],
         });
       }
@@ -204,10 +210,14 @@ export const questionSchema = z
             path: ['review', 'generatorModel'],
           });
         }
-        if (!data.review.verifierModel || data.review.verifierModel.trim() === '') {
+        const hasFormalHumanApproval =
+          data.review.approvedBy === 'Responsável humano pelo projeto / Tech Lead' &&
+          Boolean(data.review.approvedAt);
+
+        if ((!data.review.verifierModel || data.review.verifierModel.trim() === '') && !hasFormalHumanApproval) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'Questões aprovadas exigem review.verifierModel preenchido.',
+            message: 'Questões aprovadas exigem modelo verificador ou homologação humana formal registrada.',
             path: ['review', 'verifierModel'],
           });
         }
@@ -248,7 +258,164 @@ export const questionBankSchema = z
   .array(questionSchema)
   .min(20, 'O banco de questões deve conter no mínimo 20 questões.');
 
+export const editorialQuestionSchema = questionSchema;
+
+/**
+ * Schema Discente Público: Valida exclusivamente os campos públicos de questões aprovadas.
+ * Proíbe estritamente a presença de correctOptionId, explanation ou metadados de auditoria.
+ */
+export const studentQuestionSchema = z
+  .object({
+    id: z.string().min(1),
+    version: z.number().int().positive(),
+    statement: z.string().min(5, 'O enunciado deve ser descritivo.'),
+    options: z.tuple([
+      questionOptionSchema,
+      questionOptionSchema,
+      questionOptionSchema,
+      questionOptionSchema,
+    ]),
+    topic: z.string().min(1),
+    subtopic: z.string().optional(),
+    ufs: z.array(z.string()),
+    categories: z.array(z.string()),
+    source: questionSourceSchema,
+    status: z.literal('aprovada'),
+    isExample: z.literal(false),
+  })
+  .superRefine((data, ctx) => {
+    // 1. Unicidade de IDs nas alternativas
+    const optionIds = data.options.map((o) => o.id);
+    const uniqueIds = new Set(optionIds);
+    if (uniqueIds.size !== 4) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Os IDs das quatro alternativas devem ser únicos (a, b, c, d).',
+        path: ['options'],
+      });
+    }
+
+    // 2. Proibição de "BR" como código de UF (D014)
+    if (data.ufs && data.ufs.some((uf) => uf.toUpperCase() === 'BR')) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'A sigla "BR" não é um código de UF válido (D014).',
+        path: ['ufs'],
+      });
+    }
+
+    // 3. Exigência de campos obrigatórios de source para questões aprovadas
+    const requiredSourceFields = [
+      'document',
+      'provision',
+      'url',
+      'checkedAt',
+      'effectiveFrom',
+      'sourceVersion',
+    ] as const;
+
+    for (const field of requiredSourceFields) {
+      const val = data.source[field];
+      if (!val || (typeof val === 'string' && val.trim() === '')) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Questões aprovadas discentes exigem source.${field} preenchido.`,
+          path: ['source', field],
+        });
+      }
+    }
+  });
+
+/**
+ * Schema Privado do Servidor: Estrutura isolada de gabarito e explicação pedagógica.
+ */
+export const questionAnswerKeySchema = z.object({
+  questionId: z.string().min(1),
+  correctOptionId: optionIdSchema,
+  explanation: z.string().min(1),
+});
+
 export type ValidatedQuestion = z.infer<typeof questionSchema>;
+export type ValidatedEditorialQuestion = z.infer<typeof editorialQuestionSchema>;
+export type ValidatedStudentQuestion = z.infer<typeof studentQuestionSchema>;
+export type ValidatedQuestionAnswerKey = z.infer<typeof questionAnswerKeySchema>;
 export type ValidatedQuestionReview = z.infer<typeof questionReviewSchema>;
 export type ValidatedLessonSeed = z.infer<typeof lessonSeedSchema>;
 export type ValidatedQuestionBank = z.infer<typeof questionBankSchema>;
+
+/**
+ * Converte qualquer questão aprovada para o DTO discente sanitizado,
+ * garantindo a exclusão de correctOptionId, explanation e review.
+ */
+export function toStudentQuestion(q: {
+  id: string;
+  version: number;
+  statement: string;
+  options: unknown;
+  topic: string;
+  subtopic?: string | null;
+  ufs?: string[] | null;
+  categories?: string[] | null;
+  source: any;
+  status: string;
+  isExample?: boolean;
+}): ValidatedStudentQuestion {
+  if (q.status !== 'aprovada' || q.isExample) {
+    throw new Error(
+      `[Security] Tentativa de gerar DTO discente para questão inelegível: status=${q.status}, isExample=${q.isExample}`
+    );
+  }
+  const candidate = {
+    id: q.id,
+    version: q.version,
+    statement: q.statement,
+    options: q.options,
+    topic: q.topic,
+    subtopic: q.subtopic ?? undefined,
+    ufs: q.ufs ?? [],
+    categories: q.categories ?? [],
+    source: {
+      kind: q.source?.kind ?? 'official',
+      document: q.source?.document ?? null,
+      provision: q.source?.provision ?? null,
+      url: q.source?.url ?? null,
+      checkedAt: q.source?.checkedAt ?? q.source?.checked_at ?? null,
+      effectiveFrom: q.source?.effectiveFrom ?? q.source?.effective_from ?? null,
+      effectiveUntil: q.source?.effectiveUntil ?? q.source?.effective_until ?? null,
+      sourceVersion: q.source?.sourceVersion ?? q.source?.source_version ?? null,
+      licenseNote: q.source?.licenseNote ?? q.source?.license_note ?? null,
+      verificationStatus: q.source?.verificationStatus ?? q.source?.verification_status ?? 'pending',
+    },
+    status: 'aprovada' as const,
+    isExample: false as const,
+  };
+  return studentQuestionSchema.parse(candidate);
+}
+
+/**
+ * Extrai de forma controlada no servidor a chave de resposta privada.
+ */
+export function extractAnswerKey(q: {
+  id: string;
+  correctOptionId: 'a' | 'b' | 'c' | 'd';
+  explanation: string;
+}): ValidatedQuestionAnswerKey {
+  return questionAnswerKeySchema.parse({
+    questionId: q.id,
+    correctOptionId: q.correctOptionId,
+    explanation: q.explanation,
+  });
+}
+
+/**
+ * Regra central e consistente de elegibilidade de questões para publicação e estudantes (Regra D010 / AGENTS.md).
+ * Uma questão SOMENTE é elegível para visualização do aluno (Lições, SRS, Simulado, Fallback) se possuir
+ * status editorial 'aprovada' e não for um rascunho/exemplo demonstrativo (isExample === false).
+ * Questões com status 'em_revisao', 'rascunho', 'suspensa' ou 'obsoleta' JAMAIS são elegíveis.
+ */
+export function isQuestionEligibleForStudents(q: {
+  status: string;
+  isExample?: boolean;
+}): boolean {
+  return q.status === 'aprovada' && !q.isExample;
+}

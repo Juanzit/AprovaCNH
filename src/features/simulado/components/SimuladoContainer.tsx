@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import type { OptionId } from '@/features/lesson/types/question';
 import type {
   ExamConfig,
@@ -231,8 +232,31 @@ export function SimuladoContainer({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isFinishModalOpen, isSubmitting, handleSelectOption]);
 
-  if (!currentItem || !currentAnswer) {
-    return null;
+  if (items.length === 0 || !currentItem || !currentAnswer) {
+    return (
+      <div className="w-full max-w-xl mx-auto px-4 py-12 text-center space-y-4">
+        <div
+          role="alert"
+          className="p-6 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 space-y-3"
+        >
+          <span className="text-3xl" aria-hidden="true">
+            ⚠️
+          </span>
+          <h2 className="text-lg font-extrabold text-amber-900">
+            Nenhuma questão disponível para este simulado
+          </h2>
+          <p className="text-sm text-amber-800 leading-relaxed">
+            Não foi possível carregar as questões aprovadas necessárias para iniciar esta prova. Retorne ao painel e tente novamente mais tarde.
+          </p>
+        </div>
+        <Link
+          href="/simulado"
+          className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors"
+        >
+          Voltar para o Simulado
+        </Link>
+      </div>
+    );
   }
 
   const progressPercent = Math.round((answeredCount / items.length) * 100);

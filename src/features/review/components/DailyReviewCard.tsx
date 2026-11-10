@@ -31,7 +31,7 @@ export function DailyReviewCard({
     <section
       aria-labelledby="daily-review-heading"
       data-testid="daily-review-card"
-      className="w-full bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs space-y-4"
+      className="card-premium p-5 space-y-4"
     >
       <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
         <div>

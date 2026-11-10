@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { StudentProfile } from '../types/progress';
 import { ProfileModal, VISITOR_PROFILE_STORAGE_KEY } from './ProfileModal';
+import { GUEST_PROGRESS_EVENT, GUEST_PROGRESS_STORAGE_KEY, readGuestProgress } from '../utils/guestProgress';
 
 interface StudentHeaderProps {
   initialProfile: StudentProfile;
@@ -46,6 +47,24 @@ export function StudentHeader({ initialProfile }: StudentHeaderProps) {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    if (initialProfile.id !== 'guest') return;
+    const sync = () => {
+      const hasStoredProgress = window.localStorage.getItem(GUEST_PROGRESS_STORAGE_KEY) !== null;
+      setProfile((prev) => ({
+        ...prev,
+        xpTotal: hasStoredProgress ? readGuestProgress().xpTotal : initialProfile.xpTotal,
+      }));
+    };
+    sync();
+    window.addEventListener(GUEST_PROGRESS_EVENT, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(GUEST_PROGRESS_EVENT, sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, [initialProfile.id]);
+
   const initial = profile.fullName ? profile.fullName.charAt(0).toUpperCase() : 'E';
   const activeDaysCount = Math.min(7, Math.max(0, profile.currentStreak));
   const dailyGoalCompleted = profile.currentStreak > 0;
@@ -64,7 +83,7 @@ export function StudentHeader({ initialProfile }: StudentHeaderProps) {
     <>
       <section
         aria-label="Resumo do Estudante"
-        className="w-full bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-3"
+        className="card-premium p-5 space-y-4"
       >
         {/* Linha 1: Identificação Compacta do Aluno + Badges de UF/Categoria + Botão Editar */}
         <div className="flex items-center justify-between gap-2.5">

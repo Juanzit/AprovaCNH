@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useLessonState } from '@/features/lesson/hooks/useLessonState';
 import rawSeed from '@/data/seed-sinalizacao.json';
@@ -50,6 +50,27 @@ describe('useLessonState', () => {
     });
 
     expect(result.current.selectedOptionId).toBe('a');
+  });
+
+  it('exibe o feedback formativo sincronamente sem chamar a validação remota', () => {
+    const onVerifyAnswer = vi.fn().mockResolvedValue({
+      isCorrect: true,
+      correctOptionId: 'a',
+      explanation: 'A explicação pedagógica já está no DTO formativo.',
+    });
+    const { result } = renderHook(() => useLessonState(sampleQuestions, { onVerifyAnswer }));
+
+    act(() => {
+      result.current.selectOption(sampleQuestions[0].correctOptionId);
+    });
+    act(() => {
+      result.current.submitAnswer();
+    });
+
+    expect(result.current.isAnswerSubmitted).toBe(true);
+    expect(result.current.isCorrect).toBe(true);
+    expect(result.current.revealedAnswer?.explanation).toBeTruthy();
+    expect(onVerifyAnswer).not.toHaveBeenCalled();
   });
 
   it('deve ignorar chamadas duplicadas de submitAnswer sem pontuar a mais', () => {

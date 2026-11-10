@@ -11,12 +11,26 @@ vi.mock('@/lib/supabase/server', () => ({
 
 vi.mock('@/features/lesson/server/questionRepository', () => ({
   getApprovedQuestionsByTopic: vi.fn().mockResolvedValue([
-    { id: 'sin-001', correctOptionId: 'b' },
-    { id: 'sin-002', correctOptionId: 'a' },
-    { id: 'sin-003', correctOptionId: 'a' },
-    { id: 'sin-004', correctOptionId: 'a' },
-    { id: 'sin-005', correctOptionId: 'b' },
+    { id: 'sin-001', options: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }] },
+    { id: 'sin-002', options: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }] },
+    { id: 'sin-003', options: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }] },
+    { id: 'sin-004', options: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }] },
+    { id: 'sin-005', options: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }] },
   ]),
+  getQuestionAnswerKeys: vi.fn().mockImplementation(async (ids: string[]) => {
+    const keys: Record<string, { questionId: string; correctOptionId: 'a' | 'b' | 'c' | 'd'; explanation: string }> = {
+      'sin-001': { questionId: 'sin-001', correctOptionId: 'b', explanation: 'Exp 1' },
+      'sin-002': { questionId: 'sin-002', correctOptionId: 'a', explanation: 'Exp 2' },
+      'sin-003': { questionId: 'sin-003', correctOptionId: 'a', explanation: 'Exp 3' },
+      'sin-004': { questionId: 'sin-004', correctOptionId: 'a', explanation: 'Exp 4' },
+      'sin-005': { questionId: 'sin-005', correctOptionId: 'b', explanation: 'Exp 5' },
+    };
+    const map = new Map();
+    ids.forEach((id) => {
+      if (keys[id]) map.set(id, keys[id]);
+    });
+    return map;
+  }),
 }));
 
 describe('progressRepository (Validação Autoritativa no Servidor)', () => {

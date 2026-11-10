@@ -11,7 +11,7 @@ interface ReviewQueueListProps {
 export function ReviewQueueList({ queue }: ReviewQueueListProps) {
   if (queue.length === 0) {
     return (
-      <section aria-labelledby="queue-heading" className="w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-xs text-center space-y-3">
+      <section aria-labelledby="queue-heading" className="card-premium p-6 sm:p-8 text-center space-y-3">
         <h2 id="queue-heading" className="text-base font-bold text-slate-900">
           📋 Fila de Repetição Espaçada
         </h2>
@@ -35,7 +35,7 @@ export function ReviewQueueList({ queue }: ReviewQueueListProps) {
   }
 
   return (
-    <section aria-labelledby="queue-heading" className="w-full bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-xs space-y-4">
+    <section aria-labelledby="queue-heading" className="card-premium p-5 sm:p-6 space-y-4">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3">
         <div>
           <h2 id="queue-heading" className="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -46,7 +46,7 @@ export function ReviewQueueList({ queue }: ReviewQueueListProps) {
             Ordenação determinística por urgência de retenção e histórico de erros.
           </p>
         </div>
-        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">
+        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-700 dark:text-blue-200">
           {queue.length} questão{queue.length > 1 ? 'ões' : ''}
         </span>
       </div>
@@ -62,10 +62,10 @@ export function ReviewQueueList({ queue }: ReviewQueueListProps) {
               data-testid={`queue-item-${question.id}`}
               className={`p-4 rounded-xl border transition-all ${
                 isError
-                  ? 'border-red-200 bg-red-50/40'
+                  ? 'border-red-200 dark:border-red-500/30 bg-white dark:bg-slate-900'
                   : stats.isOverdue
-                  ? 'border-amber-200 bg-amber-50/30'
-                  : 'border-slate-200 bg-white'
+                  ? 'border-amber-200 dark:border-amber-500/30 bg-white dark:bg-slate-900'
+                  : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900'
               } flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`}
             >
               <div className="space-y-1">
@@ -73,7 +73,7 @@ export function ReviewQueueList({ queue }: ReviewQueueListProps) {
                   <span className="text-xs font-bold text-slate-500">
                     #{index + 1}
                   </span>
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-800">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200">
                     {question.id}
                   </span>
                   <span className="text-xs font-semibold text-blue-700">
@@ -101,7 +101,7 @@ export function ReviewQueueList({ queue }: ReviewQueueListProps) {
                 </div>
               </div>
 
-              <div className="sm:text-right shrink-0 flex sm:flex-col items-center sm:items-end justify-between gap-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-200/60">
+              <div className="sm:text-right shrink-0 flex sm:flex-col items-center sm:items-end justify-between gap-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-200/60 dark:border-slate-800">
                 <div className="text-xs text-slate-500">
                   <span className="font-semibold text-slate-700">
                     {stats.correctAttempts}/{stats.totalAttempts} acertos
@@ -111,7 +111,7 @@ export function ReviewQueueList({ queue }: ReviewQueueListProps) {
                   </span>
                 </div>
 
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                   Prioridade: {Math.round(stats.priorityScore)}
                 </span>
               </div>

@@ -6,27 +6,29 @@ interface OptionListProps {
   statement: string;
   options: [QuestionOption, QuestionOption, QuestionOption, QuestionOption];
   selectedOptionId: OptionId | null;
-  correctOptionId: OptionId;
+  correctOptionId?: OptionId | null;
   isAnswerSubmitted: boolean;
   onSelectOption: (id: OptionId) => void;
   isExample?: boolean;
+  isVerifying?: boolean;
 }
 
 export function OptionList({
   statement,
   options,
   selectedOptionId,
-  correctOptionId,
+  correctOptionId = null,
   isAnswerSubmitted,
   onSelectOption,
   isExample = false,
+  isVerifying = false,
 }: OptionListProps) {
   return (
     <fieldset className="w-full border-0 p-0 m-0">
       {/* Banner de conteúdo demonstrativo ou baseado no MBFT */}
       {isExample ? (
         <div
-          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium"
+          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium dark:bg-amber-500/15 dark:border-amber-700 dark:text-amber-100"
           role="note"
         >
           <AlertCircleIcon className="w-4 h-4 shrink-0 text-amber-600" />
@@ -34,7 +36,7 @@ export function OptionList({
         </div>
       ) : (
         <div
-          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold"
+          className="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold dark:bg-emerald-500/15 dark:border-emerald-700 dark:text-emerald-100"
           role="note"
         >
           <CheckIcon className="w-4 h-4 shrink-0 text-emerald-600" />
@@ -55,18 +57,18 @@ export function OptionList({
 
           // Classes dinâmicas baseadas no estado
           let stateStyle =
-            'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800';
+            'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-slate-100';
 
           if (isAnswerSubmitted) {
             if (isCorrectOption) {
-              stateStyle = 'bg-emerald-50 border-emerald-500 text-emerald-950 font-medium';
+              stateStyle = 'bg-emerald-50 border-emerald-500 text-emerald-950 font-medium dark:bg-emerald-500/15 dark:border-emerald-500 dark:text-emerald-50';
             } else if (isSelected && !isCorrectOption) {
-              stateStyle = 'bg-red-50 border-red-500 text-red-950';
+              stateStyle = 'bg-red-50 border-red-500 text-red-950 dark:bg-red-500/15 dark:border-red-500 dark:text-red-50';
             } else {
-              stateStyle = 'bg-slate-50 border-slate-200 text-slate-400 opacity-60';
+              stateStyle = 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300';
             }
           } else if (isSelected) {
-            stateStyle = 'bg-blue-50 border-blue-600 text-blue-950 shadow-sm';
+            stateStyle = 'bg-blue-50 border-blue-600 text-blue-950 shadow-sm dark:bg-blue-600/25 dark:border-blue-500 dark:text-white';
           }
 
           return (
@@ -74,7 +76,7 @@ export function OptionList({
               key={option.id}
               htmlFor={`option-${option.id}`}
               className={`flex items-start gap-3.5 p-4 rounded-xl border-2 cursor-pointer transition-all min-h-[56px] select-none ${stateStyle} ${
-                isAnswerSubmitted ? 'cursor-default' : ''
+                isAnswerSubmitted || isVerifying ? 'cursor-default' : ''
               }`}
             >
               <input
@@ -83,7 +85,7 @@ export function OptionList({
                 name="lesson-options"
                 value={option.id}
                 checked={isSelected}
-                disabled={isAnswerSubmitted}
+                disabled={isAnswerSubmitted || isVerifying}
                 onChange={() => onSelectOption(option.id)}
                 className="mt-1 w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-600 focus:ring-offset-2 shrink-0"
               />

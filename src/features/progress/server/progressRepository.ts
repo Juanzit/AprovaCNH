@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase/server';
-import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
+import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
+import { getApprovedQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
 import { calculateDailyStreak } from '../utils/streakCalculator';
 import type {
   StudentProfile,
@@ -28,10 +28,7 @@ export const GUEST_PROFILE: StudentProfile = {
  */
 export async function getStudentProfile(): Promise<StudentProfile> {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return GUEST_PROFILE;
@@ -84,10 +81,7 @@ export async function updateStudentProfile(data: {
       return { success: false, error: 'A sigla "BR" não é permitida como código de UF (D014).' };
     }
 
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return { success: false, error: 'Usuário não autenticado.' };
@@ -133,10 +127,7 @@ export async function getLessonTopicProgress(
   }));
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return defaultSessions;
@@ -184,6 +175,7 @@ export async function evaluateAndRecordSession(
   payload: SessionSubmissionPayload
 ): Promise<SessionSubmissionResult> {
   const allQuestions = await getApprovedQuestionsByTopic(payload.topic);
+  const answerKeys = await getQuestionAnswerKeys(payload.answers.map((a) => a.questionId));
 
   // Isola as 5 questões da sessão (Sessão 1: 0-5, Sessão 2: 5-10, etc.)
   const sessionNum = Math.max(1, Math.min(4, payload.sessionId));
@@ -196,9 +188,10 @@ export async function evaluateAndRecordSession(
 
   for (const submitted of payload.answers) {
     const officialQ = questionMap.get(submitted.questionId);
-    if (!officialQ) continue;
+    const key = answerKeys.get(submitted.questionId);
+    if (!officialQ || !key) continue;
 
-    const isCorrect = submitted.selectedOptionId === officialQ.correctOptionId;
+    const isCorrect = submitted.selectedOptionId === key.correctOptionId;
     if (isCorrect) {
       score += 1;
     }
@@ -206,16 +199,13 @@ export async function evaluateAndRecordSession(
     results.push({
       questionId: submitted.questionId,
       selectedOptionId: submitted.selectedOptionId,
-      correctOptionId: officialQ.correctOptionId,
+      correctOptionId: key.correctOptionId,
       isCorrect,
     });
   }
 
   // Obter usuário autenticado
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user } = await getSupabaseAuthContext();
 
   // Se não autenticado (modo visitante), calcula os resultados em memória sem gravar no banco
   if (!user) {

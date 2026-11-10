@@ -51,7 +51,7 @@ export function MasteryOverview({ subtopics }: MasteryOverviewProps) {
   };
 
   return (
-    <section aria-labelledby="mastery-heading" className="w-full bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-xs space-y-5">
+    <section aria-labelledby="mastery-heading" className="card-premium p-5 sm:p-6 space-y-5">
       <div className="border-b border-slate-100 pb-3">
         <h2 id="mastery-heading" className="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
           <span>📊</span>

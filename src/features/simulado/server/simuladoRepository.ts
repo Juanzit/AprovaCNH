@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
-import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
+import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
+import { getApprovedQuestionsByTopic, getAuthoritativeQuestionsWithFallback } from '@/features/lesson/server/questionRepository';
+import { toStudentQuestion } from '@/features/lesson/schemas/questionSchema';
 import { calculateDailyStreak } from '@/features/progress/utils/streakCalculator';
 import {
   DEFAULT_EXAM_CONFIG,
@@ -16,6 +18,21 @@ import {
   evaluateSimuladoSubmission,
   generateSimuladoQuestions,
 } from '../utils/simuladoGenerator';
+export { InsufficientApprovedQuestionsError } from '../utils/simuladoGenerator';
+
+const EXAM_CONFIG_CACHE_TTL_MS = 60_000;
+const EXAM_CONFIG_TIMEOUT_MS = 1_500;
+const examConfigCache = new Map<string, { expiresAt: number; value: ExamConfig }>();
+
+function withExamConfigTimeout<T>(promiseLike: PromiseLike<T>, timeoutMs: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('Timeout ao consultar configuração do simulado.')), timeoutMs);
+    Promise.resolve(promiseLike).then(
+      (value) => { clearTimeout(timer); resolve(value); },
+      (error) => { clearTimeout(timer); reject(error); }
+    );
+  });
+}
 
 interface DbExamConfigRow {
   id: string;
@@ -36,6 +53,11 @@ interface DbExamConfigRow {
  * Em caso de tabela ainda não migrada ou falha de rede, retorna DEFAULT_EXAM_CONFIG (D007).
  */
 export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<ExamConfig> {
+  const cacheKey = uf?.toUpperCase() ?? 'ALL';
+  const cached = examConfigCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+  if (cached) examConfigCache.delete(cacheKey);
+
   try {
     const supabase = await createClient();
     let query = supabase
@@ -49,9 +71,10 @@ export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<Exa
       query = query.eq('uf', uf.toUpperCase());
     }
 
-    const { data, error } = await query.maybeSingle();
+    const { data, error } = await withExamConfigTimeout(query.maybeSingle(), EXAM_CONFIG_TIMEOUT_MS);
 
     if (error || !data) {
+      examConfigCache.set(cacheKey, { expiresAt: Date.now() + 8_000, value: DEFAULT_EXAM_CONFIG });
       return DEFAULT_EXAM_CONFIG;
     }
 
@@ -70,8 +93,11 @@ export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<Exa
       isActive: row.is_active,
     });
 
-    return parsed.success ? parsed.data : DEFAULT_EXAM_CONFIG;
+    const value = parsed.success ? parsed.data : DEFAULT_EXAM_CONFIG;
+    examConfigCache.set(cacheKey, { expiresAt: Date.now() + EXAM_CONFIG_CACHE_TTL_MS, value });
+    return value;
   } catch {
+    examConfigCache.set(cacheKey, { expiresAt: Date.now() + 8_000, value: DEFAULT_EXAM_CONFIG });
     return DEFAULT_EXAM_CONFIG;
   }
 }
@@ -93,7 +119,7 @@ export async function initializeSimuladoSession(options?: {
 }> {
   const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig(options?.uf ?? 'MG'),
-    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    getAuthoritativeQuestionsWithFallback('Sinalização de Trânsito'),
   ]);
 
   const config: ExamConfig = options?.durationMinutes
@@ -110,10 +136,7 @@ export async function initializeSimuladoSession(options?: {
   const fallbackId = `sim-${Date.now()}`;
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return {
@@ -152,7 +175,9 @@ export async function initializeSimuladoSession(options?: {
             if (q) {
               restoredItems.push({
                 questionOrder: ans.question_order,
-                question: q,
+                question: toStudentQuestion(q),
+
+
               });
             }
           }
@@ -241,7 +266,7 @@ export async function submitAndEvaluateSimulado(rawPayload: unknown): Promise<{
   const payload = parsed.data;
   const [baseConfig, questions] = await Promise.all([
     getActiveExamConfig('MG'),
-    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    getAuthoritativeQuestionsWithFallback('Sinalização de Trânsito'),
   ]);
 
   const config: ExamConfig = payload.durationMinutes
@@ -252,10 +277,7 @@ export async function submitAndEvaluateSimulado(rawPayload: unknown): Promise<{
   const result = evaluateSimuladoSubmission(payload, questions, config, finishedAt);
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (user && !payload.simuladoId.startsWith('sim-')) {
       // Prevenção contra submissão duplicada (idempotência no servidor)
@@ -372,10 +394,7 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
   }
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) return null;
 
@@ -397,7 +416,7 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
         .eq('simulado_id', simuladoId)
         .order('question_order', { ascending: true }),
       getActiveExamConfig('MG'),
-      getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+      getAuthoritativeQuestionsWithFallback('Sinalização de Trânsito'),
     ]);
 
     const questionMap = new Map(questions.map((q) => [q.id, q]));
@@ -412,7 +431,11 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
 
       evaluatedItems.push({
         questionOrder: row.question_order,
-        question: q,
+        question: toStudentQuestion(q),
+
+
+        correctOptionId: q.correctOptionId,
+        explanation: q.explanation,
         selectedOptionId,
         isMarkedForReview: Boolean(row.is_marked_for_review),
         isCorrect:
@@ -451,10 +474,7 @@ export async function getSimuladoResultById(simuladoId: string): Promise<Simulad
  */
 export async function getSimuladoHistory(): Promise<SimuladoHistorySummary[]> {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) return [];
 

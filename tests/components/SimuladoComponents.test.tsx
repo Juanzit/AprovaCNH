@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import rawQuestions from '@/data/questions-sinalizacao.json';
-import { questionBankSchema } from '@/features/lesson/schemas/questionSchema';
+import { questionBankSchema, toStudentQuestion } from '@/features/lesson/schemas/questionSchema';
 import { DEFAULT_EXAM_CONFIG, type SimuladoResult } from '@/features/simulado/types/simulado';
 import { SimuladoTimer } from '@/features/simulado/components/SimuladoTimer';
 import { SimuladoNavDrawer } from '@/features/simulado/components/SimuladoNavDrawer';
@@ -86,7 +86,7 @@ describe('Componentes do Simulado Configurável (T006)', () => {
       <SimuladoQuestionCard
         questionOrder={1}
         totalQuestions={30}
-        question={questions[0]}
+        question={toStudentQuestion(questions[0])}
         selectedOptionId="b"
         isMarkedForReview={true}
         onSelectOption={onSelectOption}
@@ -142,17 +142,21 @@ describe('Componentes do Simulado Configurável (T006)', () => {
       evaluatedItems: [
         {
           questionOrder: 1,
-          question: questions[0],
+          question: toStudentQuestion(questions[0]),
           selectedOptionId: questions[0].correctOptionId,
           isMarkedForReview: false,
           isCorrect: true,
+          correctOptionId: questions[0].correctOptionId,
+          explanation: questions[0].explanation,
         },
         {
           questionOrder: 2,
-          question: questions[1],
+          question: toStudentQuestion(questions[1]),
           selectedOptionId: 'a',
           isMarkedForReview: true,
           isCorrect: false,
+          correctOptionId: questions[1].correctOptionId,
+          explanation: questions[1].explanation,
         },
       ],
     };
