@@ -1,4 +1,4 @@
-import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
+import { getApprovedFormativeQuestionsByTopic } from '@/features/lesson/server/questionRepository';
 import { getLessonTopicProgress, getStudentProfile } from '@/features/progress/server/progressRepository';
 import { LessonContainer } from '@/features/lesson/components/LessonContainer';
 
@@ -12,7 +12,7 @@ interface LicaoPageProps {
 export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPageProps) {
   // Carrega questões e progresso em paralelo para que o resumo use o estado real da unidade.
   const [allQuestions, progressSessions, profile] = await Promise.all([
-    getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    getApprovedFormativeQuestionsByTopic('Sinalização de Trânsito'),
     getLessonTopicProgress('Sinalização de Trânsito'),
     getStudentProfile(),
   ]);
@@ -22,7 +22,7 @@ export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPagePr
 
   const resolvedParams = searchParams ? await searchParams : {};
 
-  // Se 'todas=true', entrega as 20 questões do banco completo
+  // Se 'todas=true', entrega as 30 questões aprovadas do banco completo
   if (resolvedParams.todas === 'true') {
     return <LessonContainer
       key="lesson-all-questions"

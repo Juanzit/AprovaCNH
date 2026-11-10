@@ -79,6 +79,16 @@ export interface StudentQuestion {
 }
 
 /**
+ * DTO de uso exclusivamente formativo em Lição Guiada e Revisão.
+ * O gabarito é enviado ao cliente de forma intencional para feedback síncrono.
+ * O Simulado continua usando StudentQuestion e mantém o gabarito somente no servidor.
+ */
+export interface FormativeQuestion extends StudentQuestion {
+  correctOptionId: OptionId;
+  explanation: string;
+}
+
+/**
  * Estrutura Privada do Servidor: Mantida exclusivamente no backend Node.js.
  * Utilizada para conferência autoritativa de respostas no servidor.
  */

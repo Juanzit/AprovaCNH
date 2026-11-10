@@ -36,7 +36,7 @@ export interface UseLessonStateReturn {
   revealedAnswer: RevealedAnswer | null;
   isVerifying: boolean;
   selectOption: (id: OptionId) => void;
-  submitAnswer: () => Promise<void> | void;
+  submitAnswer: () => void;
   nextQuestion: () => void;
   resetLesson: () => void;
 }
@@ -70,52 +70,46 @@ export function useLessonState(
     [isAnswerSubmitted, isVerifying]
   );
 
-  const submitAnswer = useCallback(async () => {
+  const submitAnswer = useCallback(() => {
     if (isAnswerSubmitted || isVerifying || !selectedOptionId || !currentQuestion) {
-      return; // Bloqueia envios duplicados, em andamento ou sem alternativa
-    }
-
-    // 1. Caminho Preferencial: Validação Autoritativa no Servidor (Server Action)
-    if (options?.onVerifyAnswer) {
-      setIsVerifying(true);
-      try {
-        const result = await options.onVerifyAnswer(currentQuestion.id, selectedOptionId);
-        setIsCorrect(result.isCorrect);
-        setRevealedAnswer({
-          correctOptionId: result.correctOptionId,
-          explanation: result.explanation,
-        });
-        if (result.isCorrect) {
-          setCorrectAnswersCount((prev) => prev + 1);
-        }
-        setSubmittedAnswers((prev) => [
-          ...prev.filter((a) => a.questionId !== currentQuestion.id),
-          { questionId: currentQuestion.id, selectedOptionId },
-        ]);
-        setIsAnswerSubmitted(true);
-      } finally {
-        setIsVerifying(false);
-      }
       return;
     }
 
-    // 2. Caminho de Compatibilidade para Testes Estáticos em Memória
-    // Apenas acionado se o objeto de mock contiver a chave explicitamente (ex: em testes de componentes isolados)
-    if ('correctOptionId' in currentQuestion && currentQuestion.correctOptionId) {
-      const correct = selectedOptionId === (currentQuestion as Question).correctOptionId;
+    const applyVerifiedAnswer = (correctOptionId: OptionId, explanation: string) => {
+      const correct = selectedOptionId === correctOptionId;
       setIsCorrect(correct);
-      setRevealedAnswer({
-        correctOptionId: (currentQuestion as Question).correctOptionId,
-        explanation: (currentQuestion as Question).explanation || '',
-      });
-      if (correct) {
-        setCorrectAnswersCount((prev) => prev + 1);
-      }
+      setRevealedAnswer({ correctOptionId, explanation });
+      if (correct) setCorrectAnswersCount((prev) => prev + 1);
       setSubmittedAnswers((prev) => [
-        ...prev.filter((a) => a.questionId !== currentQuestion.id),
+        ...prev.filter((answer) => answer.questionId !== currentQuestion.id),
         { questionId: currentQuestion.id, selectedOptionId },
       ]);
       setIsAnswerSubmitted(true);
+    };
+
+    // Lição Guiada/Revisão: FormativeQuestion já contém a chave pedagógica.
+    // Atualização síncrona: nenhum await, Server Action ou transition antes do feedback.
+    if (
+      'correctOptionId' in currentQuestion &&
+      currentQuestion.correctOptionId &&
+      'explanation' in currentQuestion
+    ) {
+      applyVerifiedAnswer(
+        currentQuestion.correctOptionId,
+        typeof currentQuestion.explanation === 'string' ? currentQuestion.explanation : ''
+      );
+      return;
+    }
+
+    // Fallback de compatibilidade para componentes que ainda recebem StudentQuestion sanitizada.
+    if (options?.onVerifyAnswer) {
+      setIsVerifying(true);
+      void options.onVerifyAnswer(currentQuestion.id, selectedOptionId)
+        .then((result) => applyVerifiedAnswer(result.correctOptionId, result.explanation))
+        .catch((error) => {
+          console.error('[useLessonState] Falha ao validar resposta no servidor:', error);
+        })
+        .finally(() => setIsVerifying(false));
     }
   }, [isAnswerSubmitted, isVerifying, selectedOptionId, currentQuestion, options]);
 

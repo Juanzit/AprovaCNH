@@ -11,7 +11,7 @@ import {
   type ValidatedQuestionAnswerKey,
   type ValidatedEditorialQuestion,
 } from '../schemas/questionSchema';
-import type { StudentQuestion, QuestionAnswerKey } from '../types/question';
+import type { StudentQuestion, FormativeQuestion, QuestionAnswerKey } from '../types/question';
 import fallbackQuestionsRaw from '@/data/questions-sinalizacao.json';
 
 export type RepositoryDataSource = 'remote' | 'local_fallback';
@@ -493,6 +493,37 @@ export async function getAuthoritativeQuestionsWithFallback(
   const result = Array.from(byId.values()).sort((a, b) => a.id.localeCompare(b.id, 'en'));
   authoritativeQuestionCache.set(cacheKey, { expiresAt: Date.now() + APPROVED_QUESTION_CACHE_TTL_MS, questions: result });
   return result;
+}
+
+/**
+ * DTO formativo com gabarito para Lição Guiada e Revisão.
+ * Não é utilizado pelo lobby/prova do Simulado.
+ */
+export function toFormativeQuestion(question: ValidatedQuestion): FormativeQuestion {
+  return {
+    id: question.id,
+    version: question.version,
+    statement: question.statement,
+    options: question.options,
+    topic: question.topic,
+    subtopic: question.subtopic,
+    ufs: question.ufs,
+    categories: question.categories,
+    source: question.source,
+    status: 'aprovada',
+    isExample: false,
+    correctOptionId: question.correctOptionId,
+    explanation: question.explanation,
+  };
+}
+
+export async function getApprovedFormativeQuestionsByTopic(
+  topic = 'Sinalização de Trânsito'
+): Promise<FormativeQuestion[]> {
+  const questions = await getAuthoritativeQuestionsWithFallback(topic);
+  return questions
+    .filter((question) => isQuestionEligibleForStudents(question))
+    .map(toFormativeQuestion);
 }
 
 /**

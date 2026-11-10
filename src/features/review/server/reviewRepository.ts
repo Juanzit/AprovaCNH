@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
-import { getApprovedQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
-import type { Question, StudentQuestion } from '@/features/lesson/types/question';
+import { getApprovedQuestionsByTopic, getApprovedFormativeQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
+import type { Question, StudentQuestion, FormativeQuestion } from '@/features/lesson/types/question';
 import type {
   UserAnswerRecord,
   ReviewDashboardData,
@@ -137,17 +137,18 @@ export async function getReviewDashboardData(customUserId?: string): Promise<Rev
 export async function getPriorityReviewQuestions(
   limit = 5,
   customUserId?: string
-): Promise<(StudentQuestion | Question)[]> {
-  const allQuestions = await getApprovedQuestionsByTopic('Sinalização de Trânsito');
+): Promise<FormativeQuestion[]> {
+  const allQuestions = await getApprovedFormativeQuestionsByTopic('Sinalização de Trânsito');
   const dashboard = await getReviewDashboardData(customUserId);
 
-  const selectedQuestions: (StudentQuestion | Question)[] = [];
+  const selectedQuestions: FormativeQuestion[] = [];
   const selectedIds = new Set<string>();
 
   // 1. Primeiro seleciona da fila ordenada de prioridade (questões que precisam de revisão)
   for (const item of dashboard.queue) {
     if (selectedQuestions.length >= limit) break;
-    selectedQuestions.push(item.question);
+    const formativeQuestion = allQuestions.find((question) => question.id === item.question.id);
+    if (formativeQuestion) selectedQuestions.push(formativeQuestion);
     selectedIds.add(item.question.id);
   }
 
