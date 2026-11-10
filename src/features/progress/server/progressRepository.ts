@@ -28,10 +28,7 @@ export const GUEST_PROFILE: StudentProfile = {
  */
 export async function getStudentProfile(): Promise<StudentProfile> {
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return GUEST_PROFILE;

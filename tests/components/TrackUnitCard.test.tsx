@@ -4,6 +4,7 @@ import React from 'react';
 import {
   TrackUnitCard,
   getPrimaryCtaConfig,
+  calculateUnitProgressPercent,
 } from '@/features/progress/components/TrackUnitCard';
 import type { LessonSessionProgress } from '@/features/progress/types/progress';
 
@@ -46,6 +47,20 @@ describe('TrackUnitCard (Sua Próxima Atividade, Estados Semânticos e Trilha Ve
       completedAt: null,
     },
   ];
+
+  it('calcula somente sessões únicas completed da Unidade 1 (2/4 = 50%)', () => {
+    const twoCompleted = baseSessions.map((session) =>
+      session.sessionId <= 2 ? { ...session, status: 'completed' as const } : session
+    );
+
+    expect(calculateUnitProgressPercent(twoCompleted)).toBe(50);
+    expect(calculateUnitProgressPercent([
+      ...twoCompleted,
+      { ...twoCompleted[0], sessionId: 3, status: 'in_progress' },
+      { ...twoCompleted[0], sessionId: 9, status: 'completed' },
+      twoCompleted[0],
+    ])).toBe(50);
+  });
 
   it('exibe "Começar primeira sessão" e tempo estimado "~3 min" quando o progresso é 0/4', () => {
     const cta = getPrimaryCtaConfig(baseSessions);

@@ -10,7 +10,11 @@ function subscribe(callback: () => void) {
 
 function getSnapshot(): 'light' | 'dark' {
   if (typeof window === 'undefined') return 'light';
-  return (localStorage.getItem('theme-mode') as 'light' | 'dark') || 'light';
+  try {
+    return localStorage.getItem('theme-mode') === 'dark' ? 'dark' : 'light';
+  } catch {
+    return 'light';
+  }
 }
 
 function getServerSnapshot(): 'light' | 'dark' {
@@ -22,7 +26,11 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
-    localStorage.setItem('theme-mode', nextTheme);
+    try {
+      localStorage.setItem('theme-mode', nextTheme);
+    } catch {
+      // O tema continua aplicado nesta sessão quando o armazenamento está indisponível.
+    }
     if (nextTheme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {

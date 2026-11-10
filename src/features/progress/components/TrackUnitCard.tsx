@@ -6,10 +6,12 @@ import type { LessonSessionProgress } from '../types/progress';
 import {
   SESSION_METADATA,
   getPrimaryCtaConfig,
+  getCompletedUnitSessionIds,
+  calculateUnitProgressPercent,
   type PrimaryCtaConfig,
 } from '../utils/trackCta';
 
-export { SESSION_METADATA, getPrimaryCtaConfig, type PrimaryCtaConfig };
+export { SESSION_METADATA, getPrimaryCtaConfig, getCompletedUnitSessionIds, calculateUnitProgressPercent, type PrimaryCtaConfig };
 
 export interface TrackUnitCardProps {
   sessions: LessonSessionProgress[];
@@ -26,8 +28,8 @@ export function TrackUnitCard({
   }
 
   const reviewSet = new Set<number>(reviewNeededSessionIds);
-  const totalCompleted = sessions.filter((s) => s.status === 'completed').length;
-  const progressPercent = Math.round((totalCompleted / 4) * 100);
+  const totalCompleted = getCompletedUnitSessionIds(sessions).length;
+  const progressPercent = calculateUnitProgressPercent(sessions);
   const primaryCta = getPrimaryCtaConfig(sessions);
 
   return (

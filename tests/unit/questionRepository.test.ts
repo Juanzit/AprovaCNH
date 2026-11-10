@@ -4,11 +4,17 @@ import {
   getFallbackApprovedQuestions,
   getAuthoritativeQuestionsForServer,
   getApprovedQuestionsByTopic,
+  getQuestionAnswerKey,
+  getQuestionAnswerKeys,
 } from '@/features/lesson/server/questionRepository';
 import { isQuestionEligibleForStudents } from '@/features/lesson/schemas/questionSchema';
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(),
+}));
+
+vi.mock('@/lib/supabase/admin', () => ({
+  createAdminClient: vi.fn(),
 }));
 
 describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', () => {
@@ -54,6 +60,20 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
       },
     ],
   };
+
+  it('resolve gabaritos do seed aprovado no servidor sem esperar consulta remota', async () => {
+    const { createAdminClient } = await import('@/lib/supabase/admin');
+    vi.mocked(createAdminClient).mockClear();
+
+    const answerKey = await getQuestionAnswerKey('sin-001');
+    const answerKeys = await getQuestionAnswerKeys(['sin-001', 'sin-002']);
+
+    expect(answerKey?.questionId).toBe('sin-001');
+    expect(answerKey?.explanation.length).toBeGreaterThan(0);
+    expect(answerKeys.has('sin-001')).toBe(true);
+    expect(answerKeys.has('sin-002')).toBe(true);
+    expect(createAdminClient).not.toHaveBeenCalled();
+  });
 
   it('mapeia e valida com sucesso um registro válido do PostgreSQL no modelo Zod de domínio', () => {
     const question = mapAndValidateDatabaseQuestion(validDbRow);

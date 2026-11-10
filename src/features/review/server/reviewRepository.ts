@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
 import { getApprovedQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
 import type { Question, StudentQuestion } from '@/features/lesson/types/question';
 import type {
@@ -24,15 +25,9 @@ export const inMemoryGuestAnswers: UserAnswerRecord[] = [];
  */
 export async function getUserAnswerRecords(customUserId?: string): Promise<UserAnswerRecord[]> {
   try {
-    const supabase = await createClient();
-    let uid = customUserId;
-
-    if (!uid) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      uid = user?.id;
-    }
+    const authContext = customUserId ? null : await getSupabaseAuthContext();
+    const supabase = authContext?.supabase ?? await createClient();
+    const uid = customUserId ?? authContext?.user?.id;
 
     if (!uid) {
       return [...inMemoryGuestAnswers];
@@ -105,7 +100,10 @@ export async function getReviewDashboardData(customUserId?: string): Promise<Rev
 
   const totalOverdue = sortedQueue.filter((item) => item.stats.isOverdue).length;
   const totalRecentErrors = sortedQueue.filter((item) => !item.stats.lastIsCorrect).length;
-  const totalPracticedQuestions = answersByQuestionId.size;
+  const unitQuestionIds = new Set(UNIT_1_SUBTOPICS.flatMap((subtopic) => subtopic.questionIds));
+  const totalPracticedQuestions = Array.from(answersByQuestionId.keys()).filter((id) =>
+    unitQuestionIds.has(id)
+  ).length;
 
   return {
     subtopics,

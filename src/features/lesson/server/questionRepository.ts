@@ -228,13 +228,24 @@ export async function getApprovedQuestionsWithReport(
       .map(mapAndValidateStudentQuestion)
       .filter((q) => isQuestionEligibleForStudents(q));
 
-    console.info(
-      `[QuestionRepository] Carregadas com sucesso ${validatedQuestions.length} questões remotas sanitizadas.`
-    );
+    // Complementa resultados remotos incompletos com o seed local já homologado.
+    // A elegibilidade é mantida: questões em revisão jamais entram neste conjunto.
+    const isSignalingTopic = topic.toLocaleLowerCase('pt-BR').includes('sinaliza');
+    const mergedById = new Map(validatedQuestions.map((question) => [question.id, question]));
+    if (isSignalingTopic) {
+      for (const localQuestion of getFallbackApprovedQuestions()) {
+        if (!mergedById.has(localQuestion.id)) mergedById.set(localQuestion.id, localQuestion);
+      }
+    }
+    const mergedQuestions = Array.from(mergedById.values()).sort((a, b) => a.id.localeCompare(b.id, 'en'));
+    const wasSupplemented = mergedQuestions.length > validatedQuestions.length;
 
+    console.info(
+      `[QuestionRepository] Disponíveis ${mergedQuestions.length} questões aprovadas sanitizadas (${validatedQuestions.length} remotas).`
+    );
     return {
-      questions: validatedQuestions,
-      source: 'remote',
+      questions: mergedQuestions,
+      source: wasSupplemented ? 'local_fallback' : 'remote',
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
@@ -266,7 +277,24 @@ export async function getApprovedQuestionsByTopic(
  * Nunca expor para componentes cliente.
  */
 export async function getQuestionAnswerKey(questionId: string): Promise<QuestionAnswerKey | null> {
-  // 1. Tentar via cliente administrativo (service_role) caso configurado
+  // Caminho rápido e privado no servidor para questões do seed editorial aprovado.
+  const rawItem = (fallbackQuestionsRaw as unknown as Array<{
+    id: string;
+    correctOptionId: 'a' | 'b' | 'c' | 'd';
+    explanation: string;
+    status: string;
+    isExample?: boolean;
+  }>).find((q) => q.id === questionId && q.status === 'aprovada' && !q.isExample);
+
+  if (rawItem) {
+    return questionAnswerKeySchema.parse({
+      questionId: rawItem.id,
+      correctOptionId: rawItem.correctOptionId,
+      explanation: rawItem.explanation,
+    });
+  }
+
+  // Só consulta service_role para IDs ausentes do seed local aprovado.
   if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
     try {
       const admin = createAdminClient();
@@ -288,24 +316,7 @@ export async function getQuestionAnswerKey(questionId: string): Promise<Question
     }
   }
 
-  // 2. Recorrer ao acervo local do servidor
-  const rawItem = (fallbackQuestionsRaw as unknown as Array<{
-    id: string;
-    correctOptionId: 'a' | 'b' | 'c' | 'd';
-    explanation: string;
-    status: string;
-    isExample?: boolean;
-  }>).find((q) => q.id === questionId && q.status === 'aprovada' && !q.isExample);
-
-  if (!rawItem) {
-    return null;
-  }
-
-  return questionAnswerKeySchema.parse({
-    questionId: rawItem.id,
-    correctOptionId: rawItem.correctOptionId,
-    explanation: rawItem.explanation,
-  });
+  return null;
 }
 
 /**
@@ -317,14 +328,33 @@ export async function getQuestionAnswerKeys(
   const keysMap = new Map<string, QuestionAnswerKey>();
   const idSet = new Set(questionIds);
 
-  // 1. Consulta em lote via service_role se disponível
+  // Preenche primeiro as chaves do seed aprovado, sem aguardar a rede.
+  for (const raw of fallbackQuestionsRaw as unknown as Array<{
+    id: string;
+    correctOptionId: 'a' | 'b' | 'c' | 'd';
+    explanation: string;
+    status: string;
+    isExample?: boolean;
+  }>) {
+    if (idSet.has(raw.id) && raw.status === 'aprovada' && !raw.isExample) {
+      keysMap.set(raw.id, questionAnswerKeySchema.parse({
+        questionId: raw.id,
+        correctOptionId: raw.correctOptionId,
+        explanation: raw.explanation,
+      }));
+    }
+  }
+  const missingIds = questionIds.filter((id) => !keysMap.has(id));
+  if (missingIds.length === 0) return keysMap;
+
+  // Consulta remota somente para questões que não existem no seed local aprovado.
   if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
     try {
       const admin = createAdminClient();
       const { data, error } = await admin
         .from('questions')
         .select('id, correct_option_id, explanation, status, is_example')
-        .in('id', questionIds);
+        .in('id', missingIds);
 
       if (!error && data) {
         for (const row of data) {
@@ -342,26 +372,6 @@ export async function getQuestionAnswerKeys(
       }
     } catch (err) {
       console.warn('[QuestionRepository] Falha na consulta em lote via service_role:', err);
-    }
-  }
-
-  // 2. Preencher do acervo local caso faltem chaves
-  for (const raw of fallbackQuestionsRaw as unknown as Array<{
-    id: string;
-    correctOptionId: 'a' | 'b' | 'c' | 'd';
-    explanation: string;
-    status: string;
-    isExample?: boolean;
-  }>) {
-    if (idSet.has(raw.id) && !keysMap.has(raw.id) && raw.status === 'aprovada' && !raw.isExample) {
-      keysMap.set(
-        raw.id,
-        questionAnswerKeySchema.parse({
-          questionId: raw.id,
-          correctOptionId: raw.correctOptionId,
-          explanation: raw.explanation,
-        })
-      );
     }
   }
 
@@ -423,6 +433,36 @@ export async function getEditorialQuestionsByTopic(
       review: reviewRaw,
     });
   });
+}
+
+/**
+ * Acervo autoritativo server-only: une o catálogo remoto editorial ao seed local aprovado.
+ * IDs são deduplicados e qualquer questão não aprovada é descartada; nunca promove pendências.
+ */
+export async function getAuthoritativeQuestionsWithFallback(
+  topic = 'Sinalização de Trânsito'
+): Promise<ValidatedQuestion[]> {
+  const byId = new Map<string, ValidatedQuestion>();
+  const normalizedTopic = topic.toLocaleLowerCase('pt-BR');
+
+  for (const question of getAuthoritativeQuestionsForServer()) {
+    if (question.topic.toLocaleLowerCase('pt-BR').includes(normalizedTopic)) {
+      byId.set(question.id, question);
+    }
+  }
+
+  try {
+    const remoteQuestions = await getEditorialQuestionsByTopic(topic);
+    for (const question of remoteQuestions) {
+      if (isQuestionEligibleForStudents(question)) {
+        byId.set(question.id, question as ValidatedQuestion);
+      }
+    }
+  } catch (error) {
+    console.warn('[QuestionRepository] Acervo remoto indisponível; usando seed local aprovado:', error);
+  }
+
+  return Array.from(byId.values()).sort((a, b) => a.id.localeCompare(b.id, 'en'));
 }
 
 /**

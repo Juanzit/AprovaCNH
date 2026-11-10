@@ -27,6 +27,23 @@ export const SESSION_METADATA = [
   },
 ];
 
+/**
+ * Conta apenas IDs válidos e distintos com status completed na Unidade 1.
+ * Registros duplicados, inválidos ou em progresso não aumentam a conclusão.
+ */
+export function getCompletedUnitSessionIds(sessions: LessonSessionProgress[]): number[] {
+  const completedIds = new Set(
+    sessions
+      .filter((session) => session.status === 'completed' && [1, 2, 3, 4].includes(session.sessionId))
+      .map((session) => session.sessionId)
+  );
+  return [1, 2, 3, 4].filter((sessionId) => completedIds.has(sessionId));
+}
+
+export function calculateUnitProgressPercent(sessions: LessonSessionProgress[]): number {
+  return Math.round((getCompletedUnitSessionIds(sessions).length / 4) * 100);
+}
+
 export interface PrimaryCtaConfig {
   label: string;
   href: string;
@@ -49,7 +66,7 @@ export function getPrimaryCtaConfig(sessions: LessonSessionProgress[]): PrimaryC
     sessionProgressMap.set(s.sessionId, s);
   }
 
-  const totalCompleted = sessions.filter((s) => s.status === 'completed').length;
+  const totalCompleted = getCompletedUnitSessionIds(sessions).length;
   const inProgressSession = sessions.find((s) => s.status === 'in_progress');
 
   if (totalCompleted >= 4) {

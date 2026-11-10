@@ -43,9 +43,10 @@ export default async function HomePage() {
   const totalCompletedQuestions = completedSessions.length * 5;
   const totalCorrect = completedSessions.reduce((acc, s) => acc + s.score, 0);
   const totalAnsweredQuestions = completedSessions.reduce((acc, s) => acc + s.maxScore, 0);
-  const accuracyPercent = totalAnsweredQuestions > 0
+  const hasAnsweredQuestions = totalAnsweredQuestions > 0;
+  const accuracyPercent = hasAnsweredQuestions
     ? Math.round((totalCorrect / totalAnsweredQuestions) * 100)
-    : 100;
+    : 0;
 
   const primaryCta = getPrimaryCtaConfig(sessions);
 
@@ -106,11 +107,11 @@ export default async function HomePage() {
         <StatCard
           label="Taxa de Acerto"
           value={`${accuracyPercent}%`}
-          sublabel="Meta oficial: mínimo 70%"
+          sublabel={hasAnsweredQuestions ? 'Meta de estudo: 70%' : 'Inicie uma sessão'}
           icon={<TargetIcon className="w-5 h-5" />}
           iconBgColor="bg-emerald-50 text-emerald-600"
           trend={{
-            text: accuracyPercent >= 70 ? '✓ No padrão' : 'Abaixo do corte',
+            text: !hasAnsweredQuestions ? 'Sem dados' : accuracyPercent >= 70 ? '✓ No padrão' : 'Abaixo do corte',
             isPositive: accuracyPercent >= 70,
           }}
         />
