@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSupabaseAuthContext } from '@/lib/supabase/authContext';
 import { getApprovedQuestionsByTopic, getQuestionAnswerKeys } from '@/features/lesson/server/questionRepository';
 import { calculateDailyStreak } from '../utils/streakCalculator';
 import type {
@@ -81,10 +82,7 @@ export async function updateStudentProfile(data: {
       return { success: false, error: 'A sigla "BR" não é permitida como código de UF (D014).' };
     }
 
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return { success: false, error: 'Usuário não autenticado.' };
@@ -130,10 +128,7 @@ export async function getLessonTopicProgress(
   }));
 
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { supabase, user } = await getSupabaseAuthContext();
 
     if (!user) {
       return defaultSessions;
