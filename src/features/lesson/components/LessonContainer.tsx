@@ -85,21 +85,28 @@ export function LessonContainer({
 
   useEffect(() => {
     if (!isGuest) return;
-    const sync = () => setSummaryCompletedSessionIds(readGuestProgress().completedSessionIds);
+    const sync = (event?: Event) => {
+      setSummaryCompletedSessionIds(readGuestProgress().completedSessionIds);
+      const detail = event instanceof CustomEvent
+        ? event.detail as { sessionId?: number; xpAwarded?: number } | undefined
+        : undefined;
+      if (detail?.sessionId === sessionId && typeof detail.xpAwarded === 'number') {
+        setGuestXpAwarded(detail.xpAwarded);
+      }
+    };
     sync();
-    window.addEventListener(GUEST_PROGRESS_EVENT, sync);
-    window.addEventListener('storage', sync);
+    const handleProgressUpdate = (event: Event) => sync(event);
+    window.addEventListener(GUEST_PROGRESS_EVENT, handleProgressUpdate);
+    window.addEventListener('storage', handleProgressUpdate);
     return () => {
-      window.removeEventListener(GUEST_PROGRESS_EVENT, sync);
-      window.removeEventListener('storage', sync);
+      window.removeEventListener(GUEST_PROGRESS_EVENT, handleProgressUpdate);
+      window.removeEventListener('storage', handleProgressUpdate);
     };
   }, [isGuest]);
 
   useEffect(() => {
     if (!isGuest || isReviewMode || !isCompleted) return;
-    const saved = completeGuestSession(sessionId, xpBreakdown.totalXp, xpBreakdown.correctAnswersCount);
-    setSummaryCompletedSessionIds(saved.progress.completedSessionIds);
-    setGuestXpAwarded(saved.xpAwarded);
+    completeGuestSession(sessionId, xpBreakdown.totalXp, xpBreakdown.correctAnswersCount);
   }, [isGuest, isReviewMode, isCompleted, sessionId, xpBreakdown.totalXp, xpBreakdown.correctAnswersCount]);
 
   // Submissão autoritativa no servidor ao concluir as questões da sessão

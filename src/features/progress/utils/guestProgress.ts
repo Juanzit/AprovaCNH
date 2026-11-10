@@ -36,6 +36,11 @@ export function readGuestProgress(): GuestProgress {
 export function completeGuestSession(sessionId: number, xpAwarded: number, correctAnswersCount: number) {
   const current = readGuestProgress();
   if (current.completedSessionIds.includes(sessionId)) {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent(GUEST_PROGRESS_EVENT, {
+        detail: { sessionId, xpAwarded: 0 },
+      }));
+    }
     return { progress: current, xpAwarded: 0, firstCompletion: false };
   }
 
@@ -51,7 +56,9 @@ export function completeGuestSession(sessionId: number, xpAwarded: number, corre
   if (typeof window !== 'undefined') {
     try {
       window.localStorage.setItem(GUEST_PROGRESS_STORAGE_KEY, JSON.stringify(next));
-      window.dispatchEvent(new Event(GUEST_PROGRESS_EVENT));
+      window.dispatchEvent(new CustomEvent(GUEST_PROGRESS_EVENT, {
+        detail: { sessionId, xpAwarded: earned },
+      }));
     } catch {
       // A sessão continua visível mesmo quando o armazenamento local está indisponível.
     }

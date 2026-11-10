@@ -191,3 +191,6 @@ html.dark [class~="dark:bg-blue-600/25"] { background-color: rgb(37 99 235 / 0.2
 html.dark [class~="dark:bg-emerald-500/15"] { background-color: rgb(16 185 129 / 0.15) !important; }
 html.dark [class~="dark:bg-red-500/15"] { background-color: rgb(239 68 68 / 0.15) !important; }
 html.dark [class~="dark:bg-amber-500/15"] { background-color: rgb(245 158 11 / 0.15) !important; }
+
+html.dark [class~="bg-slate-50/100"] { background-color: #1E293B !important; }
+html.dark [class~="dark:text-white"] { color: #FFFFFF !important; }
