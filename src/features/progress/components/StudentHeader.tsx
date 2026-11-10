@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import type { StudentProfile } from '../types/progress';
 import { ProfileModal, VISITOR_PROFILE_STORAGE_KEY } from './ProfileModal';
-import { GUEST_PROGRESS_EVENT, readGuestProgress } from '../utils/guestProgress';
+import { GUEST_PROGRESS_EVENT, GUEST_PROGRESS_STORAGE_KEY, readGuestProgress } from '../utils/guestProgress';
 
 interface StudentHeaderProps {
   initialProfile: StudentProfile;
@@ -49,7 +49,13 @@ export function StudentHeader({ initialProfile }: StudentHeaderProps) {
 
   useEffect(() => {
     if (initialProfile.id !== 'guest') return;
-    const sync = () => setProfile((prev) => ({ ...prev, xpTotal: readGuestProgress().xpTotal }));
+    const sync = () => {
+      const hasStoredProgress = window.localStorage.getItem(GUEST_PROGRESS_STORAGE_KEY) !== null;
+      setProfile((prev) => ({
+        ...prev,
+        xpTotal: hasStoredProgress ? readGuestProgress().xpTotal : initialProfile.xpTotal,
+      }));
+    };
     sync();
     window.addEventListener(GUEST_PROGRESS_EVENT, sync);
     window.addEventListener('storage', sync);

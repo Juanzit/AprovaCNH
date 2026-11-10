@@ -3,13 +3,16 @@
 import React, { useEffect, useState } from 'react';
 import { StatCard } from '@/components/ui/StatCard';
 import { SparklesIcon } from '@/components/ui/Icons';
-import { GUEST_PROGRESS_EVENT, readGuestProgress } from '../utils/guestProgress';
+import { GUEST_PROGRESS_EVENT, GUEST_PROGRESS_STORAGE_KEY, readGuestProgress } from '../utils/guestProgress';
 
 export function GuestXpStat({ initialXp }: { initialXp: number }) {
   const [xp, setXp] = useState(initialXp);
 
   useEffect(() => {
-    const sync = () => setXp(readGuestProgress().xpTotal);
+    const sync = () => {
+      const hasStoredProgress = window.localStorage.getItem(GUEST_PROGRESS_STORAGE_KEY) !== null;
+      setXp(hasStoredProgress ? readGuestProgress().xpTotal : initialXp);
+    };
     sync();
     window.addEventListener(GUEST_PROGRESS_EVENT, sync);
     window.addEventListener('storage', sync);
