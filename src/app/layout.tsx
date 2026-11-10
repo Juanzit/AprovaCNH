@@ -23,11 +23,9 @@ export default function RootLayout({
             __html: `
               try {
                 const theme = localStorage.getItem('theme-mode') || 'light';
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                }
+                const root = document.documentElement;
+                root.classList.toggle('dark', theme === 'dark');
+                root.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
               } catch (_) {}
             `,
           }}

@@ -51,8 +51,8 @@ export function FeedbackPanel({
       aria-live="polite"
       className={`mt-6 p-4 sm:p-5 rounded-2xl border space-y-4 ${
         isCorrect
-          ? 'bg-emerald-50/90 border-emerald-300 text-emerald-950'
-          : 'bg-red-50/90 border-red-300 text-red-950'
+          ? 'bg-emerald-50/90 border-emerald-300 text-emerald-950 dark:bg-emerald-500/15 dark:border-emerald-500 dark:text-emerald-50'
+          : 'bg-red-50/90 border-red-300 text-red-950 dark:bg-red-500/15 dark:border-red-500 dark:text-red-50'
       }`}
     >
       {/* Banner de status da resposta (Verde para acerto, Vermelho para erro) */}
@@ -66,7 +66,7 @@ export function FeedbackPanel({
             <XIcon className="w-4 h-4" />
           </div>
         )}
-        <h3 className="text-base font-extrabold tracking-tight text-slate-900">
+        <h3 className="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">
           {isCorrect ? 'Resposta correta!' : 'Resposta incorreta.'}
         </h3>
       </div>
@@ -74,12 +74,12 @@ export function FeedbackPanel({
       {/* Bloco 1: Por que essa resposta está correta? (Explicação direta do gabarito) */}
       <div
         data-testid="explanation-block"
-        className="bg-white border border-slate-200/90 rounded-xl p-4 shadow-2xs space-y-1.5"
+        className="bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700 rounded-xl p-4 shadow-2xs space-y-1.5"
       >
-        <p className="text-xs font-extrabold uppercase tracking-wider text-blue-800">
+        <p className="text-xs font-extrabold uppercase tracking-wider text-blue-800 dark:text-blue-200">
           Por que essa resposta está correta?
         </p>
-        <p className="text-sm leading-relaxed text-slate-800 font-medium">
+        <p className="text-sm leading-relaxed text-slate-800 dark:text-slate-100 font-medium">
           {explanation}
         </p>
       </div>
@@ -87,12 +87,12 @@ export function FeedbackPanel({
       {/* Bloco 2: Entenda a regra (Síntese destacada do conceito normativo para memorização) */}
       <div
         data-testid="rule-summary-block"
-        className="bg-blue-50/80 border border-blue-200 rounded-xl p-4 space-y-1"
+        className="bg-blue-50/80 dark:bg-slate-800 border border-blue-200 dark:border-slate-700 rounded-xl p-4 space-y-1"
       >
-        <p className="text-xs font-extrabold uppercase tracking-wider text-blue-900">
+        <p className="text-xs font-extrabold uppercase tracking-wider text-blue-900 dark:text-blue-200">
           Entenda a regra
         </p>
-        <p className="text-xs sm:text-sm leading-relaxed text-slate-800 font-semibold">
+        <p className="text-xs sm:text-sm leading-relaxed text-slate-800 dark:text-slate-100 font-semibold">
           {ruleSynthesis}
         </p>
       </div>
@@ -100,24 +100,24 @@ export function FeedbackPanel({
       {/* Bloco 3: Fundamentação legal (Documento, ficha MBFT/artigo CTB e link oficial) */}
       <div
         data-testid="legal-source-block"
-        className="bg-slate-100/90 border border-slate-300 rounded-xl p-4 space-y-2 text-slate-800"
+        className="bg-slate-100/90 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-4 space-y-2 text-slate-800 dark:text-slate-100"
       >
-        <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-slate-900">
+        <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white">
           <AlertCircleIcon className="w-4 h-4 text-blue-700 shrink-0" />
           <span>Fundamentação legal</span>
         </div>
 
         <div className="space-y-1 text-xs sm:text-sm">
-          <div className="font-bold text-slate-900" data-testid="source-document">
+          <div className="font-bold text-slate-900 dark:text-slate-100" data-testid="source-document">
             {source.kind === 'demo'
               ? 'Referência legal demonstrativa (Validação jurídica pendente)'
               : source.document || 'Documento oficial'}
           </div>
 
           {source.provision && (
-            <p className="text-slate-800 font-bold" data-testid="source-provision">
+            <p className="text-slate-800 dark:text-slate-100 font-bold" data-testid="source-provision">
               Dispositivo legal:{' '}
-              <span className="font-semibold text-slate-900">{source.provision}</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100">{source.provision}</span>
             </p>
           )}
         </div>
@@ -136,7 +136,7 @@ export function FeedbackPanel({
         )}
 
         {source.licenseNote && (
-          <p className="text-xs font-medium text-slate-700 border-t border-slate-200 pt-1.5">
+          <p className="text-xs font-medium text-slate-700 dark:text-slate-300 border-t border-slate-200 dark:border-slate-700 pt-1.5">
             {source.licenseNote}
           </p>
         )}

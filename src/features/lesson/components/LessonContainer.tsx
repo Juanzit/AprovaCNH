@@ -11,6 +11,7 @@ import { submitSessionAnswersAction } from '@/features/progress/actions/sessionA
 import { submitReviewSessionAction } from '@/features/review/actions/reviewActions';
 import { verifyLessonAnswerAction } from '../actions/lessonActions';
 import type { SessionSubmissionResult } from '@/features/progress/types/progress';
+import { completeGuestSession, readGuestProgress, GUEST_PROGRESS_EVENT } from '@/features/progress/utils/guestProgress';
 
 interface LessonContainerProps {
   questions: (StudentQuestion | Question)[];
@@ -20,6 +21,7 @@ interface LessonContainerProps {
   customTopic?: string;
   backHref?: string;
   backLabel?: string;
+  isGuest?: boolean;
   onVerifyAnswer?: (
     questionId: string,
     selectedOptionId: OptionId
@@ -38,6 +40,7 @@ export function LessonContainer({
   customTopic,
   backHref,
   backLabel,
+  isGuest = false,
   onVerifyAnswer,
 }: LessonContainerProps) {
   // Callback padrão utilizando a Server Action autoritativa do servidor
@@ -77,6 +80,27 @@ export function LessonContainer({
   });
 
   const [serverResult, setServerResult] = useState<SessionSubmissionResult | null>(null);
+  const [summaryCompletedSessionIds, setSummaryCompletedSessionIds] = useState(completedSessionIds);
+  const [guestXpAwarded, setGuestXpAwarded] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (!isGuest) return;
+    const sync = () => setSummaryCompletedSessionIds(readGuestProgress().completedSessionIds);
+    sync();
+    window.addEventListener(GUEST_PROGRESS_EVENT, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(GUEST_PROGRESS_EVENT, sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, [isGuest]);
+
+  useEffect(() => {
+    if (!isGuest || isReviewMode || !isCompleted) return;
+    const saved = completeGuestSession(sessionId, xpBreakdown.totalXp, xpBreakdown.correctAnswersCount);
+    setSummaryCompletedSessionIds(saved.progress.completedSessionIds);
+    setGuestXpAwarded(saved.xpAwarded);
+  }, [isGuest, isReviewMode, isCompleted, sessionId, xpBreakdown.totalXp, xpBreakdown.correctAnswersCount]);
 
   // Submissão autoritativa no servidor ao concluir as questões da sessão
   useEffect(() => {
@@ -137,8 +161,9 @@ export function LessonContainer({
       <LessonSummary
         xpBreakdown={xpBreakdown}
         sessionId={sessionId}
-        completedSessionIds={completedSessionIds}
+        completedSessionIds={summaryCompletedSessionIds}
         serverResult={serverResult}
+        xpAwardedOverride={isGuest ? guestXpAwarded : undefined}
         isReviewMode={isReviewMode}
         onRestart={resetLesson}
         backHref={backHref}
@@ -163,7 +188,7 @@ export function LessonContainer({
         totalQuestions={totalQuestions}
       />
 
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 md:p-8 shadow-sm mb-6">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 md:p-8 shadow-sm mb-6">
         <OptionList
           statement={currentQuestion.statement}
           options={currentQuestion.options}
@@ -172,6 +197,7 @@ export function LessonContainer({
           isAnswerSubmitted={isAnswerSubmitted}
           onSelectOption={selectOption}
           isExample={currentQuestion.isExample}
+          isVerifying={isVerifying}
         />
 
         {/* Botão de confirmação visível antes da submissão */}
@@ -179,20 +205,27 @@ export function LessonContainer({
           <div className="mt-8">
             <button
               type="button"
-              disabled={!selectedOptionId || isVerifying}
+              disabled={!selectedOptionId}
               onClick={submitAnswer}
+              aria-busy={isVerifying}
               className={`w-full min-h-11 py-3.5 px-6 rounded-xl font-bold text-white transition-all shadow-sm ${
                 selectedOptionId && !isVerifying
                   ? 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 cursor-pointer'
                   : 'bg-slate-300 cursor-not-allowed text-slate-500'
               } focus:outline-none`}
             >
-              {isVerifying ? 'Verificando...' : 'Confirmar resposta'}
+              Confirmar resposta
             </button>
           </div>
         )}
 
-        {/* Painel de feedback imediato após confirmação autoritativa */}
+        {isVerifying && (
+          <p role="status" aria-live="polite" className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            Resposta recebida. Conferindo o gabarito oficial com segurança…
+          </p>
+        )}
+
+        {/* Painel de feedback após confirmação autoritativa */}
         {isAnswerSubmitted && isCorrect !== null && (
           <FeedbackPanel
             isCorrect={isCorrect}

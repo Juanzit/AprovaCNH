@@ -15,6 +15,7 @@ interface LessonSummaryProps {
   backLabel?: string;
   badgeText?: string;
   completedSessionIds?: number[];
+  xpAwardedOverride?: number;
 }
 
 export function LessonSummary({
@@ -27,6 +28,7 @@ export function LessonSummary({
   backLabel = 'Voltar à Trilha',
   badgeText,
   completedSessionIds = [],
+  xpAwardedOverride,
 }: LessonSummaryProps) {
   const { correctAnswersCount, totalQuestions, pointsFromAnswers, completionBonus, totalXp } =
     xpBreakdown;
@@ -75,7 +77,7 @@ export function LessonSummary({
             className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-extrabold border border-emerald-300 shadow-2xs"
           >
             <span aria-hidden="true">🎉</span>
-            <span>+{serverResult ? serverResult.xpAwarded : totalXp} XP Conquistados</span>
+            <span>+{xpAwardedOverride ?? (serverResult ? serverResult.xpAwarded : totalXp)} XP Conquistados</span>
           </span>
         )}
 
@@ -96,7 +98,7 @@ export function LessonSummary({
       {!isReviewMode && (
         <div
           data-testid="unit-progress-summary"
-          className="bg-blue-50/70 border border-blue-200 rounded-2xl p-4 mb-5 text-left space-y-2"
+          className="bg-blue-50/70 dark:bg-slate-800 border border-blue-200 dark:border-slate-700 rounded-2xl p-4 mb-5 text-left space-y-2"
         >
           <div className="flex items-center justify-between text-xs font-bold text-slate-900">
             <span>Avanço na Unidade 1 (Sinalização)</span>
@@ -120,7 +122,7 @@ export function LessonSummary({
       )}
 
       {/* Card de desempenho e XP */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm mb-6 text-left space-y-3.5">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm mb-6 text-left space-y-3.5">
         <div className="flex justify-between items-center pb-3 border-b border-slate-100">
           <span className="text-sm font-semibold text-slate-700">Acertos</span>
           <span className="text-base font-extrabold text-slate-900" data-testid="score-text">
@@ -153,6 +155,7 @@ export function LessonSummary({
         {!isReviewMode && nextSessionId && (
           <Link
             href={`/licao/sinalizacao?sessao=${nextSessionId}`}
+            onClick={onRestart}
             data-testid="next-session-cta"
             className="w-full min-h-11 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 font-bold text-white text-sm shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-colors"
           >
