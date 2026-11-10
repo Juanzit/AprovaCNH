@@ -78,7 +78,7 @@ export default async function SimuladoLobbyPage() {
               </h2>
 
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Treino prático focado nas 30 questões do módulo de Sinalização de Trânsito e Normas de Circulação.
+                Treino prático focado no acervo homologado. No momento, {availableCount} de {config.totalQuestions} questões previstas estão aprovadas para uso.
                 Durante a prova, não há dicas nem correção imediata: você pode navegar livremente entre as questões,
                 marcar itens para revisar e conferir o gabarito comentado da plataforma com fundamentação legal ao entregar.
               </p>
@@ -92,7 +92,7 @@ export default async function SimuladoLobbyPage() {
               </div>
               <p className="text-amber-900/90 leading-relaxed text-xs">
                 Esta é uma ferramenta independente de preparação e fixação de conteúdo desenvolvida pela plataforma AprovaCNH.
-                O acervo atual é composto por <strong>30 questões temáticas exclusivas de Sinalização e Normas de Circulação</strong>.
+                O acervo aprovado disponível é composto por <strong>{availableCount} questões temáticas</strong>; itens adicionais só entram após homologação editorial.
                 Ele <strong>não reproduz necessariamente a distribuição multidisciplinar</strong> (Legislação, Direção Defensiva, Primeiros Socorros, Mecânica e Meio Ambiente)
                 nem o conjunto de questões do exame oficial do DETRAN/SENATRAN.
               </p>

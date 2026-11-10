@@ -22,6 +22,7 @@ export default function RegisterPage() {
   const [uf, setUf] = useState('MG');
   const [category, setCategory] = useState('B');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isDuplicateEmail, setIsDuplicateEmail] = useState(false);
   const [isRegistrationCompleted, setIsRegistrationCompleted] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState('');
   const [resendFeedback, setResendFeedback] = useState<string | null>(null);
@@ -31,6 +32,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(null);
+    setIsDuplicateEmail(false);
     setResendFeedback(null);
     setShowPassword(false);
 
@@ -67,8 +69,15 @@ export default function RegisterPage() {
         return;
       }
 
+      if (data.user?.identities?.length === 0) {
+        setIsDuplicateEmail(true);
+        setErrorMessage('Este e-mail já possui cadastro. Faça login na sua conta.');
+        setIsLoading(false);
+        return;
+      }
+
       if (data.session) {
-        router.push('/');
+        router.replace('/');
         router.refresh();
       } else {
         setRegisteredEmail(submittedEmail);
@@ -93,17 +102,17 @@ export default function RegisterPage() {
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.resend?.({
+      const { error } = await supabase.auth.resend({
         type: 'signup',
         email: registeredEmail,
-      }) ?? { error: null };
+      });
 
       if (error) {
         const translated = translateSupabaseAuthError(error.message);
         setResendFeedback(translated.message);
       } else {
         setResendFeedback(
-          'E-mail de confirmação reenviado com sucesso! Verifique sua caixa de entrada e spam.'
+          'Solicitação aceita pelo serviço de autenticação. Verifique a caixa de entrada e spam; a entrega depende da configuração de e-mail do projeto.'
         );
       }
     } catch {
@@ -209,6 +218,14 @@ export default function RegisterPage() {
                     <div>
                       <strong className="font-bold block">Atenção</strong>
                       <span>{errorMessage}</span>
+                      {isDuplicateEmail && (
+                        <Link
+                          href="/login"
+                          className="mt-2 inline-flex items-center justify-center rounded-lg bg-red-700 px-3 py-2 text-xs font-bold text-white hover:bg-red-800"
+                        >
+                          Ir para o login
+                        </Link>
+                      )}
                     </div>
                   </div>
                 )}
