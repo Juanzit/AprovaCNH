@@ -22,7 +22,7 @@ export default async function ReviewPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="inline-flex items-center justify-center w-8 h-8 rounded-xl border border-slate-200 bg-white text-slate-600 hover:text-blue-600 hover:border-blue-200 transition-colors shadow-2xs"
+            className="inline-flex items-center justify-center w-8 h-8 rounded-xl border border-slate-200 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:border-blue-200 dark:border-slate-800 transition-colors shadow-2xs"
             title="Voltar à Trilha Principal"
             aria-label="Voltar para a Trilha de Aprendizagem"
           >
@@ -76,7 +76,7 @@ export default async function ReviewPage() {
           <StudentHeader initialProfile={profile} />
 
           {/* Guia Pedagógico Rápido */}
-          <div className="card-premium p-5 space-y-3 bg-gradient-to-br from-white to-slate-50/60 border border-slate-200/90 text-xs">
+          <div className="card-premium p-5 space-y-3 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs">
             <h2 className="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
               <span>🧠</span>
               <span>Como funciona a Repetição?</span>
