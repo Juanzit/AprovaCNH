@@ -62,6 +62,8 @@ describe('useLessonState', () => {
 
     act(() => {
       result.current.selectOption(sampleQuestions[0].correctOptionId);
+    });
+    act(() => {
       result.current.submitAnswer();
     });
 

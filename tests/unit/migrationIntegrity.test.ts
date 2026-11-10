@@ -114,7 +114,7 @@ describe('Integridade das Migrations, Políticas RLS e Preservação de Curadori
     const migration10Path = path.resolve('supabase/migrations/20261109000010_human_approve_sin_021_to_030.sql');
     const migration10Sql = fs.readFileSync(migration10Path, 'utf8');
 
-    expect(migration10Sql).toMatch(/\\bBEGIN;\\s*/);
+    expect(migration10Sql).toMatch(/\bBEGIN;\s*/);
     expect(migration10Sql.trim()).toMatch(/COMMIT;$/);
     expect(migration10Sql).toContain("status = 'aprovada'");
     expect(migration10Sql).toContain("'Responsável humano pelo projeto / Tech Lead'");

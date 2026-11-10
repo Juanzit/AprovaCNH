@@ -85,22 +85,25 @@ describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Disc
 
   // 3. Não inferir aprovação pela existência de fonte oficial
   it('não permite publicação de questão com fonte oficial se o status for "em_revisao"', () => {
-    const officialInReview = parsedBank.find((q) => q.id === 'sin-021')!;
-    expect(officialInReview.source.kind).toBe('official');
-    expect(officialInReview.status).toBe('em_revisao');
-    expect(isQuestionEligibleForStudents(officialInReview)).toBe(false);
+    const formallyApprovedQuestion = parsedBank.find((q) => q.id === 'sin-021')!;
+    expect(formallyApprovedQuestion.source.kind).toBe('official');
+    expect(formallyApprovedQuestion.status).toBe('aprovada');
+    expect(formallyApprovedQuestion.review?.approvedBy).toBe('Responsável humano pelo projeto / Tech Lead');
+
+    const stillInReview = { ...formallyApprovedQuestion, status: 'em_revisao' as const };
+    expect(isQuestionEligibleForStudents(stillInReview)).toBe(false);
   });
 
-  // 4. Caminho 1: Fallback local — retorna somente as 20 questões homologadas
-  it('Caminho 1 (Fallback Local): retorna somente as 20 questões homologadas, sem vazar as 10 em revisão', () => {
+  // 4. Caminho 1: Fallback local — retorna as 30 questões formalmente homologadas
+  it('Caminho 1 (Fallback Local): retorna as 30 questões formalmente homologadas', () => {
     const fallback = getFallbackApprovedQuestions();
-    expect(fallback).toHaveLength(20);
+    expect(fallback).toHaveLength(30);
 
     const ids = fallback.map((q) => q.id);
     expect(ids).toContain('sin-001');
     expect(ids).toContain('sin-020');
-    expect(ids).not.toContain('sin-021');
-    expect(ids).not.toContain('sin-030');
+    expect(ids).toContain('sin-021');
+    expect(ids).toContain('sin-030');
 
     for (const q of fallback) {
       expect(isQuestionEligibleForStudents(q)).toBe(true);
@@ -141,21 +144,20 @@ describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Disc
   });
 
   // 7. Caminho 4: Gerador de Simulado — Rejeita conjunto insuficiente e descarta itens não elegíveis
-  it('Caminho 4 (Simulado): falha com InsufficientApprovedQuestionsError no fallback de 20 e não usa itens em revisão', () => {
+  it('Caminho 4 (Simulado): monta 30 questões após homologação e rejeita qualquer pool realmente insuficiente', () => {
     const fallback = getFallbackApprovedQuestions();
-    expect(() =>
-      generateSimuladoQuestions(fallback, { totalQuestions: 30 })
-    ).toThrow(InsufficientApprovedQuestionsError);
+    expect(fallback).toHaveLength(30);
+    expect(generateSimuladoQuestions(fallback, { totalQuestions: 30, seed: 41 })).toHaveLength(30);
 
-    // Tentativa com 29 aprovadas + 10 em revisão
     const twentyNineApproved = createMockApprovedBank(29);
-    const mixed = [
-      ...twentyNineApproved,
-      ...rawQuestions.filter((q) => q.status === 'em_revisao'),
-    ];
+    const tenPending = parsedBank.slice(0, 10).map((question, index) => ({
+      ...question,
+      id: `pending-security-${index + 1}`,
+      status: 'em_revisao' as const,
+    }));
 
     expect(() =>
-      generateSimuladoQuestions(mixed as ValidatedQuestion[], { totalQuestions: 30 })
+      generateSimuladoQuestions([...twentyNineApproved, ...tenPending], { totalQuestions: 30 })
     ).toThrow(InsufficientApprovedQuestionsError);
   });
 
@@ -177,7 +179,7 @@ describe('Segurança de Publicação e Elegibilidade Editorial nos Caminhos Disc
     // Caso 3: Aprovada demonstrativa (is_example=true) -> Agora BLOQUEADO para alunos
     expect(canStudentSelectQuestion({ status: 'aprovada', is_example: true })).toBe(false);
 
-    // Caso 4: Em revisão (ex: sin-021..sin-030) -> BLOQUEADO
+    // Caso 4: Qualquer questão que permaneça em revisão -> BLOQUEADO
     expect(canStudentSelectQuestion({ status: 'em_revisao', is_example: false })).toBe(false);
 
     // Caso 5: Suspensa ou obsoleta -> BLOQUEADO
