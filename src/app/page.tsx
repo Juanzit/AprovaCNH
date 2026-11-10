@@ -62,10 +62,10 @@ export default async function HomePage() {
       {/* 1. Header de Boas-Vindas / Hero do Estudante */}
       <section
         aria-label="Boas-vindas ao AprovaCNH"
-        className="card-premium p-6 sm:p-7 relative overflow-hidden bg-gradient-to-br from-white via-blue-50/20 to-indigo-50/40 border border-slate-200/90"
+        className="card-premium p-6 sm:p-7 relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 border-l-4 border-l-blue-500"
       >
         <div
-          className="absolute -right-16 -top-16 w-64 h-64 bg-gradient-to-bl from-blue-100/50 via-indigo-50/30 to-transparent rounded-full pointer-events-none blur-xl"
+          className="hidden"
           aria-hidden="true"
         />
 
@@ -192,7 +192,7 @@ export default async function HomePage() {
           <section
             aria-labelledby="dashboard-simulado-heading"
             data-testid="dashboard-simulado-card"
-            className="card-premium p-5 space-y-4 border border-slate-200/90 relative overflow-hidden"
+            className="card-premium p-5 space-y-4 border border-slate-200/90 dark:border-slate-800 relative overflow-hidden bg-white dark:bg-slate-900"
           >
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <Badge variant="brand" size="sm">
@@ -217,7 +217,7 @@ export default async function HomePage() {
             </div>
 
             {/* Ficha Rápida do Simulado */}
-            <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-slate-50 border border-slate-200/70 text-xs">
+            <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/70 dark:border-slate-700 text-xs">
               <div className="flex items-center gap-2">
                 <ClockIcon className="w-4 h-4 text-slate-400 shrink-0" />
                 <div>
@@ -238,7 +238,7 @@ export default async function HomePage() {
               <Link
                 href="/simulado"
                 data-testid="dashboard-simulado-link"
-                className="inline-flex items-center justify-center w-full min-h-11 px-4 py-2.5 rounded-xl border border-blue-600/20 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-[0.99]"
+                className="inline-flex items-center justify-center w-full min-h-11 px-4 py-2.5 rounded-xl border border-blue-600/20 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-[0.99]"
               >
                 <span>Acessar Simulado Temático &rarr;</span>
               </Link>
