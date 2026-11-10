@@ -2,26 +2,27 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get('code');
-  const next = searchParams.get('next') ?? '/licao/sinalizacao';
+  const requestUrl = new URL(request.url);
+  const code = requestUrl.searchParams.get('code');
+  const requestedNext = requestUrl.searchParams.get('next') ?? '/';
+  const safeNext =
+    requestedNext.startsWith('/') &&
+    !requestedNext.startsWith('//') &&
+    !requestedNext.includes('\\')
+      ? requestedNext
+      : '/';
 
-  if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      const forwardedHost = request.headers.get('x-forwarded-host');
-      const isLocalEnv = process.env.NODE_ENV === 'development';
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`);
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}`);
-      }
-    }
+  if (!code) {
+    return NextResponse.redirect(new URL('/login?error=auth-callback-failed', requestUrl.origin));
   }
 
-  // Se falhar o código, redireciona para login com erro
-  return NextResponse.redirect(`${origin}/login?error=auth-callback-failed`);
+  const supabase = await createClient();
+  const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+  if (error) {
+    return NextResponse.redirect(new URL('/login?error=auth-callback-failed', requestUrl.origin));
+  }
+
+  // createClient writes the PKCE session cookies through the Route Handler cookie store.
+  return NextResponse.redirect(new URL(safeNext, requestUrl.origin));
 }
