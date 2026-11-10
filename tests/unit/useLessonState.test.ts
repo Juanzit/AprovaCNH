@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useLessonState } from '@/features/lesson/hooks/useLessonState';
 import rawSeed from '@/data/seed-sinalizacao.json';

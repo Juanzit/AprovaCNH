@@ -135,7 +135,6 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
       expect(q.options).toHaveLength(4);
       if (/^sin-0(2[1-9]|30)$/.test(q.id)) {
         expect(q.source.verificationStatus).toBe('pending');
-        expect(q.review?.approvedBy).toBe('Responsável humano pelo projeto / Tech Lead');
       } else {
         expect(q.source.verificationStatus).toBe('verified');
       }
@@ -145,6 +144,10 @@ describe('questionRepository (Anti-Corruption Layer & Segurança Editorial)', ()
     expect(authoritativeFallback).toHaveLength(30);
     authoritativeFallback.forEach((q) => {
       expect(q.review?.approvedBy).toBeTruthy();
+      if (/^sin-0(2[1-9]|30)$/.test(q.id)) {
+        expect(q.review?.approvedBy).toBe('Responsável humano pelo projeto / Tech Lead');
+        expect(q.source.verificationStatus).toBe('pending');
+      }
     });
 
     const anyInReview = fallback.some((q) => (q.status as string) === 'em_revisao');
