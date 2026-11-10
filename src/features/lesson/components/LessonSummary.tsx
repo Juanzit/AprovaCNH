@@ -2,6 +2,7 @@ import React from 'react';
 import type { XpBreakdown } from '../utils/xpCalculator';
 import type { SessionSubmissionResult } from '@/features/progress/types/progress';
 import { AwardIcon } from '@/components/ui/Icons';
+import { calculateUnitProgressPercentFromIds } from '@/features/progress/utils/trackCta';
 import Link from 'next/link';
 
 interface LessonSummaryProps {
@@ -13,6 +14,7 @@ interface LessonSummaryProps {
   backHref?: string;
   backLabel?: string;
   badgeText?: string;
+  completedSessionIds?: number[];
 }
 
 export function LessonSummary({
@@ -24,12 +26,16 @@ export function LessonSummary({
   backHref = '/',
   backLabel = 'Voltar à Trilha',
   badgeText,
+  completedSessionIds = [],
 }: LessonSummaryProps) {
   const { correctAnswersCount, totalQuestions, pointsFromAnswers, completionBonus, totalXp } =
     xpBreakdown;
 
   const isReview = serverResult && !serverResult.isFirstCompletion;
-  const trackProgressPercent = Math.min(100, Math.max(25, sessionId * 25));
+  const completedForSummary = isReviewMode
+    ? completedSessionIds
+    : [...completedSessionIds, sessionId];
+  const trackProgressPercent = calculateUnitProgressPercentFromIds(completedForSummary);
   const nextSessionId = sessionId < 4 ? sessionId + 1 : null;
 
   return (

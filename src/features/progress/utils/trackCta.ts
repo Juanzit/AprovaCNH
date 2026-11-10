@@ -40,8 +40,13 @@ export function getCompletedUnitSessionIds(sessions: LessonSessionProgress[]): n
   return [1, 2, 3, 4].filter((sessionId) => completedIds.has(sessionId));
 }
 
+export function calculateUnitProgressPercentFromIds(sessionIds: number[]): number {
+  const validCompletedIds = new Set(sessionIds.filter((id) => [1, 2, 3, 4].includes(id)));
+  return Math.round((validCompletedIds.size / 4) * 100);
+}
+
 export function calculateUnitProgressPercent(sessions: LessonSessionProgress[]): number {
-  return Math.round((getCompletedUnitSessionIds(sessions).length / 4) * 100);
+  return calculateUnitProgressPercentFromIds(getCompletedUnitSessionIds(sessions));
 }
 
 export interface PrimaryCtaConfig {

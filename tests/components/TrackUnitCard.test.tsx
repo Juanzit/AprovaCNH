@@ -5,6 +5,7 @@ import {
   TrackUnitCard,
   getPrimaryCtaConfig,
   calculateUnitProgressPercent,
+  calculateUnitProgressPercentFromIds,
 } from '@/features/progress/components/TrackUnitCard';
 import type { LessonSessionProgress } from '@/features/progress/types/progress';
 
@@ -54,6 +55,7 @@ describe('TrackUnitCard (Sua Próxima Atividade, Estados Semânticos e Trilha Ve
     );
 
     expect(calculateUnitProgressPercent(twoCompleted)).toBe(50);
+    expect(calculateUnitProgressPercentFromIds([1, 2, 2, 9])).toBe(50);
     expect(calculateUnitProgressPercent([
       ...twoCompleted,
       { ...twoCompleted[0], sessionId: 3, status: 'in_progress' },

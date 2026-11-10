@@ -8,10 +8,11 @@ import {
   getPrimaryCtaConfig,
   getCompletedUnitSessionIds,
   calculateUnitProgressPercent,
+  calculateUnitProgressPercentFromIds,
   type PrimaryCtaConfig,
 } from '../utils/trackCta';
 
-export { SESSION_METADATA, getPrimaryCtaConfig, getCompletedUnitSessionIds, calculateUnitProgressPercent, type PrimaryCtaConfig };
+export { SESSION_METADATA, getPrimaryCtaConfig, getCompletedUnitSessionIds, calculateUnitProgressPercent, calculateUnitProgressPercentFromIds, type PrimaryCtaConfig };
 
 export interface TrackUnitCardProps {
   sessions: LessonSessionProgress[];

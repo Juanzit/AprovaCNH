@@ -15,6 +15,7 @@ import type { SessionSubmissionResult } from '@/features/progress/types/progress
 interface LessonContainerProps {
   questions: (StudentQuestion | Question)[];
   sessionId?: number;
+  completedSessionIds?: number[];
   isReviewMode?: boolean;
   customTopic?: string;
   backHref?: string;
@@ -32,6 +33,7 @@ interface LessonContainerProps {
 export function LessonContainer({
   questions,
   sessionId = 1,
+  completedSessionIds = [],
   isReviewMode = false,
   customTopic,
   backHref,
@@ -135,6 +137,7 @@ export function LessonContainer({
       <LessonSummary
         xpBreakdown={xpBreakdown}
         sessionId={sessionId}
+        completedSessionIds={completedSessionIds}
         serverResult={serverResult}
         isReviewMode={isReviewMode}
         onRestart={resetLesson}
