@@ -1,5 +1,5 @@
 import { getApprovedQuestionsByTopic } from '@/features/lesson/server/questionRepository';
-import { getLessonTopicProgress } from '@/features/progress/server/progressRepository';
+import { getLessonTopicProgress, getStudentProfile } from '@/features/progress/server/progressRepository';
 import { LessonContainer } from '@/features/lesson/components/LessonContainer';
 
 interface LicaoPageProps {
@@ -11,9 +11,10 @@ interface LicaoPageProps {
 
 export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPageProps) {
   // Carrega questões e progresso em paralelo para que o resumo use o estado real da unidade.
-  const [allQuestions, progressSessions] = await Promise.all([
+  const [allQuestions, progressSessions, profile] = await Promise.all([
     getApprovedQuestionsByTopic('Sinalização de Trânsito'),
     getLessonTopicProgress('Sinalização de Trânsito'),
+    getStudentProfile(),
   ]);
   const completedSessionIds = progressSessions
     .filter((session) => session.status === 'completed')
@@ -28,6 +29,7 @@ export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPagePr
       questions={allQuestions}
       sessionId={1}
       completedSessionIds={completedSessionIds}
+      isGuest={profile.id === 'guest'}
     />;
   }
 
@@ -43,6 +45,7 @@ export default async function LicaoSinalizacaoPage({ searchParams }: LicaoPagePr
       questions={sessionQuestions}
       sessionId={validSession}
       completedSessionIds={completedSessionIds}
+      isGuest={profile.id === 'guest'}
     />
   );
 }

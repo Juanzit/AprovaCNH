@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { LessonSessionProgress } from '../types/progress';
+import { GUEST_PROGRESS_EVENT, readGuestProgress, type GuestProgress } from '../utils/guestProgress';
 import {
   SESSION_METADATA,
   getPrimaryCtaConfig,
@@ -17,21 +18,50 @@ export { SESSION_METADATA, getPrimaryCtaConfig, getCompletedUnitSessionIds, calc
 export interface TrackUnitCardProps {
   sessions: LessonSessionProgress[];
   reviewNeededSessionIds?: number[];
+  isGuest?: boolean;
 }
 
 export function TrackUnitCard({
   sessions,
   reviewNeededSessionIds = [],
+  isGuest = false,
 }: TrackUnitCardProps) {
+  const [guestProgress, setGuestProgress] = useState<GuestProgress | null>(null);
+
+  useEffect(() => {
+    if (!isGuest) return;
+    const sync = () => setGuestProgress(readGuestProgress());
+    sync();
+    window.addEventListener(GUEST_PROGRESS_EVENT, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(GUEST_PROGRESS_EVENT, sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, [isGuest]);
+
+  const completedLocally = new Set(guestProgress?.completedSessionIds ?? []);
+  const effectiveSessions = sessions.map((session) => {
+    if (!isGuest || !completedLocally.has(session.sessionId)) return session;
+    const id = String(session.sessionId);
+    return {
+      ...session,
+      status: 'completed' as const,
+      xpEarned: guestProgress?.sessionXp[id] ?? 0,
+      score: guestProgress?.sessionScores[id] ?? 0,
+      maxScore: 5,
+    };
+  });
+
   const sessionProgressMap = new Map<number, LessonSessionProgress>();
-  for (const s of sessions) {
+  for (const s of effectiveSessions) {
     sessionProgressMap.set(s.sessionId, s);
   }
 
   const reviewSet = new Set<number>(reviewNeededSessionIds);
-  const totalCompleted = getCompletedUnitSessionIds(sessions).length;
-  const progressPercent = calculateUnitProgressPercent(sessions);
-  const primaryCta = getPrimaryCtaConfig(sessions);
+  const totalCompleted = getCompletedUnitSessionIds(effectiveSessions).length;
+  const progressPercent = calculateUnitProgressPercent(effectiveSessions);
+  const primaryCta = getPrimaryCtaConfig(effectiveSessions);
 
   return (
     <div className="card-premium p-5 sm:p-7 space-y-6">
@@ -120,7 +150,7 @@ export function TrackUnitCard({
             const isInProgress = progress?.status === 'in_progress';
             const needsReview = reviewSet.has(meta.sessionId);
             const isLast = index === SESSION_METADATA.length - 1;
-            const earnedXp = progress?.xpEarned || 70;
+            const earnedXp = progress?.xpEarned ?? 0;
 
             // Determinação dos 4 estados semânticos exigidos:
             // 1. Revisão necessária (Âmbar: bg-amber-100 text-amber-800)

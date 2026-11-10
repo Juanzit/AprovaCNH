@@ -6,6 +6,7 @@ import {
 import { getReviewDashboardData } from '@/features/review/server/reviewRepository';
 import { StudentHeader } from '@/features/progress/components/StudentHeader';
 import { TrackUnitCard } from '@/features/progress/components/TrackUnitCard';
+import { GuestXpStat } from '@/features/progress/components/GuestXpStat';
 import { getPrimaryCtaConfig } from '@/features/progress/utils/trackCta';
 import { DailyReviewCard } from '@/features/review/components/DailyReviewCard';
 import { StatCard } from '@/components/ui/StatCard';
@@ -140,17 +141,18 @@ export default async function HomePage() {
           }}
         />
 
-        <StatCard
-          label="Experiência (XP)"
-          value={`${profile.xpTotal} XP`}
-          sublabel="Pontuação acumulada"
-          icon={<SparklesIcon className="w-5 h-5" />}
-          iconBgColor="bg-purple-50 text-purple-600"
-          trend={{
-            text: 'Nível 1 • Iniciante',
-            isPositive: true,
-          }}
-        />
+        {profile.id === 'guest' ? (
+          <GuestXpStat initialXp={profile.xpTotal} />
+        ) : (
+          <StatCard
+            label="Experiência (XP)"
+            value={`${profile.xpTotal} XP`}
+            sublabel="Pontuação acumulada"
+            icon={<SparklesIcon className="w-5 h-5" />}
+            iconBgColor="bg-purple-50 text-purple-600"
+            trend={{ text: 'Nível 1 • Iniciante', isPositive: true }}
+          />
+        )}
       </section>
 
       {/* 3. Composição Principal em Duas Colunas */}
@@ -158,6 +160,7 @@ export default async function HomePage() {
         {/* Coluna Principal da Esquerda (8 Colunas): Trilha de Aprendizagem */}
         <div className="lg:col-span-8 space-y-6 order-2 lg:order-1">
           <TrackUnitCard
+            isGuest={profile.id === 'guest'}
             sessions={sessions}
             reviewNeededSessionIds={reviewNeededSessionIds}
           />

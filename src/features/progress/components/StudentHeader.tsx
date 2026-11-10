@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { StudentProfile } from '../types/progress';
 import { ProfileModal, VISITOR_PROFILE_STORAGE_KEY } from './ProfileModal';
+import { GUEST_PROGRESS_EVENT, readGuestProgress } from '../utils/guestProgress';
 
 interface StudentHeaderProps {
   initialProfile: StudentProfile;
@@ -45,6 +46,18 @@ export function StudentHeader({ initialProfile }: StudentHeaderProps) {
     return baseProfile;
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (initialProfile.id !== 'guest') return;
+    const sync = () => setProfile((prev) => ({ ...prev, xpTotal: readGuestProgress().xpTotal }));
+    sync();
+    window.addEventListener(GUEST_PROGRESS_EVENT, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(GUEST_PROGRESS_EVENT, sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, [initialProfile.id]);
 
   const initial = profile.fullName ? profile.fullName.charAt(0).toUpperCase() : 'E';
   const activeDaysCount = Math.min(7, Math.max(0, profile.currentStreak));
