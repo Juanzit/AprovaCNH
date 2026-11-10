@@ -19,6 +19,7 @@ export type RepositoryDataSource = 'remote' | 'local_fallback';
 const APPROVED_QUESTION_CACHE_TTL_MS = 45_000;
 const APPROVED_QUESTION_TIMEOUT_MS = 1_500;
 const approvedQuestionCache = new Map<string, { expiresAt: number; result: QuestionLoadResult }>();
+const authoritativeQuestionCache = new Map<string, { expiresAt: number; questions: ValidatedQuestion[] }>();
 
 function withTimeout<T>(promiseLike: PromiseLike<T>, timeoutMs: number): Promise<T> {
   return new Promise<T>((resolve, reject) => {
@@ -464,8 +465,13 @@ export async function getEditorialQuestionsByTopic(
 export async function getAuthoritativeQuestionsWithFallback(
   topic = 'Sinalização de Trânsito'
 ): Promise<ValidatedQuestion[]> {
+  const cacheKey = topic.toLocaleLowerCase('pt-BR');
+  const cached = authoritativeQuestionCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.questions;
+  if (cached) authoritativeQuestionCache.delete(cacheKey);
+
   const byId = new Map<string, ValidatedQuestion>();
-  const normalizedTopic = topic.toLocaleLowerCase('pt-BR');
+  const normalizedTopic = cacheKey;
 
   for (const question of getAuthoritativeQuestionsForServer()) {
     if (question.topic.toLocaleLowerCase('pt-BR').includes(normalizedTopic)) {
@@ -474,7 +480,7 @@ export async function getAuthoritativeQuestionsWithFallback(
   }
 
   try {
-    const remoteQuestions = await getEditorialQuestionsByTopic(topic);
+    const remoteQuestions = await withTimeout(getEditorialQuestionsByTopic(topic), APPROVED_QUESTION_TIMEOUT_MS);
     for (const question of remoteQuestions) {
       if (isQuestionEligibleForStudents(question)) {
         byId.set(question.id, question as ValidatedQuestion);
@@ -484,7 +490,9 @@ export async function getAuthoritativeQuestionsWithFallback(
     console.warn('[QuestionRepository] Acervo remoto indisponível; usando seed local aprovado:', error);
   }
 
-  return Array.from(byId.values()).sort((a, b) => a.id.localeCompare(b.id, 'en'));
+  const result = Array.from(byId.values()).sort((a, b) => a.id.localeCompare(b.id, 'en'));
+  authoritativeQuestionCache.set(cacheKey, { expiresAt: Date.now() + APPROVED_QUESTION_CACHE_TTL_MS, questions: result });
+  return result;
 }
 
 /**

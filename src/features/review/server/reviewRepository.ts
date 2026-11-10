@@ -66,12 +66,19 @@ export async function getReviewDashboardData(customUserId?: string): Promise<Rev
     ? { user: { id: customUserId } }
     : await getSupabaseAuthContext();
 
-  const [records, allQuestions] = user
-    ? await Promise.all([
-        getUserAnswerRecords(user.id),
-        getApprovedQuestionsByTopic('Sinalização de Trânsito'),
-      ])
-    : [await getUserAnswerRecords(), []];
+  let records: UserAnswerRecord[];
+  let allQuestions: StudentQuestion[];
+  if (user) {
+    [records, allQuestions] = await Promise.all([
+      getUserAnswerRecords(user.id),
+      getApprovedQuestionsByTopic('Sinalização de Trânsito'),
+    ]);
+  } else {
+    records = await getUserAnswerRecords();
+    allQuestions = records.length > 0
+      ? await getApprovedQuestionsByTopic('Sinalização de Trânsito')
+      : [];
+  }
 
   const questionMap = new Map<string, StudentQuestion>(allQuestions.map((q) => [q.id, q]));
 

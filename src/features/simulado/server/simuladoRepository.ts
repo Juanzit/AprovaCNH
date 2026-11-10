@@ -20,6 +20,20 @@ import {
 } from '../utils/simuladoGenerator';
 export { InsufficientApprovedQuestionsError } from '../utils/simuladoGenerator';
 
+const EXAM_CONFIG_CACHE_TTL_MS = 60_000;
+const EXAM_CONFIG_TIMEOUT_MS = 1_500;
+const examConfigCache = new Map<string, { expiresAt: number; value: ExamConfig }>();
+
+function withExamConfigTimeout<T>(promiseLike: PromiseLike<T>, timeoutMs: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('Timeout ao consultar configuração do simulado.')), timeoutMs);
+    Promise.resolve(promiseLike).then(
+      (value) => { clearTimeout(timer); resolve(value); },
+      (error) => { clearTimeout(timer); reject(error); }
+    );
+  });
+}
+
 interface DbExamConfigRow {
   id: string;
   name: string;
@@ -39,6 +53,11 @@ interface DbExamConfigRow {
  * Em caso de tabela ainda não migrada ou falha de rede, retorna DEFAULT_EXAM_CONFIG (D007).
  */
 export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<ExamConfig> {
+  const cacheKey = uf?.toUpperCase() ?? 'ALL';
+  const cached = examConfigCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+  if (cached) examConfigCache.delete(cacheKey);
+
   try {
     const supabase = await createClient();
     let query = supabase
@@ -52,9 +71,10 @@ export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<Exa
       query = query.eq('uf', uf.toUpperCase());
     }
 
-    const { data, error } = await query.maybeSingle();
+    const { data, error } = await withExamConfigTimeout(query.maybeSingle(), EXAM_CONFIG_TIMEOUT_MS);
 
     if (error || !data) {
+      examConfigCache.set(cacheKey, { expiresAt: Date.now() + 8_000, value: DEFAULT_EXAM_CONFIG });
       return DEFAULT_EXAM_CONFIG;
     }
 
@@ -73,8 +93,11 @@ export async function getActiveExamConfig(uf: string | null = 'MG'): Promise<Exa
       isActive: row.is_active,
     });
 
-    return parsed.success ? parsed.data : DEFAULT_EXAM_CONFIG;
+    const value = parsed.success ? parsed.data : DEFAULT_EXAM_CONFIG;
+    examConfigCache.set(cacheKey, { expiresAt: Date.now() + EXAM_CONFIG_CACHE_TTL_MS, value });
+    return value;
   } catch {
+    examConfigCache.set(cacheKey, { expiresAt: Date.now() + 8_000, value: DEFAULT_EXAM_CONFIG });
     return DEFAULT_EXAM_CONFIG;
   }
 }
