@@ -165,11 +165,11 @@ export default function RegisterPage() {
                   Cadastro realizado!
                 </h1>
                 <p className="text-sm text-slate-700 leading-relaxed">
-                  Enviamos um link de confirmação para seu e-mail. Confirme sua conta para começar a salvar sua evolução.
+                  Solicitação de cadastro processada. Se a confirmação por e-mail estiver habilitada, o Supabase tentará enviar um link para este endereço. Confira também a caixa de spam.
                 </p>
                 {registeredEmail && (
                   <p className="text-xs font-bold text-slate-500">
-                    Enviado para: <span className="text-slate-800">{registeredEmail}</span>
+                    Endereço informado: <span className="text-slate-800">{registeredEmail}</span>
                   </p>
                 )}
               </div>
